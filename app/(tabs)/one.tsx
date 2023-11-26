@@ -1,14 +1,12 @@
-import { Text, View } from 'react-native';
+import { Text, View } from "react-native";
 import EditScreenInfo from "../../components/EditScreenInfo";
 
 export default function TabOneScreen() {
   return (
     <View>
       <Text>Tab One</Text>
-      <View/>
+      <View />
       <EditScreenInfo path="app/(tabs)/one.tsx" />
     </View>
   );
 }
-
-
