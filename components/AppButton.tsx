@@ -1,27 +1,29 @@
+// Imports
 import React from "react";
-import { TouchableOpacity, Text, GestureResponderEvent } from "react-native";
-import { View } from "../components/Themed";
+import { Text, TouchableOpacity } from "react-native";
+import { twMerge } from "tailwind-merge";
 
-// Define the types for your Button props
+// Defining the types of props to be used
 interface ButtonProps {
-  onPress: (event: GestureResponderEvent) => void;
-  className?: string;
   children: React.ReactNode;
+  onPress: () => void;
+  className?: string;
 }
 
-// Your Button component
-const Button: React.FC<ButtonProps> = ({
-  onPress,
-  className = "",
+// Destructuring the props and merging the classNames together so that you can override or add to the default button styling.
+export default function AppButton({
   children,
-}) => {
+  onPress,
+  className,
+  ...props
+}: ButtonProps) {
   return (
-    <TouchableOpacity onPress={onPress}>
-      <View className={`px-4 py-2 rounded bg-white ${className}`}>
-        <Text className="text-black text-center">{children}</Text>
-      </View>
+    <TouchableOpacity
+      onPress={onPress}
+      className={twMerge("text-black bg-white rounded-lg p-3", className)}
+      {...props}
+    >
+      <Text>{children}</Text>
     </TouchableOpacity>
   );
-};
-
-export default Button;
+}
