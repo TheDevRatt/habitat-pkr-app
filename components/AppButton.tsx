@@ -20,10 +20,12 @@ export default function AppButton({
   return (
     <TouchableOpacity
       onPress={onPress}
-      className={twMerge("text-black bg-white rounded-lg p-3", className)}
+      className={twMerge("bg-white rounded-3xl", className)}
       {...props}
     >
-      <Text>{children}</Text>
+      <Text className="text-center text-black text-[30px] font-Karla_400Regular">
+        {children}
+      </Text>
     </TouchableOpacity>
   );
 }

@@ -6,6 +6,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Text, View } from "../components/Themed";
 import PKRLogo from "@/components/PKRLogo";
 import AppButton from "@/components/AppButton"; // Import the Button component
+import DividerWithText from "@/components/DividerWithText";
 
 export default function HomeScreen() {
   return (
@@ -20,9 +21,19 @@ export default function HomeScreen() {
       <Text className="text-center text-black">
         By Habitat for Humanity {"\n"} Peterborough & {"\n"} Kawartha Region
       </Text>
-      <AppButton onPress={() => console.log("Button Pressed!")}>
-        Test Button
+      <AppButton
+        className="flex-initial mt-[29px] w-[350px] h-[55px] justify-center"
+        onPress={() => console.log("Log in Button Pressed")}
+      >
+        Log In
       </AppButton>
+      <AppButton
+        className="flex-initial mt-[29px] w-[350px] h-[55px] justify-center"
+        onPress={() => console.log("Sign Up Button Pressed")}
+      >
+        Sign Up
+      </AppButton>
+      <DividerWithText />
     </LinearGradient>
   );
 }
