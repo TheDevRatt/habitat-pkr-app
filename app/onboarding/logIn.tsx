@@ -7,15 +7,11 @@ import {
   } from "react-native";
   import { LinearGradient } from "expo-linear-gradient";
   import React, { useState, useRef } from "react";
-  import PKRLogo from "@/components/PKRLogo";
+  import PKRLogo from "../../components/PKRLogo";
   import FontAwesome from "@expo/vector-icons/FontAwesome";
-  import Button from "@/components/AppButton";
+  import AppButton from "../../components/AppButton";
   
   const LogIn = () => {
-    const handlePress = () => {
-      // Handle the button press event here
-      console.log("Button was pressed");
-    };
   
     return (
       <LinearGradient
@@ -54,8 +50,10 @@ import {
               </Text>
             </TouchableOpacity>
           </View>
-          <View className="mt-12">
-            <Button onPress={handlePress}>Log In</Button>
+          <View>
+          <AppButton onPress={() => console.log("Login Button Pressed!")}>
+        Log In
+      </AppButton>
           </View>
   
           <View className="mt-20 flex-1 items-center">

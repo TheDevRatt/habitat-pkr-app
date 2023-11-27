@@ -1,63 +1,38 @@
-import { View, Text, TouchableOpacity, TextInput } from "react-native";
+// index.tsx
+import React from "react";
+import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useState, useRef } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+
+import { Text, View } from "../components/Themed";
+import PKRLogo from "../components/PKRLogo";
+import AppButton from "../components/AppButton"; // Import the Button component
 
 
-const HomeScreen = () => {
- 
-
+export default function HomeScreen() {
   return (
     <LinearGradient
       colors={["#FFFFFF", "#0099CC"]}
-      start={{ x: 1, y: 0.3 }}
-      className="h-full"
+      className="flex-1 items-center bg-white"
     >
-      <SafeAreaView className="m-5 ">
-        <View className="mt-4">
-          <Text className="font-Karla_500Medium text-5xl">Welcome</Text>
-        </View>
-        <View className="mt-8 mx-4 space-y-9">
-          <TextInput
-            placeholder={"First Name"}
-            placeholderTextColor="#000"
-            className="font-Karla_400Regular py-2 border-b text-2xl"
-          />
-          <TextInput
-            placeholder={"Last Name"}
-            placeholderTextColor="#000"
-            className="font-Karla_400Regular py-2 border-b text-2xl"
-          />
-          <TextInput
-            placeholder={"Email"}
-            placeholderTextColor="#000"
-            className="font-Karla_400Regular py-2 border-b text-2xl"
-          />
-          <TextInput
-            secureTextEntry={true}
-            placeholder={"Password"}
-            placeholderTextColor="#000"
-            className="font-Karla_400Regular py-2 border-b text-2xl"
-          />
-            <TextInput
-            keyboardType="numeric"
-            placeholder={"Phone Number"}
-            placeholderTextColor="#000"
-            className="font-Karla_400Regular py-2 border-b text-2xl"
-          />
-         
-          <Text>
-          
-            Already have account? Log in!
-          </Text>
-          
-         
-
-
-        </View>
-      </SafeAreaView>
+      <PKRLogo className="mt-[76px]" />
+      <Text className="text-8xl font-semibold italic width-[393px] height-[135px] text-black pt-[15px]">
+        PKRides
+      </Text>
+      <Text className="text-center text-black">
+        By Habitat for Humanity {"\n"} Peterborough & {"\n"} Kawartha Region
+      </Text>
+      <AppButton
+        className="flex-initial mt-[29px] w-[350px] h-[55px] justify-center"
+        onPress={() => console.log("Log in Button Pressed")}
+      >
+        Log In
+      </AppButton>
+      <AppButton
+        className="flex-initial mt-[29px] w-[350px] h-[55px] justify-center"
+        onPress={() => console.log("Sign Up Button Pressed")}
+      >
+        Sign Up
+      </AppButton>
     </LinearGradient>
   );
-};
-
-export default HomeScreen;
+}
