@@ -1,9 +1,5 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
+
 import {
   useFonts,
   Karla_200ExtraLight,
@@ -22,7 +18,7 @@ import {
   Karla_800ExtraBold_Italic,
 } from "@expo-google-fonts/karla";
 
-import { SplashScreen, Stack } from "expo-router";
+import { SplashScreen, Stack, useRouter } from 'expo-router';
 import { useEffect } from "react";
 
 export {
@@ -32,11 +28,8 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "(tabs)",
+  initialRouteName: "index",
 };
-
-
-
 
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -84,7 +77,11 @@ function RootLayoutNav() {
    <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="onboarding/signUp" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: "modal" }} />
       </Stack>
   );
 }
+
+
+

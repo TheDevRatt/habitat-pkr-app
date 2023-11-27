@@ -20,6 +20,11 @@ module.exports = {
         Karla_700Bold_Italic: ["Karla_700Bold_Italic"],
         Karla_800ExtraBold_Italic: ["Karla_800ExtraBold_Italic"],
       },
+      colors: {
+        'primary-blue': '#0099CC',
+        'primary-orange': '#E55D25',
+        'link-blue':'#00126D'
+      },
     },
   },
   plugins: [],
