@@ -10,6 +10,7 @@ import React, { useState, useRef } from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import AppButton from "../../components/AppButton";
 import { SelectList } from "react-native-dropdown-select-list";
+import {Link, useRouter} from 'expo-router'
 
 const SignUp = () => {
 
@@ -90,7 +91,7 @@ const SignUp = () => {
        
 
         <View className="mt-12 mx-4">
-        <AppButton className="pt-5" onPress={() => console.log("Button Pressed!")}>
+        <AppButton className="py-3" onPress={() => console.log("Button Pressed!")}>
         Create An Account
       </AppButton>
         </View>
@@ -111,12 +112,14 @@ const SignUp = () => {
           <Text className="font-Karla_400Regular text-xl">
             Already have an account?
           </Text>
+          <Link href={'/onboarding/logIn'} asChild>
           <TouchableOpacity>
             <Text className="font-Karla_700Bold text-xl text-link-blue underline">
               {" "}
               Log in
             </Text>
           </TouchableOpacity>
+          </Link>
         </View>
         
       </SafeAreaView>

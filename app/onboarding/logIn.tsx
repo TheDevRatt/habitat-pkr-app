@@ -10,6 +10,7 @@ import {
   import PKRLogo from "../../components/PKRLogo";
   import FontAwesome from "@expo/vector-icons/FontAwesome";
   import AppButton from "../../components/AppButton";
+  import {Link, useRouter} from 'expo-router'
   
   const LogIn = () => {
   
@@ -50,8 +51,8 @@ import {
               </Text>
             </TouchableOpacity>
           </View>
-          <View>
-          <AppButton onPress={() => console.log("Login Button Pressed!")}>
+          <View className="mt-14">
+          <AppButton className="w-80" onPress={() => console.log("Login Button Pressed!")}>
         Log In
       </AppButton>
           </View>
@@ -60,12 +61,14 @@ import {
             <Text className="font-Karla_400Regular text-xl">
               New around here?
             </Text>
+            <Link href={'/onboarding/signUp'} asChild>
             <TouchableOpacity>
               <Text className="font-Karla_700Bold text-xl text-link-blue underline">
                 {" "}
                 Create an account
               </Text>
             </TouchableOpacity>
+            </Link>
           </View>
         </SafeAreaView>
       </LinearGradient>

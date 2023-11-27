@@ -6,9 +6,12 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Text, View } from "../components/Themed";
 import PKRLogo from "../components/PKRLogo";
 import AppButton from "../components/AppButton"; // Import the Button component
-
+import DividerWithText from "../components/DividerWithText";
+import {Link, useRouter} from 'expo-router'
 
 export default function HomeScreen() {
+const router = useRouter();
+
   return (
     <LinearGradient
       colors={["#FFFFFF", "#0099CC"]}
@@ -23,16 +26,36 @@ export default function HomeScreen() {
       </Text>
       <AppButton
         className="flex-initial mt-[29px] w-[350px] h-[55px] justify-center"
-        onPress={() => console.log("Log in Button Pressed")}
+        onPress={() => router.push('/onboarding/logIn')}
       >
         Log In
       </AppButton>
+
       <AppButton
         className="flex-initial mt-[29px] w-[350px] h-[55px] justify-center"
-        onPress={() => console.log("Sign Up Button Pressed")}
+        onPress={() => router.push('/onboarding/signUp')}
       >
         Sign Up
       </AppButton>
+
+      <DividerWithText />
+
+      <View className="flex-row space-x-10 bg-transparent">
+        <AppButton
+          className="flex-initial w-[160px] h-[55px] justify-center"
+          onPress={() => console.log("Sign Up Button Pressed")}
+        >
+          <Text></Text>
+          Google
+        </AppButton>
+
+        <AppButton
+          className="flex-initial w-[160px] h-[55px] justify-center"
+          onPress={() => console.log("Sign Up Button Pressed")}
+        >
+          Apple
+        </AppButton>
+      </View>
     </LinearGradient>
   );
 }
