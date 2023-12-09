@@ -41,15 +41,16 @@ export default function HomeScreen() {
       <View className="flex-row space-x-10 bg-transparent">
         <AppButton
           className="flex-initial w-[160px] h-[55px] justify-center"
-          onPress={() => console.log("Sign Up Button Pressed")}
+          onPress={() => console.log("Google Sign In Button Pressed")}
+          icon="google"
         >
-          <Text></Text>
           Google
         </AppButton>
 
         <AppButton
           className="flex-initial w-[160px] h-[55px] justify-center"
-          onPress={() => console.log("Sign Up Button Pressed")}
+          onPress={() => console.log("Apple Sign In Button Pressed")}
+          icon="apple"
         >
           Apple
         </AppButton>
