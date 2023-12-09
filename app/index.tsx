@@ -1,15 +1,16 @@
 // index.tsx
 import React from "react";
-import { Image, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Text, View } from "../components/Themed";
-import { FontAwesome } from "@expo/vector-icons";
+import { Link, useRouter } from "expo-router";
 
 import PKRLogo from "@/components/PKRLogo";
-import AppButton from "@/components/AppButton"; // Import the Button component
+import AppButton from "@/components/AppButton";
 import DividerWithText from "@/components/DividerWithText";
 
 export default function HomeScreen() {
+  const router = useRouter();
+
   return (
     <LinearGradient
       colors={["#FFFFFF", "#0099CC"]}
@@ -24,14 +25,14 @@ export default function HomeScreen() {
       </Text>
       <AppButton
         className="flex-initial mt-[29px] w-[350px] h-[55px] justify-center"
-        onPress={() => console.log("Log in Button Pressed")}
+        onPress={() => router.push("/onboarding/logIn")}
       >
         Log In
       </AppButton>
 
       <AppButton
         className="flex-initial mt-[29px] w-[350px] h-[55px] justify-center"
-        onPress={() => console.log("Sign Up Button Pressed")}
+        onPress={() => router.push("/onboarding/signUp")}
       >
         Sign Up
       </AppButton>
