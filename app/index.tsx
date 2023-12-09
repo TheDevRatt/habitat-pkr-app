@@ -19,7 +19,7 @@ export default function HomeScreen() {
       <Text className="text-8xl font-semibold italic width-[393px] height-[135px] text-black pt-[15px]">
         PKRides
       </Text>
-      <Text className="text-center text-black">
+      <Text className="text-center text-base text-black">
         By Habitat for Humanity {"\n"} Peterborough & {"\n"} Kawartha Region
       </Text>
       <AppButton
