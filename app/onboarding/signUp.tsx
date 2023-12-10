@@ -4,24 +4,41 @@ import {
   TouchableOpacity,
   TextInput,
   SafeAreaView,
+  ScrollView,
+  Modal,
+  Button,
 } from "react-native";
+import DropDownPicker from "react-native-dropdown-picker";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useState, useRef } from "react";
+import { useState } from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import AppButton from "../../components/AppButton";
 import { SelectList } from "react-native-dropdown-select-list";
-import { Link, useRouter } from "expo-router";
+import { Link } from "expo-router";
+
+const handleButtonPress = () => console.log("Button Pressed!");
+const handleTermsPress = () => console.log("Terms and conditions pressed");
+
+const pronouns = [
+  "",
+  "she/her/hers",
+  "he/him/his",
+  "they/them/theirs",
+  "other",
+];
 
 const SignUp = () => {
-  const [selected, setSelected] = React.useState("");
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState(
+    pronouns.map((pronoun) => ({ label: pronoun, value: pronoun }))
+  );
+  const [selectedPronoun, setSelectedPronoun] = useState();
 
-  const data = [
-    { key: "1", value: "" },
-    { key: "2", value: "she/her/hers" },
-    { key: "3", value: "he/him/his" },
-    { key: "4", value: "they/them/theirs" },
-    { key: "5", value: "other" },
-  ];
+  const data = pronouns.map((pronoun, index) => ({
+    key: index.toString(),
+    value: pronoun,
+  }));
 
   return (
     <LinearGradient
@@ -31,30 +48,30 @@ const SignUp = () => {
     >
       <SafeAreaView className="m-5">
         <View className="mt-10 ml-2">
-          <Text className="font-Karla_500Medium text-5xl">Welcome</Text>
+          <Text className="font-Karla_500Medium text-[40px]">Welcome</Text>
         </View>
-        <View className="mt-8 mx-4 space-y-9">
+        <View className="mt-8 mx-4 space-y-7">
           <TextInput
             placeholder={"First Name"}
             placeholderTextColor="#000"
-            className="font-Karla_400Regular py-2 border-b text-2xl"
+            className="font-Karla_400Regular py-2 border-b text-[22px]"
           />
           <TextInput
             placeholder={"Last Name"}
             placeholderTextColor="#000"
-            className="font-Karla_400Regular py-2 border-b text-2xl"
+            className="font-Karla_400Regular py-2 border-b text-[22px]"
           />
           <TextInput
             placeholder={"Email"}
             placeholderTextColor="#000"
-            className="font-Karla_400Regular py-2 border-b text-2xl"
+            className="font-Karla_400Regular py-2 border-b text-[22px]"
           />
           <View className="flex-row items-center border-b w-90">
             <TextInput
               secureTextEntry={true}
               placeholder={"Password"}
               placeholderTextColor="#000"
-              className="font-Karla_400Regular flex-1 py-2 text-2xl"
+              className="font-Karla_400Regular flex-1 py-2 text-[22px]"
             />
             <FontAwesome name={"eye"} size={28} />
           </View>
@@ -62,7 +79,7 @@ const SignUp = () => {
             keyboardType="numeric"
             placeholder={"Phone Number"}
             placeholderTextColor="#000"
-            className="font-Karla_400Regular py-2 border-b text-2xl"
+            className="font-Karla_400Regular py-2 border-b text-[22px]"
           />
         </View>
 
@@ -73,43 +90,35 @@ const SignUp = () => {
             placeholderTextColor="#000"
             className="font-Karla_400Regular w-24 mr-24 py-2 border-b text-2xl"
           />
-          <SelectList
-            data={data}
-            setSelected={setSelected}
-            save="value"
-            placeholder="Pronouns"
-            search={false}
-            boxStyles={{
-              borderColor: "transparent",
-              borderBottomColor: "black",
-              borderRadius: 0,
-              width: 167,
-              position: "absolute",
-            }}
-            inputStyles={{ fontSize: 24, paddingLeft: 0 }}
-            dropdownStyles={{ borderColor: "transparent" }}
-            dropdownItemStyles={{ zIndex: 50 }}
+
+          <DropDownPicker
+            open={open}
+            value={value}
+            items={items}
+            setOpen={setOpen}
+            setValue={setValue}
+            setItems={setItems}
           />
         </View>
 
-        <View className="mt-12 mx-4">
+        <View className="mt-10 mx-4">
           <AppButton
-            className="py-3"
-            onPress={() => console.log("Button Pressed!")}
+            className="flex-initial w-[350px] h-[55px] justify-center"
+            onPress={handleButtonPress}
           >
             Create An Account
           </AppButton>
         </View>
 
-        <View className="mt-5 mx-3">
-          <Text className="text-center text-base font-Karla_300Light">
-            By clicking ‘Create Account’ you agree to Habitat PKR
-            <TouchableOpacity className="pt-0.5">
-              <Text className="text-link-blue text-base pt-6 underline font-Karla_300Light">
-                {" "}
-                terms and conditions
-              </Text>
-            </TouchableOpacity>
+        <View className="m-5">
+          <Text className="font-Karla_300Light text-[15px] text-center">
+            By clicking 'Create Account' you agree to Habitat PKR's{" "}
+            <Text
+              className="underline font-Karla_300Light text-[15px]"
+              onPress={handleTermsPress}
+            >
+              terms and conditions
+            </Text>
           </Text>
         </View>
 
