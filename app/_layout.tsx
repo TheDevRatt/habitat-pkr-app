@@ -79,6 +79,9 @@ function RootLayoutNav() {
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="onboarding/signUp" options={{ headerShown: false }} />
         <Stack.Screen name="onboarding/logIn" options={{ headerShown: false }} />
+        <Stack.Screen name="onboarding/basicInfo" options={{ headerShown: false }} />
+        <Stack.Screen name="onboarding/membership" options={{ headerShown: false }} />
+        <Stack.Screen name="onboarding/paymentInfo" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: "modal" }} />
       </Stack>
   );

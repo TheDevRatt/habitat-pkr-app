@@ -1,67 +1,78 @@
 // index.tsx
 import React from "react";
-import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-
 import { Text, View } from "../components/Themed";
+import { Link, useRouter } from "expo-router";
+
+import { StyleSheet } from "react-native";
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from "../constants/Metrics";
+
 import PKRLogo from "../components/PKRLogo";
-import AppButton from "../components/AppButton"; // Import the Button component
+import AppButton from "../components/AppButton";
 import DividerWithText from "../components/DividerWithText";
-import {Link, useRouter} from 'expo-router'
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 export default function HomeScreen() {
-const router = useRouter();
+  const router = useRouter();
 
   return (
     <LinearGradient
       colors={["#FFFFFF", "#0099CC"]}
       className="flex-1 items-center bg-white"
     >
-      <PKRLogo className="mt-[76px]" />
-      <Text className="text-8xl font-semibold italic width-[393px] height-[135px] text-black pt-[15px]">
+
+      <PKRLogo className="mt-[18%]"/>
+      <Text className="text-8xl font-Karla_700Bold_Italic text-black pt-[2.5%]">
         PKRides
       </Text>
-      <Text className="text-center text-black">
+      <Text className="font-Karla_300Light text-center text-base text-black">
         By Habitat for Humanity {"\n"} Peterborough & {"\n"} Kawartha Region
       </Text>
       <AppButton
-        className="flex-initial mt-[29px] w-[350px] h-[55px] justify-center"
-        onPress={() => router.push('/onboarding/logIn')}
+        className="mt-[8%] w-[90%] h-[6.5%] justify-center"
+        onPress={() => router.push("/onboarding/logIn")}
       >
-   
         Log In
       </AppButton>
 
       <AppButton
-        className="flex-initial mt-[29px] w-[350px] h-[55px] justify-center"
-        onPress={() => router.push('/onboarding/signUp')}
+        className="mt-[5%] w-[90%] h-[6.5%] justify-center"
+        onPress={() => router.push("/onboarding/signUp")}
       >
         Sign Up
       </AppButton>
 
       <DividerWithText />
 
-      <View className="flex-row space-x-10 bg-transparent">
-
+      <View className="flex-row bg-transparent">
         <AppButton
-          className="flex-initial w-[160px] h-[55px] justify-center"
-          onPress={() => console.log("Google Button Pressed")}
+          className="flex-initial w-[42%] h-[35%] justify-center"
+          onPress={() => console.log("Google Sign In Button Pressed")}
+          icon="google"
         >
-           {/* <FontAwesome className="mr-4" name={"google"} size={25} /> */}
-          <Text className="ml-4" >Google</Text>
-          
+          Google
         </AppButton>
 
         <AppButton
-          className="flex-initial w-[160px] h-[55px] justify-center"
-          onPress={() => console.log("Apple Button Pressed")}
+          className="flex-initial ml-[5.5%] w-[42%] h-[55px] justify-center"
+          onPress={() => console.log("Apple Sign In Button Pressed")}
+          icon="apple"
         >
-           {/* <FontAwesome className="mr-4" name={"apple"} size={25} /> */}
           Apple
         </AppButton>
       </View>
-    
     </LinearGradient>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    width: horizontalScale(10),
+  },
+  containerText: {
+    fontSize: moderateScale(18),
+  },
+});

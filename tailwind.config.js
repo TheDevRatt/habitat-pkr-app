@@ -23,7 +23,8 @@ module.exports = {
       colors: {
         'primary-blue': '#0099CC',
         'primary-orange': '#E55D25',
-        'link-blue':'#00126D'
+        'link-blue':'#00126D',
+        'light-pastel-blue':'#D3F0FA'
       },
     },
   },
