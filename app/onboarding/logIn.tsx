@@ -13,6 +13,12 @@ import AppButton from "../../components/AppButton";
 import { Link, useRouter } from "expo-router";
 
 const LogIn = () => {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
+
   return (
     <LinearGradient
       colors={["#FFFFFF", "#0099CC"]}
@@ -34,12 +40,14 @@ const LogIn = () => {
           />
           <View className="flex-row items-center border-b">
             <TextInput
-              secureTextEntry={true}
+              secureTextEntry={!isPasswordVisible}
               placeholder={"Password"}
               placeholderTextColor="#000"
               className="font-Karla_400Regular flex-1 py-2 text-2xl"
             />
-            <FontAwesome name={"eye"} size={28} />
+            <TouchableOpacity onPress={togglePasswordVisibility}>
+              <FontAwesome name={isPasswordVisible ? "eye-slash" : "eye"} size={28} />
+            </TouchableOpacity>
           </View>
         </View>
         <View className="mt-[4%] ml-[48%]">
@@ -57,6 +65,7 @@ const LogIn = () => {
           >
             Log In
           </AppButton>
+          
 
         <View className="mt-[15%] items-center">
           <Text className="font-Karla_400Regular items-center text-xl">

@@ -10,8 +10,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import React, { useState, useRef } from "react";
 import AppButton from "../../components/AppButton";
 import { Link, useRouter } from "expo-router";
-import driverLicense from "../../components/images/driverLicense.png";
-import insurance from "../../components/images/insuranceREPLACELATER.png";
+
+
 
 const BasicInfo = () => {
   const router = useRouter();
