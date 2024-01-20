@@ -80,11 +80,4 @@ export default function HomeScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    width: horizontalScale(10),
-  },
-  containerText: {
-    fontSize: moderateScale(18),
-  },
-});
+

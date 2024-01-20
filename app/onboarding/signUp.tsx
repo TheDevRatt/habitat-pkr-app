@@ -5,12 +5,17 @@ import {
   TouchableOpacity,
   TextInput,
   SafeAreaView,
+  ScrollView,
+  Modal,
+  Button,
 } from "react-native";
+import DropDownPicker from "react-native-dropdown-picker";
 import { LinearGradient } from "expo-linear-gradient";
+import { useState } from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import AppButton from "../../components/AppButton";
 import { SelectList } from "react-native-dropdown-select-list";
-import { Link } from 'expo-router';
+import {  Link  } from "expo-router";;
 
 const SignUp = () => {
   const [selected, setSelected] = useState("");
@@ -23,6 +28,29 @@ const SignUp = () => {
     { key: "4", value: "they/them/theirs" },
     { key: "5", value: "other" }
   ];
+  const pronouns = [
+    "",
+    "she/her/hers",
+    "he/him/his",
+    "they/them/theirs",
+    "other",
+  ];
+
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState(
+    pronouns.map((pronoun) => ({ label: pronoun, value: pronoun }))
+  );
+  const [selectedPronoun, setSelectedPronoun] = useState();
+
+  const data = pronouns.map((pronoun, index) => ({
+    key: index.toString(),
+    value: pronoun,
+  }));
+
+  const router = useRouter();
+  const handleButtonPress = () => console.log("Button Pressed!");
+  const handleTermsPress = () => console.log("Terms and conditions pressed");
 
   return (
     <LinearGradient
@@ -30,27 +58,26 @@ const SignUp = () => {
       start={{ x: 1, y: 0.3 }}
       style={{ flex: 1 }}
     >
-      <SafeAreaView style={{ margin: 5 }}>
-        <View style={{ marginTop: 10, marginLeft: 2 }}>
-          <Text style={{ fontFamily: "Karla_500Medium", fontSize: 32 }}>
-            Welcome
-          </Text>
+      <SafeAreaView className="m-3">
+        <View className="mt-4 mx-3">
+          <Text className="font-Karla_500Medium text-[40px]">Welcome</Text>
         </View>
-        <View style={{ marginTop: 8, marginHorizontal: 4, marginBottom: 9 }}>
+
+        <View className="mt-[25] mx-5 space-y-[9.5%]">
           <TextInput
             placeholder={"First Name"}
             placeholderTextColor="#000"
-            style={{ fontFamily: "Karla_400Regular", paddingVertical: 10, borderBottomWidth: 1, fontSize: 20 }}
+            className="font-Karla_400Regular py-2 border-b text-[22px]"
           />
           <TextInput
             placeholder={"Last Name"}
             placeholderTextColor="#000"
-            style={{ fontFamily: "Karla_400Regular", paddingVertical: 10, borderBottomWidth: 1, fontSize: 20 }}
+            className="font-Karla_400Regular py-2 border-b text-[22px]"
           />
           <TextInput
             placeholder={"Email"}
             placeholderTextColor="#000"
-            style={{ fontFamily: "Karla_400Regular", paddingVertical: 10, borderBottomWidth: 1, fontSize: 20 }}
+            className="font-Karla_400Regular py-2 border-b text-[22px]"
           />
           <View style={{ flexDirection: "row", alignItems: "center", borderBottomWidth: 1, borderBottomColor: "#000" }}>
             <TextInput
@@ -67,50 +94,64 @@ const SignUp = () => {
             keyboardType="numeric"
             placeholder={"Phone Number"}
             placeholderTextColor="#000"
-            style={{ fontFamily: "Karla_400Regular", paddingVertical: 10, borderBottomWidth: 1, fontSize: 20 }}
+            className="font-Karla_400Regular py-2 border-b text-[22px]"
           />
         </View>
 
-        <View style={{ minHeight: 0, zIndex: 30, width: 40, marginLeft: 4, marginTop: 10, flexDirection: "row" }}>
+        <View className="flex-row mx-5 mt-[9%]">
           <TextInput
             keyboardType="numeric"
             placeholder={"Age"}
             placeholderTextColor="#000"
-            style={{ fontFamily: "Karla_400Regular", width: 120, marginRight: 24, paddingVertical: 10, borderBottomWidth: 1, fontSize: 20 }}
+            className="font-Karla_400Regular w-[25%] mr-[27%] border-b text-2xl"
           />
-          <SelectList
-            data={data}
-            setSelected={setSelected}
-            save="value"
+
+          <DropDownPicker
+            open={open}
+            value={value}
+            items={items}
+            setOpen={setOpen}
+            setValue={setValue}
+            setItems={setItems}
+            style={{
+              backgroundColor: "transparent",
+              borderWidth: 0,
+              borderBottomWidth: 1,
+              borderBottomColor: "black",
+              width: "50%",
+              right: 0,
+            }}
             placeholder="Pronouns"
-            search={false}
-            boxStyles={{ borderColor: 'transparent', borderBottomColor: 'black', borderRadius: 0, width: 167, position: 'absolute' }}
-            inputStyles={{ fontSize: 20, paddingLeft: 0 }}
-            dropdownStyles={{ borderColor: 'transparent' }}
-            dropdownItemStyles={{ zIndex: 50 }}
+            textStyle={{ fontSize: 22, bottom: 0 }}
+            dropDownContainerStyle={{
+              backgroundColor: "rgb(153, 230, 255, 0.9)",
+              borderStyle: "solid",
+            }}
           />
         </View>
 
-        <View style={{ marginTop: 12, marginHorizontal: 4 }}>
-          <AppButton style={{ paddingVertical: 10 }} onPress={() => console.log("Button Pressed!")}>
-            Create An Account
+        <View className="mx-3">
+          <AppButton
+            className="flex mt-12 mb-5 justify-center h-[50]"
+            onPress={() => router.push("/onboarding/basicInfo")}
+          >
+            <Text className="font-Karla_400Regular text-[22]">
+              Create Account
+            </Text>
           </AppButton>
         </View>
 
-        <View style={{ marginTop: 5, marginHorizontal: 3 }}>
-          <Text style={{ textAlign: "center", fontSize: 16, fontFamily: "Karla_300Light" }}>
-            By clicking ‘Create Account’ you agree to Habitat PKR
-            <TouchableOpacity style={{ paddingTop: 0.5 }}>
-              <Text style={{ color: "#0099CC", fontSize: 16, paddingTop: 6, textDecorationLine: "underline", fontFamily: "Karla_300Light" }}>
-                {" "}
-                terms and conditions
-              </Text>
-            </TouchableOpacity>
+        <View className="m-0">
+          <Text className="font-Karla_300Light text-15 text-center">
+            By clicking 'Create Account' you agree to Habitat PKR's{" "}
+            <Text className="underline" onPress={handleTermsPress}>
+              terms and conditions
+            </Text>
           </Text>
         </View>
 
-        <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 8 }}>
-          <Text style={{ fontFamily: "Karla_400Regular", fontSize: 20 }}>
+        <View className="flex-row justify-center mt-8">
+          <Text className="font-Karla_400Regular text-xl">
             Already have an account?
           </Text>
           <Link href={'/onboarding/logIn'} asChild>
@@ -122,6 +163,7 @@ const SignUp = () => {
             </TouchableOpacity>
           </Link>
         </View>
+
       </SafeAreaView>
     </LinearGradient>
   );
