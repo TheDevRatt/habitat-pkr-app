@@ -10,32 +10,32 @@ import { LinearGradient } from "expo-linear-gradient";
 import React, { useState, useRef } from "react";
 import AppButton from "../../components/AppButton";
 import { Link, useRouter } from "expo-router";
-import driverLicense from "../../components/images/driverLicense.png";
-import insurance from "../../components/images/insuranceREPLACELATER.png";
+const driverLicense = require("../../components/images/driverLicense.png");
+const insurance = require("../../components/images/insuranceREPLACELATER.png");
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import * as ImagePicker from 'expo-image-picker';
-import { Camera } from 'expo-camera';
+import * as ImagePicker from "expo-image-picker";
+import { Camera } from "expo-camera";
 
 const BasicInfo = () => {
   const router = useRouter();
 
   const openCamera = async () => {
     const { status } = await Camera.requestPermissionsAsync();
-    if (status === 'granted') {
+    if (status === "granted") {
       let result = await ImagePicker.launchCameraAsync();
       console.log(result);
     } else {
-      console.log('Camera permission not granted');
+      console.log("Camera permission not granted");
     }
   };
 
   const openFilePicker = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status === 'granted') {
+    if (status === "granted") {
       let result = await ImagePicker.launchImageLibraryAsync();
       console.log(result);
     } else {
-      console.log('File picker permission not granted');
+      console.log("File picker permission not granted");
     }
   };
 
@@ -61,9 +61,9 @@ const BasicInfo = () => {
               className="flex-row justify-evenly mt-8 mb-2 px-5 w-50 py-1.5 items-center bg-transparent rounded-sm border border-dashed"
               onPress={openCamera}
             >
-              <FontAwesome name={"camera"} size={15}  />
+              <FontAwesome name={"camera"} size={15} />
               <Text className="font-Karla_400Regular py-2 border-b text-[18px] mt-10 mb-8">
-              &nbsp;Open Camera
+                &nbsp;Open Camera
               </Text>
             </AppButton>
             <AppButton
@@ -72,7 +72,7 @@ const BasicInfo = () => {
             >
               <FontAwesome name={"upload"} size={15} />
               <Text className="font-Karla_400Regular border-b text-[18px] mt-10 mb-8">
-              &nbsp;Upload File
+                &nbsp;Upload File
               </Text>
             </AppButton>
           </View>
@@ -84,16 +84,15 @@ const BasicInfo = () => {
           </Text>
           <Image source={insurance} />
           <View className="flex justify-between w-55">
-          <AppButton
-            className="flex-row justify-evenly mb-6 mt-6 px-5 py-1.5 w-55 bg-transparent rounded-sm border border-dashed"
-            onPress={openFilePicker}
-          >
-          
+            <AppButton
+              className="flex-row justify-evenly mb-6 mt-6 px-5 py-1.5 w-55 bg-transparent rounded-sm border border-dashed"
+              onPress={openFilePicker}
+            >
               <FontAwesome name={"upload"} size={15} />
-            <Text className="font-Karla_400Regular border-b text-[18px] mt-10 mb-8">
-            &nbsp;Upload File
-            </Text>
-          </AppButton>
+              <Text className="font-Karla_400Regular border-b text-[18px] mt-10 mb-8">
+                &nbsp;Upload File
+              </Text>
+            </AppButton>
           </View>
         </View>
         <View className="mt-12 w-[80%]">
@@ -101,9 +100,7 @@ const BasicInfo = () => {
             className="py-2"
             onPress={() => router.push("/onboarding/membership")}
           >
-             <Text className="font-Karla_400Regular text-[22]">
-              Next
-            </Text>
+            <Text className="font-Karla_400Regular text-[22]">Next</Text>
           </AppButton>
         </View>
       </SafeAreaView>
