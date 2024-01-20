@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -6,7 +7,6 @@ import {
   SafeAreaView,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useState, useRef } from "react";
 import PKRLogo from "../../components/PKRLogo";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import AppButton from "../../components/AppButton";
@@ -14,9 +14,15 @@ import { Link, useRouter } from "expo-router";
 
 const LogIn = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const router = useRouter();
 
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
+  };
+
+  const handleForgotPassword = () => {
+    // Redirect to Forgot Password page
+    router.push("/onboarding/ForgotPassword");
   };
 
   return (
@@ -51,25 +57,24 @@ const LogIn = () => {
           </View>
         </View>
         <View className="mt-[4%] ml-[48%]">
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleForgotPassword}>
             <Text className="font-Karla_400Regular text-lg text-link-blue underline">
               {" "}
               Forgot Password?
             </Text>
           </TouchableOpacity>
         </View>
-       
-          <AppButton
-            className="h-[6.5%] mt-[15%] w-[90%] justify-center"
-            onPress={() => console.log("Login Button Pressed!")}
-          >
-            Log In
-          </AppButton>
-          
+
+        <AppButton
+          className="h-[6.5%] mt-[15%] w-[90%] justify-center"
+          onPress={() => console.log("Login Button Pressed!")}
+        >
+          Log In
+        </AppButton>
 
         <View className="mt-[15%] items-center">
           <Text className="font-Karla_400Regular items-center text-xl">
-           New around here?
+            New around here?
           </Text>
           <Link href={"/onboarding/signUp"} asChild>
             <TouchableOpacity>
