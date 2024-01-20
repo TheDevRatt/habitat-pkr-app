@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   View,
   Text,
@@ -15,19 +14,9 @@ import { useState } from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import AppButton from "../../components/AppButton";
 import { SelectList } from "react-native-dropdown-select-list";
-import {  Link  } from "expo-router";;
+import { Link, useRouter } from "expo-router";
 
 const SignUp = () => {
-  const [selected, setSelected] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-
-  const data = [
-    { key: "1", value: "" },
-    { key: "2", value: "she/her/hers" },
-    { key: "3", value: "he/him/his" },
-    { key: "4", value: "they/them/theirs" },
-    { key: "5", value: "other" }
-  ];
   const pronouns = [
     "",
     "she/her/hers",
@@ -41,22 +30,21 @@ const SignUp = () => {
   const [items, setItems] = useState(
     pronouns.map((pronoun) => ({ label: pronoun, value: pronoun }))
   );
-  const [selectedPronoun, setSelectedPronoun] = useState();
 
-  const data = pronouns.map((pronoun, index) => ({
-    key: index.toString(),
-    value: pronoun,
-  }));
+  const [showPassword, setShowPassword] = useState(false);
 
   const router = useRouter();
   const handleButtonPress = () => console.log("Button Pressed!");
-  const handleTermsPress = () => console.log("Terms and conditions pressed");
+  const handleTermsPress = () => {
+    console.log('Navigating to TermsAndConditions');
+    router.push("/onboarding/TermsAndConditions");
+  };
 
   return (
     <LinearGradient
       colors={["#FFFFFF", "#0099CC"]}
       start={{ x: 1, y: 0.3 }}
-      style={{ flex: 1 }}
+      className="h-full"
     >
       <SafeAreaView className="m-3">
         <View className="mt-4 mx-3">
@@ -79,15 +67,15 @@ const SignUp = () => {
             placeholderTextColor="#000"
             className="font-Karla_400Regular py-2 border-b text-[22px]"
           />
-          <View style={{ flexDirection: "row", alignItems: "center", borderBottomWidth: 1, borderBottomColor: "#000" }}>
+          <View className="flex-row items-center border-b w-90">
             <TextInput
               secureTextEntry={!showPassword}
               placeholder={"Password"}
               placeholderTextColor="#000"
-              style={{ flex: 1, fontSize: 20 }}
+              className="font-Karla_400Regular flex-1 py-2 text-[22px]"
             />
             <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-              <FontAwesome name={showPassword ? "eye-slash" : "eye"} size={28} />
+              <FontAwesome name={showPassword ? "eye" : "eye-slash"} size={28} />
             </TouchableOpacity>
           </View>
           <TextInput
@@ -156,7 +144,7 @@ const SignUp = () => {
           </Text>
           <Link href={'/onboarding/logIn'} asChild>
             <TouchableOpacity>
-              <Text style={{ fontFamily: "Karla_700Bold", fontSize: 20, color: "#0099CC", textDecorationLine: "underline" }}>
+              <Text className="font-Karla_700Bold text-xl text-link-blue underline">
                 {" "}
                 Log in
               </Text>

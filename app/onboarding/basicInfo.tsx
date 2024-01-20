@@ -13,9 +13,31 @@ import { Link, useRouter } from "expo-router";
 import driverLicense from "../../components/images/driverLicense.png";
 import insurance from "../../components/images/insuranceREPLACELATER.png";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import * as ImagePicker from 'expo-image-picker';
+import { Camera } from 'expo-camera';
 
 const BasicInfo = () => {
   const router = useRouter();
+
+  const openCamera = async () => {
+    const { status } = await Camera.requestPermissionsAsync();
+    if (status === 'granted') {
+      let result = await ImagePicker.launchCameraAsync();
+      console.log(result);
+    } else {
+      console.log('Camera permission not granted');
+    }
+  };
+
+  const openFilePicker = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status === 'granted') {
+      let result = await ImagePicker.launchImageLibraryAsync();
+      console.log(result);
+    } else {
+      console.log('File picker permission not granted');
+    }
+  };
 
   return (
     <LinearGradient
@@ -37,7 +59,7 @@ const BasicInfo = () => {
           <View className="flex justify-between w-55">
             <AppButton
               className="flex-row justify-evenly mt-8 mb-2 px-5 w-50 py-1.5 items-center bg-transparent rounded-sm border border-dashed"
-              onPress={() => console.log("Open camera pressed")}
+              onPress={openCamera}
             >
               <FontAwesome name={"camera"} size={15}  />
               <Text className="font-Karla_400Regular py-2 border-b text-[18px] mt-10 mb-8">
@@ -46,7 +68,7 @@ const BasicInfo = () => {
             </AppButton>
             <AppButton
               className="mb-6 px-5 py-1.5 w-50 bg-transparent rounded-sm border border-dashed"
-              onPress={() => console.log("Open camera pressed")}
+              onPress={openFilePicker}
             >
               <FontAwesome name={"upload"} size={15} />
               <Text className="font-Karla_400Regular border-b text-[18px] mt-10 mb-8">
@@ -64,7 +86,7 @@ const BasicInfo = () => {
           <View className="flex justify-between w-55">
           <AppButton
             className="flex-row justify-evenly mb-6 mt-6 px-5 py-1.5 w-55 bg-transparent rounded-sm border border-dashed"
-            onPress={() => console.log("Open camera pressed")}
+            onPress={openFilePicker}
           >
           
               <FontAwesome name={"upload"} size={15} />
