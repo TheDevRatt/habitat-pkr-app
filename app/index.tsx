@@ -4,12 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Text, View } from "../components/Themed";
 import { Link, useRouter } from "expo-router";
 
-import { StyleSheet } from "react-native";
-import {
-  horizontalScale,
-  moderateScale,
-  verticalScale,
-} from "../constants/Metrics";
+
 
 import PKRLogo from "../components/PKRLogo";
 import AppButton from "../components/AppButton";
@@ -68,11 +63,4 @@ export default function HomeScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    width: horizontalScale(10),
-  },
-  containerText: {
-    fontSize: moderateScale(18),
-  },
-});
+
