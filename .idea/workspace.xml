@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="163a4076-8aea-4170-acb2-fb9edd9b4bb1" name="Changes" comment="Testing Realm and Atlas">
-      <change afterPath="$PROJECT_DIR$/app/firebase.js" afterDir="false" />
+    <list default="true" id="163a4076-8aea-4170-acb2-fb9edd9b4bb1" name="Changes" comment="Added firestore config">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(classes)/UserSchema.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(classes)/UserSchema.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(testFIles)/DBtest.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(testFIles)/DBtest.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/firebase.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/firebase.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/metro.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/metro.config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
@@ -140,7 +139,14 @@
       <option name="project" value="LOCAL" />
       <updated>1705799934632</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Added firestore config">
+      <created>1705967826644</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1705967826644</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -156,6 +162,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Testing Realm and Atlas" />
-    <option name="LAST_COMMIT_MESSAGE" value="Testing Realm and Atlas" />
+    <MESSAGE value="Added firestore config" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added firestore config" />
   </component>
 </project>
