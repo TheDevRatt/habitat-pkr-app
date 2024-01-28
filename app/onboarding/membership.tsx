@@ -18,12 +18,12 @@ const Membership = () => {
   return (
     <LinearGradient
       colors={["#FFFFFF", "#0099CC"]}
-      start={{ x: 1, y: 0.2 }}
+      start={{ x: 1, y: 0.1 }}
       className="h-full"
     >
-      <SafeAreaView className="m-2 flex-1 items-center">
+      <SafeAreaView className="flex-1 items-center">
         <View>
-          <Text className="font-Karla_500Medium mt-14 text-5xl items-start mr-5">
+          <Text className="font-Karla_500Medium text-[40px] items-start mr-5 mt-[76px]">
             Membership
           </Text>
           <Text className="font-Karla_500Medium mt-8 text-[26px] items-start mr-5">
