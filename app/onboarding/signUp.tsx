@@ -76,7 +76,7 @@ const SignUp = () => {
             />
             <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
               <FontAwesome
-                name={showPassword ? "eye" : "eye-slash"}
+                name={showPassword ? "eye-slash" : "eye"}
                 size={28}
               />
             </TouchableOpacity>
