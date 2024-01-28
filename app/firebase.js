@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, doc, setDoc, query, where } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -33,6 +33,28 @@ const db = getFirestore(app);
       //console.log("Document written with ID: ", docRef.id);
     //} catch (e) {
       //console.error("Error adding document: ", e);
-    //}
 //}
 //addUser();
+
+//import User from './classes/User.js';
+//var user = new User()
+//async function read(){
+
+    // Read function for returning specific data, in this case it
+    // returns any user from the collection users where their
+    // first name is equal to jane
+
+    //const q = query(collection(db, "Users"), where("first", "==", "Jane"));
+    //const querySnapshot = await getDocs(q);
+    //querySnapshot.forEach((doc) => {console.log(doc.id, " => ", doc.data());
+
+
+    // Read function for everything in a collection
+
+    //const querySnapshot = await getDocs(collection(db, "Users"));
+    //querySnapshot.forEach((doc) => {console.log(doc.id, " => ", doc.data());
+
+    //});
+
+//}
+//read();
