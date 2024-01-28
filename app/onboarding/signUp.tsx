@@ -36,14 +36,14 @@ const SignUp = () => {
   const router = useRouter();
   const handleButtonPress = () => console.log("Button Pressed!");
   const handleTermsPress = () => {
-    console.log('Navigating to TermsAndConditions');
+    console.log("Navigating to TermsAndConditions");
     router.push("/onboarding/TermsAndConditions");
   };
 
   return (
     <LinearGradient
       colors={["#FFFFFF", "#0099CC"]}
-      start={{ x: 1, y: 0.3 }}
+      start={{ x: 1, y: 0.1 }}
       className="h-full"
     >
       <SafeAreaView className="m-3">
@@ -75,7 +75,10 @@ const SignUp = () => {
               className="font-Karla_400Regular flex-1 py-2 text-[22px]"
             />
             <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-              <FontAwesome name={showPassword ? "eye" : "eye-slash"} size={28} />
+              <FontAwesome
+                name={showPassword ? "eye" : "eye-slash"}
+                size={28}
+              />
             </TouchableOpacity>
           </View>
           <TextInput
@@ -142,7 +145,7 @@ const SignUp = () => {
           <Text className="font-Karla_400Regular text-xl">
             Already have an account?
           </Text>
-          <Link href={'/onboarding/logIn'} asChild>
+          <Link href={"/onboarding/logIn"} asChild>
             <TouchableOpacity>
               <Text className="font-Karla_700Bold text-xl text-link-blue underline">
                 {" "}
@@ -151,7 +154,6 @@ const SignUp = () => {
             </TouchableOpacity>
           </Link>
         </View>
-
       </SafeAreaView>
     </LinearGradient>
   );

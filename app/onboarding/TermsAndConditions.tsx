@@ -1,32 +1,52 @@
-import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import React from "react";
+import { Link, useRouter } from "expo-router";
+import AppButton from "../../components/AppButton";
+import { View, Text, ScrollView } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 const TermsAndConditions = () => {
+  const router = useRouter();
   return (
     <LinearGradient
-      colors={['#FFFFFF', '#0099CC']}
-      start={{ x: 1, y: 0.3 }}
-      style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+      colors={["#FFFFFF", "#0099CC"]}
+      start={{ x: 1, y: 0.1 }}
+      className="flex-1 items-center bg-white"
     >
-      <Text style={{ fontSize: 26, fontWeight: 'bold', marginBottom: 20, fontFamily: 'Karla_500Medium', color: '#0099CC' }}>
+      <Text className="text-[26px] font-bold mt-[20%] mb-[20px] font-Karla_500Medium text-[#0099CC]">
         Terms and Conditions
       </Text>
-      <View style={{ width: '90%', backgroundColor: '#FFFFFF', padding: 30, borderRadius: 10, borderWidth: 1, borderColor: '#0099CC' }}>
+      <View className="w-[90%] bg-[#FFFFFF] p-10 rounded-lg border-[1px] border-[#0099CC]">
         <ScrollView>
-          <Text style={{ fontSize: 20, fontFamily: 'Karla_400Regular', color: '#000' }}>
+          <Text
+            style={{
+              fontSize: 20,
+              fontFamily: "Karla_400Regular",
+              color: "#000",
+            }}
+          >
             General Site Usage
             {"\n"}
             Last Revised: December 16, 2013
             {"\n\n"}
-            Welcome to www.lorem-ipsum.info. This site is provided as a service to our visitors and may be used for informational purposes only. Because the Terms and Conditions contain legal obligations, please read them carefully.
+            Welcome to www.lorem-ipsum.info. This site is provided as a service
+            to our visitors and may be used for informational purposes only.
+            Because the Terms and Conditions contain legal obligations, please
+            read them carefully.
             {"\n\n"}
             1. YOUR AGREEMENT
             {"\n"}
-            By using this Site, you agree to be bound by, and to comply with, these Terms and Conditions. If you do not agree to these Terms and Conditions, please do not use this site.
+            By using this Site, you agree to be bound by, and to comply with,
+            these Terms and Conditions. If you do not agree to these Terms and
+            Conditions, please do not use this site.
           </Text>
         </ScrollView>
       </View>
+      <AppButton
+        className="mt-[5%] w-[90%] h-[6.5%] justify-center"
+        onPress={() => router.push("/onboarding/signUp")}
+      >
+        Back
+      </AppButton>
     </LinearGradient>
   );
 };

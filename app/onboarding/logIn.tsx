@@ -22,7 +22,7 @@ const LogIn = () => {
   return (
     <LinearGradient
       colors={["#FFFFFF", "#0099CC"]}
-      start={{ x: 1, y: 0.3 }}
+      start={{ x: 1, y: 0.1 }}
       className="h-full"
     >
       <SafeAreaView className="m-[3%] flex-1 items-center">
@@ -46,7 +46,10 @@ const LogIn = () => {
               className="font-Karla_400Regular flex-1 py-2 text-2xl"
             />
             <TouchableOpacity onPress={togglePasswordVisibility}>
-              <FontAwesome name={isPasswordVisible ? "eye-slash" : "eye"} size={28} />
+              <FontAwesome
+                name={isPasswordVisible ? "eye-slash" : "eye"}
+                size={28}
+              />
             </TouchableOpacity>
           </View>
         </View>
@@ -58,18 +61,17 @@ const LogIn = () => {
             </Text>
           </TouchableOpacity>
         </View>
-       
-          <AppButton
-            className="h-[6.5%] mt-[15%] w-[90%] justify-center"
-            onPress={() => console.log("Login Button Pressed!")}
-          >
-            Log In
-          </AppButton>
-          
+
+        <AppButton
+          className="h-[6.5%] mt-[15%] w-[90%] justify-center"
+          onPress={() => console.log("Login Button Pressed!")}
+        >
+          Log In
+        </AppButton>
 
         <View className="mt-[15%] items-center">
           <Text className="font-Karla_400Regular items-center text-xl">
-           New around here?
+            New around here?
           </Text>
           <Link href={"/onboarding/signUp"} asChild>
             <TouchableOpacity>

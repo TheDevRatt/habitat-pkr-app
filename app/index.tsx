@@ -2,9 +2,13 @@ import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { Text, View } from "../components/Themed";
 import { Link, useRouter } from "expo-router";
-import * as AppleAuthentication from 'expo-apple-authentication';
+import * as AppleAuthentication from "expo-apple-authentication";
 import { StyleSheet } from "react-native";
-import { horizontalScale, moderateScale, verticalScale } from "../constants/Metrics";
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from "../constants/Metrics";
 import PKRLogo from "../components/PKRLogo";
 import AppButton from "../components/AppButton";
 import DividerWithText from "../components/DividerWithText";
@@ -21,22 +25,23 @@ export default function HomeScreen() {
         ],
       });
 
-      console.log('Apple Sign In Credential:', credential);
+      console.log("Apple Sign In Credential:", credential);
     } catch (error) {
-      console.error('Apple Sign In Error:', error);
+      console.error("Apple Sign In Error:", error);
     }
   };
 
   const handleGoogleSignIn = () => {
-    console.log('Google Sign In Button Pressed');
+    console.log("Google Sign In Button Pressed");
   };
 
   return (
     <LinearGradient
       colors={["#FFFFFF", "#0099CC"]}
+      start={{ x: 1, y: 0.1 }}
       className="flex-1 items-center bg-white"
     >
-      <PKRLogo className="mt-[18%]"/>
+      <PKRLogo className="mt-[18%]" />
       <Text className="text-8xl font-Karla_700Bold_Italic text-black pt-[2.5%]">
         PKRides
       </Text>
@@ -79,5 +84,3 @@ export default function HomeScreen() {
     </LinearGradient>
   );
 }
-
-
