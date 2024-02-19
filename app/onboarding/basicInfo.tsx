@@ -1,114 +1,155 @@
+import React, { useState } from "react";
+import { StyleSheet } from "react-native";
 import {
-  View,
   Text,
-  TouchableOpacity,
-  TextInput,
+  View,
   SafeAreaView,
-  Image,
-} from "react-native";
+  TextInput,
+  TouchableOpacity,
+} from "@/components/components(old)/Themed";
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from "@/constants/Metrics";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useState, useRef } from "react";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import * as ImagePicker from "expo-image-picker";
+import { Camera } from "expo-camera";
 import AppButton from "../../components/AppButton";
 import { Link, useRouter } from "expo-router";
-import driverLicense from "../../components/images/driverLicense.png";
-import insurance from "../../components/images/insuranceREPLACELATER.png";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import * as ImagePicker from 'expo-image-picker';
-import { Camera } from 'expo-camera';
+import DriversLicenseLogo from "@/components/DriversLicenseLogo";
+import InsuranceLogo from "@/components/InsuranceLogo";
 
 const BasicInfo = () => {
   const router = useRouter();
 
   const openCamera = async () => {
     const { status } = await Camera.requestPermissionsAsync();
-    if (status === 'granted') {
+    if (status === "granted") {
       let result = await ImagePicker.launchCameraAsync();
       console.log(result);
     } else {
-      console.log('Camera permission not granted');
+      console.log("Camera permission not granted");
     }
   };
 
   const openFilePicker = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status === 'granted') {
+    if (status === "granted") {
       let result = await ImagePicker.launchImageLibraryAsync();
       console.log(result);
     } else {
-      console.log('File picker permission not granted');
+      console.log("File picker permission not granted");
     }
   };
 
   return (
-    <LinearGradient
-      colors={["#FFFFFF", "#0099CC"]}
-      start={{ x: 1, y: 0.3 }}
-      className="h-full"
-    >
-      <SafeAreaView className="flex-1 items-center">
-        <View>
-          <Text className="font-Karla_500Medium mt-5 text-[40px] items-start mr-5">
-            Add Information
-          </Text>
+    <LinearGradient colors={["#FFFFFF", "#0099CC"]} style={styles.gradient}>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Add Information</Text>
         </View>
-        <View className="items-center w-50">
-          <Text className="font-Karla_500Medium border-b text-[22px] mt-10 mb-8">
-            Driver's License
-          </Text>
-          <Image source={driverLicense} />
-          <View className="flex justify-between w-55">
-            <AppButton
-              className="flex-row justify-evenly mt-8 mb-2 px-5 w-50 py-1.5 items-center bg-transparent rounded-sm border border-dashed"
-              onPress={openCamera}
-            >
-              <FontAwesome name={"camera"} size={15}  />
-              <Text className="font-Karla_400Regular py-2 border-b text-[18px] mt-10 mb-8">
-              &nbsp;Open Camera
-              </Text>
+        <View style={styles.itemContainer}>
+          <Text style={styles.label}>Driver's License</Text>
+          <DriversLicenseLogo style={styles.logoL} />
+          <View style={styles.buttonGroup}>
+            <View style={styles.camera}>
+            <AppButton onPress={openCamera} backgroundColor="transparent" widthPercentage={45} borderStyle="dashed" borderRadius={5} borderColor="black" borderWidth={1}>
+              <FontAwesome name={"camera"} size={15} />
+              <Text style={styles.buttonText}>&nbsp;Open Camera</Text>
             </AppButton>
-            <AppButton
-              className="mb-6 px-5 py-1.5 w-50 bg-transparent rounded-sm border border-dashed"
-              onPress={openFilePicker}
-            >
+            </View>
+            <AppButton onPress={openFilePicker} backgroundColor="transparent" widthPercentage={45} borderStyle="dashed" borderRadius={5} borderColor="black"  borderWidth={1}>
               <FontAwesome name={"upload"} size={15} />
-              <Text className="font-Karla_400Regular border-b text-[18px] mt-10 mb-8">
-              &nbsp;Upload File
-              </Text>
+              <Text style={styles.buttonText}>&nbsp;Upload File</Text>
             </AppButton>
           </View>
         </View>
-
-        <View className="items-center w-50 mt-5">
-          <Text className="font-Karla_400Regular border-b text-2xl mb-9">
-            Insurance
-          </Text>
-          <Image source={insurance} />
-          <View className="flex justify-between w-55">
-          <AppButton
-            className="flex-row justify-evenly mb-6 mt-6 px-5 py-1.5 w-55 bg-transparent rounded-sm border border-dashed"
-            onPress={openFilePicker}
-          >
-          
+        <View style={styles.itemContainer}>
+          <Text style={styles.label}>Insurance</Text>
+          <InsuranceLogo style={styles.logoI} />
+          <View style={styles.buttonGroup}>
+            <AppButton onPress={openFilePicker}  backgroundColor="transparent" widthPercentage={45} borderStyle="dashed" borderRadius={5} borderColor="black"  borderWidth={1}>
               <FontAwesome name={"upload"} size={15} />
-            <Text className="font-Karla_400Regular border-b text-[18px] mt-10 mb-8">
-            &nbsp;Upload File
-            </Text>
-          </AppButton>
+              <Text style={styles.buttonText}>&nbsp; Upload File</Text>
+            </AppButton>
           </View>
         </View>
-        <View className="mt-12 w-[80%]">
-          <AppButton
-            className="py-2"
-            onPress={() => router.push("/onboarding/membership")}
-          >
-             <Text className="font-Karla_400Regular text-[22]">
-              Next
-            </Text>
+        <View style={styles.nextButtonContainer}>
+          <AppButton borderRadius={20} widthPercentage={85} paddingVertical={10} onPress={() => router.push("/onboarding/membership")}>
+            <Text style={styles.nextButtonText}>Next</Text>
           </AppButton>
         </View>
       </SafeAreaView>
     </LinearGradient>
   );
 };
+
+const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+  },
+  container: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: "transparent",
+  },
+  titleContainer: {
+    marginTop: verticalScale(30),
+    marginBottom: verticalScale(30),
+    marginLeft: horizontalScale(25),
+    backgroundColor: "transparent",
+    textAlign: "left",
+  },
+  title: {
+    fontFamily: "karlaM",
+    fontSize: moderateScale(44),
+  },
+  itemContainer: {
+    alignItems: "center",
+    width: horizontalScale(300),
+    marginBottom: verticalScale(30),
+    backgroundColor: "transparent",
+  },
+  label: {
+    fontSize: moderateScale(22),
+    fontFamily: "karlaM",
+    borderBottomWidth: 1,
+    marginTop: verticalScale(5),
+    marginBottom: -verticalScale(10),
+    alignItems: "center",
+    backgroundColor: "transparent",
+  },
+  logoL: {
+    marginBottom: verticalScale(0),
+  },
+  logoI: {
+    marginVertical: verticalScale(40),
+  },
+
+  buttonGroup: {
+    backgroundColor: "transparent",
+    alignItems:"center",
+  },
+
+  buttonText: {
+    fontSize: moderateScale(18),
+    fontFamily: "karlaR",
+    borderBottomWidth: 1,
+    textAlign:"center"
+  },
+  camera:{
+    marginBottom: verticalScale(12),
+    backgroundColor: "transparent",
+  },
+  nextButtonContainer: {
+    marginTop: verticalScale(12),
+  },
+  nextButtonText: {
+    fontSize: moderateScale(22),
+    fontFamily: "karlaR",
+  },
+});
 
 export default BasicInfo;
