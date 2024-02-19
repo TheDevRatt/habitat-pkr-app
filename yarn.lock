@@ -2175,6 +2175,12 @@
     prompts "^2.4.0"
     semver "^7.5.2"
 
+"@react-native-community/datetimepicker@github:react-native-community/datetimepicker":
+  version "7.6.2"
+  resolved "git+ssh://git@github.com/react-native-community/datetimepicker.git#aa64fa4555d3e40d94f8def22e8aa9aa3e4e97b3"
+  dependencies:
+    invariant "^2.2.4"
+
 "@react-native-picker/picker@>= 2.0":
   version "2.6.1"
   resolved "https://registry.npmjs.org/@react-native-picker/picker/-/picker-2.6.1.tgz"

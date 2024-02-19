@@ -87,6 +87,9 @@ function RootLayoutNav() {
         <Stack.Screen name="Pickup/Pictures" options={{ headerShown: false }} />
         <Stack.Screen name="Pickup/FinalPictures" options={{ headerShown: false }} />
         <Stack.Screen name="Pickup/ActiveReservation" options={{ headerShown: false }} />
+        <Stack.Screen name="Pickup/ReportDamages" options={{ headerShown: false }} />
+        <Stack.Screen name="Pickup/DropOff" options={{ headerShown: false }} />
+        <Stack.Screen name="Pickup/ReservationEnding" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: "modal" }} />
       </Stack>
   );

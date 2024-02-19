@@ -57,7 +57,7 @@ const Membership = () => {
         <View className="mt-16 w-[80%]">
           <AppButton
             className="py-2"
-            onPress={() => router.push("/Pickup/ActiveReservation")}
+            onPress={() => router.push("/Pickup/ReservationEnding")}
           >
             <Text className="font-Karla_400Regular text-[22]">Continue</Text>
           </AppButton>
