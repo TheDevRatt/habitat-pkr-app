@@ -1,24 +1,42 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
-import { collection, addDoc, getDocs, doc, setDoc, query, where } from "firebase/firestore";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyCVuRXK0tDtijz_9PWz9Y5icQU4kt7iqQw",
-  authDomain: "pkrides-d3c59.firebaseapp.com",
-  databaseURL: "https://pkrides-d3c59-default-rtdb.firebaseio.com",
-  projectId: "pkrides-d3c59",
-  storageBucket: "pkrides-d3c59.appspot.com",
-  messagingSenderId: "539323902826",
-  appId: "1:539323902826:web:c43816f1c18112bd369313",
-  measurementId: "G-RRQCR4ZZBJ"
-};
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+import {addUser} from './classes/User.js';
+//addUser("Tim", "Drake", 1990,"a@b.com");
+
+import {readUser} from './classes/User.js';
+//readUser("Doe");
+
+// Code to check if user already exists by
+// searching for their email, returns
+// true if exists, and false if it doesn't
+import {userExists} from './classes/User.js';
+// The email arg should receive a string of the
+// attempted account creation email
+
+var test;
+async function checkEmail(email){
+    let v;
+    try{
+        v = await userExists(email);
+    } catch(e){
+    alert("Error connecting to database")
+    }
+    if (v == true){
+        alert("Email already in use")
+    }
+    }
+
+checkEmail("a@b.com");
+
+//async function emailVerifyTest(){
+
+    //await checkEmail("a@c.com");
+    //if(test == false){
+    //console.log("false");
+    //}
+    //else{console.log("true")}
+//}
+//emailVerifyTest();
 
 
 // Example for adding to the data base
@@ -33,15 +51,14 @@ const db = getFirestore(app);
       //console.log("Document written with ID: ", docRef.id);
     //} catch (e) {
       //console.error("Error adding document: ", e);
+    //}
 //}
 //addUser();
 
-//import User from './classes/User.js';
-//var user = new User()
 //async function read(){
 
     // Read function for returning specific data, in this case it
-    // returns any user from the collection users where their
+    // returns any user from the collection "users" where their
     // first name is equal to jane
 
     //const q = query(collection(db, "Users"), where("first", "==", "Jane"));

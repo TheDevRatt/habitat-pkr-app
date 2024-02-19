@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="163a4076-8aea-4170-acb2-fb9edd9b4bb1" name="Changes" comment="Added firestore connection">
-      <change afterPath="$PROJECT_DIR$/app/classes/User.js" afterDir="false" />
+    <list default="true" id="163a4076-8aea-4170-acb2-fb9edd9b4bb1" name="Changes" comment="Added examples for reading from the database">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/classes/User.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/classes/User.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/firebase.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/firebase.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -150,7 +150,14 @@
       <option name="project" value="LOCAL" />
       <updated>1705975555149</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Added examples for reading from the database">
+      <created>1706478121591</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1706478121591</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -168,6 +175,7 @@
     <MESSAGE value="Testing Realm and Atlas" />
     <MESSAGE value="Added firestore config" />
     <MESSAGE value="Added firestore connection" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added firestore connection" />
+    <MESSAGE value="Added examples for reading from the database" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added examples for reading from the database" />
   </component>
 </project>
