@@ -1,15 +1,6 @@
 const tintColorLight = '#2f95dc';
 const tintColorDark = '#fff';
 
-// Habitat PKR blue
-const primaryBlue = '#0099CC'
-// Habitat PKR orange
-const primaryOrange = '#E55D25'
-//the light blue for backgrounds
-const secondayBlue = '#ECFAFF'
-// the glow blue
-const accentBlue = '#97F9FF'
-
 export default {
   light: {
     text: '#000',
