@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import AppButton from '../../components/AppButton';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -10,13 +10,23 @@ const ReportDamages = () => {
   const [photos, setPhotos] = useState([]);
 
   const openCamera = async () => {
-    const imageResult = await ImagePicker.launchCameraAsync({
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert('Permission to access camera is required!');
+      return;
+    }
+
+    const pickerResult = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       aspect: [4, 3],
     });
 
-    if (!imageResult.cancelled) {
-      setPhotos([...photos, imageResult.uri]);
+    if (!pickerResult.cancelled) {
+      const imageResult = pickerResult.assets[0]; // Extract the first item from the assets array
+      const newUri = imageResult.uri + '?' + new Date().getTime(); // Add timestamp to URI
+      console.log('New photo URI:', newUri); // Log the new URI for debugging
+      setPhotos([...photos, newUri]);
     }
   };
 
@@ -29,54 +39,54 @@ const ReportDamages = () => {
   };
 
   return (
-    <View style={{ flex: 1, padding: 20, backgroundColor: 'white' }}>
-      <Text style={{ fontSize: 40, fontWeight: 'bold', marginBottom: 20, marginTop: 20}}>
+    <View style={styles.container}>
+      <Text style={styles.title}>
         Report Accident or Damages
       </Text>
 
-      <Text style={{ fontSize: 24, marginBottom: 10 }}>
+      <Text style={styles.label}>
         Please describe the damages or report it as much in detail as possible:
       </Text>
       <TextInput
         multiline
         numberOfLines={10}
-        style={{ borderWidth: 1, borderColor: 'black', padding: 10, marginBottom: 20, height: '20%' }}
+        style={styles.input}
         value={description}
         onChangeText={text => setDescription(text)}
       />
 
-      <Text style={{ fontSize: 24, marginBottom: 10 }}>Location of damage/accident:</Text>
+      <Text style={styles.label}>Location of damage/accident:</Text>
       <TextInput
-        style={{ borderBottomWidth: 1, borderColor: 'black', padding: 10, marginBottom: 20, height: 40 }}
+        style={styles.input}
         value={location}
         onChangeText={text => setLocation(text)}
       />
 
-      <Text style={{ fontSize: 24, marginBottom: 10 }}>Time of damage/accident occurring:</Text>
+      <Text style={styles.label}>Time of damage/accident occurring:</Text>
       <TextInput
-        style={{ borderWidth: 1, borderColor: 'black', padding: 8, marginBottom: 20, height: 40, borderRadius: 10, flex: 1 }}
+        style={styles.input}
         value={time}
         onChangeText={text => setTime(text)}
       />
 
-      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
+      <View style={styles.cameraRow}>
         <TouchableOpacity onPress={openCamera}>
-          <Image source={require('../../components/images/camera.png')} style={{ width: 60, height: 60 }} />
+          <Image source={require('../../components/images/camera.png')} style={styles.cameraIcon} />
         </TouchableOpacity>
-        <Text style={{ fontSize: 30, flexShrink: 1, marginLeft: 10 }}>
+        <Text style={styles.cameraLabel}>
           Attach photos of the accident/damages
         </Text>
       </View>
 
       {/* Display selected photos */}
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 20 }}>
+      <View style={styles.photoContainer}>
         {photos.map((photo, index) => (
-          <Image key={index} source={{ uri: photo }} style={{ width: 100, height: 100, marginRight: 10, marginBottom: 10 }} />
+          <Image key={index} source={{ uri: photo }} style={styles.photo} />
         ))}
       </View>
 
       <AppButton
-       style={{ height: 50, width: '90%', justifyContent: 'center', alignSelf: 'center', backgroundColor: 'orange', marginBottom: 20}}
+        style={styles.submitButton}
         onPress={handleSubmit}
       >
         Submit
@@ -84,5 +94,65 @@ const ReportDamages = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: 'white',
+  },
+  title: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    marginTop: 20,
+  },
+  label: {
+    fontSize: 24,
+    marginBottom: 10,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: 'black',
+    padding: 10,
+    marginBottom: 20,
+    height: '10%',
+  },
+  cameraRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  cameraIcon: {
+    width: 60,
+    height: 60,
+  },
+  cameraLabel: {
+    fontSize: 30,
+    flexShrink: 1,
+    marginLeft: 10,
+  },
+  photoContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 20,
+  },
+  photo: {
+    width: 60,
+    height: 60,
+    borderRadius: 10,
+    marginRight: 10,
+  },
+  submitButton: {
+    height: 50,
+    width: '90%',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor: 'orange', 
+    borderRadius: 25, 
+    color: 'white', 
+    marginBottom: 20,
+  },
+});
 
 export default ReportDamages;

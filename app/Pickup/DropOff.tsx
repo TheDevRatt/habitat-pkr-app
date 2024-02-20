@@ -1,42 +1,94 @@
-import React from 'react';
-import { View, Text, Image } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import AppButton from '../../components/AppButton';
+import AnalogClock from '../../components/AnalogClock';
 
 const DropOff = () => {
   return (
-    <LinearGradient
-      colors={['#FFFFFF', '#0099CC']}
-      start={{ x: 1, y: 0.3 }}
-      style={{ flex: 1, padding: 20, backgroundColor: 'white' }}
-    >
-      <Text style={{ fontSize: 40, fontWeight: 'bold', marginBottom: 5, marginTop: 80 }}>
+    <View style={styles.container}>
+      <Text style={styles.heading}>
         Your reservation is Ending soon
       </Text>
 
       {/* Active Duration Box */}
-      <View style={{ alignItems: 'center', marginBottom: 40, marginTop: 80}}>
-        <View style={{ backgroundColor: 'white', borderWidth: 1, borderColor: 'black', padding: 50, borderRadius: 10, flexDirection: 'row', alignItems: 'center' }}>
-          <Image source={require('../../components/images/clock.png')} style={{ marginRight: 20, width: 100, height: 100 }} />
-          <View>
-            <Text style={{ fontSize: 28, fontWeight: 'bold', marginBottom: 10 }}>4:00Min</Text>
-          
-          </View>
+      <View style={styles.durationBox}>
+        <View style={styles.clockContainer}>
+          <AnalogClock />
+        </View>
+        <View>
+          <Text style={styles.durationText}>4:00Min</Text>
         </View>
       </View>
-      <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 50, marginTop: 30 }}>
-      Please return to drop off location and press drop off before the timer ends
+
+      <Text style={styles.infoText}>
+        Please return to drop off location and press drop off before the timer ends
       </Text>
 
       {/* Drop Off */}
       <AppButton
-        style={{ height: 50, width: '90%', justifyContent: 'center', alignSelf: 'center', marginTop: 20 }}
+        style={styles.button}
         onPress={() => console.log('Drop off')}
       >
-        Drop Off
+        <Text style={styles.buttonText}>Drop Off</Text>
       </AppButton>
-    </LinearGradient>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: 'white',
+  },
+  heading: {
+    fontSize: 40,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    marginTop: 80,
+    textAlign: 'center',
+  },
+  durationBox: {
+    flexDirection: 'row', // added this to align the clock and the text horizontally
+    alignItems: 'center', // added this to center the items vertically
+    marginBottom: 40,
+    marginTop: 80,
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderColor: 'black',
+    padding: 50,
+    borderRadius: 10,
+  },
+  clockContainer: {
+    marginRight: 20, // added this to create some space between the clock and the text
+  },
+  durationText: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  infoText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 50,
+    marginTop: 30,
+    textAlign: 'center',
+  },
+  button: {
+    height: 50,
+    width: '90%',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginTop: 20,
+    borderRadius: 10,
+    backgroundColor: 'orange',
+    borderWidth: 1,
+    borderColor: 'black',
+  },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
+  },
+});
 
 export default DropOff;

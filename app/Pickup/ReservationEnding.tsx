@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity } from 'react-native';
 import AppButton from '../../components/AppButton';
 import * as ImagePicker from 'expo-image-picker';
 
-const ReservationEnded = () => {
+const ReservationEnding = () => {
   const [image, setImage] = useState(require('../../components/images/camera.png'));
 
   const openCamera = async () => {
@@ -59,4 +59,4 @@ const ReservationEnded = () => {
   );
 };
 
-export default ReservationEnded;
+export default ReservationEnding;

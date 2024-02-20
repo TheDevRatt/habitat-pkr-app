@@ -1,48 +1,103 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, Text, StyleSheet } from 'react-native';
 import AppButton from '../../components/AppButton';
+import AnalogClock from '../../components/AnalogClock';
 
-const ActiveBooking = () => {
+const ActiveBooking = ({ navigation }) => {
+  const handleResetPassword = () => {
+    console.log("Password reset link sent");
+  };
+
+  const goToLogin = () => {
+    navigation.push('LogIn');
+  };
+
   return (
-    <LinearGradient
-      colors={['#FFFFFF', '#0099CC']}
-      start={{ x: 1, y: 0.3 }}
-      style={{ flex: 1, padding: 20, backgroundColor: 'white' }}
-    >
-      <Text style={{ fontSize: 40, fontWeight: 'bold', marginBottom: 10, marginTop: 80 }}>
+    <View style={styles.container}>
+      <Text style={styles.heading}>
         Your reservation is active
       </Text>
 
       {/* Active Duration Box */}
-      <View style={{ alignItems: 'center', marginBottom: 40, marginTop: 100}}>
-        <View style={{ backgroundColor: 'white', borderWidth: 1, borderColor: 'black', padding: 50, borderRadius: 10, flexDirection: 'row', alignItems: 'center' }}>
-          <Image source={require('../../components/images/clock.png')} style={{ marginRight: 20, width: 100, height: 100 }} />
-          <View>
-            <Text style={{ fontSize: 28, fontWeight: 'bold', marginBottom: 10 }}>4 days</Text>
-            <Text style={{ fontSize: 28, fontWeight: 'bold', marginBottom: 10 }}>23 hours</Text>
-            <Text style={{ fontSize: 28, fontWeight: 'bold' }}>42 mins</Text>
-          </View>
+      <View style={styles.durationBox}>
+        <AnalogClock />
+        <View style={styles.durationText}>
+          <Text style={styles.duration}>4 days</Text>
+          <Text style={styles.duration}>23 hours</Text>
+          <Text style={styles.duration}>42 mins</Text>
         </View>
       </View>
 
       {/* Report Accident Button */}
       <AppButton
-        style={{ height: 80, width: '90%', justifyContent: 'center', alignSelf: 'center', marginTop: 30, marginBottom: 20 }}
-        onPress={() => console.log('Report an accident or damages')}
+        style={styles.button}
+        onPress={handleResetPassword}
       >
-        Report an accident or damages
+        <Text style={styles.buttonText}>Report an accident or damages</Text>
       </AppButton>
 
       {/* End Reservation Button */}
       <AppButton
-        style={{ height: 50, width: '90%', justifyContent: 'center', alignSelf: 'center', marginTop: 20 }}
-        onPress={() => console.log('End reservation early')}
+        style={[styles.button, styles.endButton]}
+        onPress={goToLogin}
       >
-        End reservation early
+        <Text style={styles.buttonText}>End reservation early</Text>
       </AppButton>
-    </LinearGradient>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: 'white',
+  },
+  heading: {
+    fontSize: 40,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    marginTop: 80,
+    textAlign: 'center',
+  },
+  durationBox: {
+    alignItems: 'center',
+    marginBottom: 40,
+    marginTop: 100,
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderColor: 'black',
+    padding: 50,
+    borderRadius: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  durationText: {},
+  duration: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  button: {
+    height: 80,
+    width: '90%',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginTop: 30,
+    marginBottom: 20,
+    borderRadius: 20,
+    backgroundColor: 'orange',
+    borderWidth: 1,
+    borderColor: 'black',
+  },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
+  },
+  endButton: {
+    height: 50,
+    marginTop: 20,
+  },
+});
 
 export default ActiveBooking;

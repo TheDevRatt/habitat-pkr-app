@@ -1,59 +1,108 @@
 import React from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  SafeAreaView,
-} from "react-native";
+import { View, Text, TouchableOpacity, TextInput, SafeAreaView, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import PKRLogo from "../../components/PKRLogo";
 import AppButton from "../../components/AppButton";
+import { router } from "expo-router";
 
-const ForgotPassword = () => {
+const ForgotPassword = ({ navigation }) => {
   const handleResetPassword = () => {
     console.log("Password reset link sent");
+  };
+
+  const goToLogin = () => {
+    router.push("/onboarding/logIn");
   };
 
   return (
     <LinearGradient
       colors={["#FFFFFF", "#0099CC"]}
       start={{ x: 1, y: 0.3 }}
-      className="h-full"
+      style={styles.gradient}
     >
-      <SafeAreaView className="m-[3%] flex-1 items-center">
-        <PKRLogo className="mt-[7%] scale-120 flex content-center" />
-        <View>
-          <Text className="font-Karla_500Medium mt-[9%] text-4xl items-start mr-[3%]">
-            Forgot Password
-          </Text>
+      <SafeAreaView style={styles.container}>
+        <PKRLogo style={styles.logo} />
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Forgot Password</Text>
         </View>
-        <View className="mt-[8%] space-y-10 w-[88%]">
+        <View style={styles.inputContainer}>
           <TextInput
             placeholder={"Email"}
             placeholderTextColor="#000"
-            className="font-Karla_400Regular py-2 border-b text-2xl"
+            style={styles.inputField}
           />
         </View>
-
-        <AppButton
-          className="h-[6.5%] mt-[15%] w-[90%] justify-center"
+        <TouchableOpacity
+          style={styles.resetButton}
           onPress={handleResetPassword}
         >
-          Reset Password
-        </AppButton>
-
-        <View className="mt-[15%] items-center">
-          <TouchableOpacity>
-            <Text className="font-Karla_400Regular items-center text-xl text-link-blue underline">
-              {" "}
-              Back to Login
-            </Text>
+          <Text style={styles.resetButtonText}>Reset Password</Text>
+        </TouchableOpacity>
+        <View style={styles.backToLoginContainer}>
+          <TouchableOpacity onPress={goToLogin}>
+            <Text style={styles.backToLoginText}>Back to Login</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
     </LinearGradient>
   );
 };
+
+const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  logo: {
+    marginTop: '7%',
+    transform: [{ scale: 1.2 }],
+  },
+  titleContainer: {
+    marginTop: '9%',
+  },
+  title: {
+    fontFamily: "karla_500Medium",
+    fontSize: 32,
+  },
+  inputContainer: {
+    marginTop: '8%',
+    width: '88%',
+    marginBottom: '15%',
+  },
+  inputField: {
+    fontFamily: "karla_400Regular",
+    fontSize: 20,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "black",
+  },
+  resetButton: {
+    width: '90%',
+    marginTop: '15%',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    borderRadius: 10,
+  },
+  resetButtonText: {
+    fontFamily: "karla_400Regular",
+    fontSize: 20,
+    color: "black",
+    textAlign: 'center',
+    paddingVertical: 10,
+  },
+  backToLoginContainer: {
+    marginTop: '15%',
+    alignItems: 'center',
+  },
+  backToLoginText: {
+    fontFamily: "karla_400Regular",
+    fontSize: 20,
+    textDecorationLine: "underline",
+    color: "#00126D",
+  },
+});
 
 export default ForgotPassword;

@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, Platform } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import React, { useState } from 'react';
+import { View, Text, Image, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import AppButton from '../../components/AppButton';
 
@@ -20,81 +19,126 @@ const PicturesPage = () => {
 
   const openCamera = async (setImage) => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-
+  
     if (permissionResult.granted === false) {
       alert('Permission to access camera is required!');
       return;
     }
-
-    const imageResult = await ImagePicker.launchCameraAsync({
+  
+    const pickerResult = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       aspect: [4, 3],
     });
-
-    if (!imageResult.cancelled) {
-      setImage(imageResult.uri);
+  
+    if (!pickerResult.cancelled) {
+      const imageResult = pickerResult.assets[0]; // Extract the first item from the assets array
+      const newUri = imageResult.uri + '?' + new Date().getTime(); // Add timestamp to URI
+      console.log('New photo URI:', newUri); // Log the new URI for debugging
+      setImage(newUri);
     }
+  };
+  
+
+  const renderImage = (imageUri) => {
+    return imageUri ? (
+      <Image source={{ uri: imageUri }} style={styles.photo} key={imageUri} />
+    ) : (
+      <Image source={require('../../components/images/camera.png')} style={styles.cameraIcon} />
+    );
   };
 
   return (
-    <LinearGradient
-      colors={['#FFFFFF', '#0099CC']}
-      start={{ x: 1, y: 0.3 }}
-      style={{ flex: 1, padding: 20 }}
-    >
-      <Text style={{ fontSize: 30, fontWeight: 'bold', marginBottom: 30, marginTop: 80 }}>
+    <View style={styles.container}>
+      <Text style={styles.title}>
         Photo time!
       </Text>
 
       {/* Front Photo */}
       <TouchableOpacity onPress={() => openCamera(setFrontImage)}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 40 }}>
-          <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 10, marginRight: 10 }}>
-            <Image source={require('../../components/images/camera.png')} />
-          </View>
-          <Text style={{ flexShrink: 1, fontSize: 22, fontWeight: 'bold' }}>Please take a photo of the front of the car</Text>
+        <View style={styles.photoContainer}>
+          {renderImage(frontImage)}
+          <Text style={styles.photoText}>Please take a photo of the front of the car</Text>
         </View>
       </TouchableOpacity>
 
       {/* Back Photo */}
       <TouchableOpacity onPress={() => openCamera(setBackImage)}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 40 }}>
-          <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 10, marginRight: 10 }}>
-            <Image source={require('../../components/images/camera.png')} />
-          </View>
-          <Text style={{ flexShrink: 1, fontSize: 22, fontWeight: 'bold' }}>Please take a photo of the back of the car</Text>
+        <View style={styles.photoContainer}>
+          {renderImage(backImage)}
+          <Text style={styles.photoText}>Please take a photo of the back of the car</Text>
         </View>
       </TouchableOpacity>
 
       {/* Right Side Photo */}
       <TouchableOpacity onPress={() => openCamera(setRightImage)}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 40 }}>
-          <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 10, marginRight: 10 }}>
-            <Image source={require('../../components/images/camera.png')} />
-          </View>
-          <Text style={{ flexShrink: 1, fontSize: 22, fontWeight: 'bold' }}>Please take a photo of the right side of the car</Text>
+        <View style={styles.photoContainer}>
+          {renderImage(rightImage)}
+          <Text style={styles.photoText}>Please take a photo of the right side of the car</Text>
         </View>
       </TouchableOpacity>
 
       {/* Left Side Photo */}
       <TouchableOpacity onPress={() => openCamera(setLeftImage)}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 40 }}>
-          <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 10, marginRight: 10 }}>
-            <Image source={require('../../components/images/camera.png')} />
-          </View>
-          <Text style={{ flexShrink: 1, fontSize: 22, fontWeight: 'bold' }}>Please take a photo of the left side of the car</Text>
+        <View style={styles.photoContainer}>
+          {renderImage(leftImage)}
+          <Text style={styles.photoText}>Please take a photo of the left side of the car</Text>
         </View>
       </TouchableOpacity>
 
       {/* Submit Button */}
       <AppButton
-        style={{ height: 50, width: '90%', justifyContent: 'center', alignSelf: 'center', marginTop: 30 }}
+        style={styles.submitButton}
         onPress={handleSubmission}
       >
         Submit
       </AppButton>
-    </LinearGradient>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: 'white', 
+  },
+  title: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    marginBottom: 30,
+    marginTop: 80,
+    textAlign: 'center',
+  },
+  photoContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 40,
+  },
+  cameraIcon: {
+    width: 60,
+    height: 60,
+  },
+  photoText: {
+    flexShrink: 1,
+    fontSize: 22,
+    fontWeight: 'bold',
+  },
+  photo: {
+    width: 60,
+    height: 60,
+    borderRadius: 10,
+    marginRight: 10,
+  },
+  submitButton: {
+    height: 50,
+    width: '90%',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginTop: 30,
+    backgroundColor: 'orange', 
+    borderRadius: 25, 
+    color: 'white', 
+  },
+});
 
 export default PicturesPage;

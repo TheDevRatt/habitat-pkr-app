@@ -8,20 +8,23 @@ import {
 } from "@/components/components(old)/Themed";
 import {
   horizontalScale,
-  moderateScale,
   verticalScale,
 } from "@/constants/Metrics";
-import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import AppButton from "../../components/AppButton";
-import { Link, useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router"; // Import useRouter hook
 import PKRLogo from "@/components/PKRLogo";
 
 const LogIn = () => {
-  const router = useRouter();
+  const router = useRouter(); 
   const [showPassword, setShowPassword] = useState(false);
+
+  const handleForgotPassword = () => {
+    // Navigate to the Forgot Password page
+    router.navigate("/onboarding/ForgotPassword");
+  };
 
   return (
     <LinearGradient colors={["#FFFFFF", "#0099CC"]} style={styles.gradient}>
@@ -57,7 +60,10 @@ const LogIn = () => {
             </TouchableOpacity>
           </View>
         </View>
-        <TouchableOpacity style={styles.forgotPasswordContainer}>
+        <TouchableOpacity
+          style={styles.forgotPasswordContainer}
+          onPress={handleForgotPassword} // Navigate to the Forgot Password page
+        >
           <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
         </TouchableOpacity>
         <View style={styles.loginButton}>
