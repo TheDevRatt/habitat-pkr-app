@@ -6,7 +6,7 @@ import {
   SafeAreaView,
   TextInput,
   TouchableOpacity,
-} from "@/components/components(old)/Themed";
+} from "@/components/Themed";
 import {
   horizontalScale,
   moderateScale,
@@ -105,7 +105,7 @@ const BasicInfo = () => {
             borderRadius={20}
             widthPercentage={85}
             paddingVertical={10}
-            onPress={() => router.push("/onboarding/membership")}
+            onPress={() => router.push("./onboarding/membership")}
           >
             <Text style={styles.nextButtonText}>Next</Text>
           </AppButton>
