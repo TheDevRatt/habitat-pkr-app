@@ -1,7 +1,48 @@
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 
 
-import {addUser} from './classes/User.js';
-//addUser("Tim", "Drake", 1990,"a@b.com");
+
+
+
+import {verifyUser} from './classes/User.js';
+//addUser("bradygibson@trentu.ca", "Password", "Brady", "Gibson", 1234567890, 25, "he/him");
+
+//import {signinUser} from './classes/User.js';
+
+//async function userSignin(email, password){
+    //await signinUser(email, password);
+//}
+//userSignin("bradygibson@trentu.ca", "password");
+ //"Brady", "Gibson"
+
+const auth = getAuth();
+const user = auth.currentUser;
+
+
+
+//onAuthStateChanged(auth, (user) => {
+  //if (user) {
+    // User is signed in, see docs for a list of available properties
+    // https://firebase.google.com/docs/reference/js/auth.user
+    //const uid = user.uid;
+    //alert("user confirmed");
+    // ...
+  //} else {
+    // User is signed out
+    // ...
+  //}
+//});
+
+//user.providerData.forEach((profile) => {
+    //console.log("  Email: " + profile.email);
+//});
+
+//sendEmailVerification(auth.currentUser)
+            //.then(() => {
+              // Email verification sent!
+              // ...
+            //});
+
 
 import {readUser} from './classes/User.js';
 //readUser("Doe");
@@ -13,30 +54,6 @@ import {userExists} from './classes/User.js';
 // The email arg should receive a string of the
 // attempted account creation email
 
-var test;
-async function checkEmail(email){
-    let v;
-    try{
-        v = await userExists(email);
-    } catch(e){
-    alert("Error connecting to database")
-    }
-    if (v == true){
-        alert("Email already in use")
-    }
-    }
-
-checkEmail("a@b.com");
-
-//async function emailVerifyTest(){
-
-    //await checkEmail("a@c.com");
-    //if(test == false){
-    //console.log("false");
-    //}
-    //else{console.log("true")}
-//}
-//emailVerifyTest();
 
 
 // Example for adding to the data base

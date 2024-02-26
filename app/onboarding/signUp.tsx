@@ -7,6 +7,9 @@ import {
   ScrollView,
   Modal,
   Button,
+  Alert,
+  TouchableWithoutFeedback,
+  Keyboard
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { LinearGradient } from "expo-linear-gradient";
@@ -15,6 +18,8 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import AppButton from "../../components/AppButton";
 import { SelectList } from "react-native-dropdown-select-list";
 import { Link, useRouter } from "expo-router";
+import {verifyUser} from './../classes/User';
+
 
 const SignUp = () => {
   const pronouns = [
@@ -40,7 +45,16 @@ const SignUp = () => {
     router.push("/onboarding/TermsAndConditions");
   };
 
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [age, setAge] = useState("");
+
   return (
+  <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
     <LinearGradient
       colors={["#FFFFFF", "#0099CC"]}
       start={{ x: 1, y: 0.3 }}
@@ -53,24 +67,32 @@ const SignUp = () => {
 
         <View className="mt-[25] mx-5 space-y-[9.5%]">
           <TextInput
+            value={firstName}
             placeholder={"First Name"}
+            onChangeText={newFirstName => setFirstName(newFirstName)}
             placeholderTextColor="#000"
             className="font-Karla_400Regular py-2 border-b text-[22px]"
           />
           <TextInput
+            value={lastName}
             placeholder={"Last Name"}
+            onChangeText={newLastName => setLastName(newLastName)}
             placeholderTextColor="#000"
             className="font-Karla_400Regular py-2 border-b text-[22px]"
           />
           <TextInput
+            value={email}
             placeholder={"Email"}
+            onChangeText={newEmail => setEmail(newEmail)}
             placeholderTextColor="#000"
             className="font-Karla_400Regular py-2 border-b text-[22px]"
           />
           <View className="flex-row items-center border-b w-90">
             <TextInput
+              value={password}
               secureTextEntry={!showPassword}
               placeholder={"Password"}
+              onChangeText={newPassword => setPassword(newPassword)}
               placeholderTextColor="#000"
               className="font-Karla_400Regular flex-1 py-2 text-[22px]"
             />
@@ -79,8 +101,10 @@ const SignUp = () => {
             </TouchableOpacity>
           </View>
           <TextInput
+            value={phoneNumber}
             keyboardType="numeric"
             placeholder={"Phone Number"}
+            onChangeText={newPhoneNumber => setPhoneNumber(newPhoneNumber)}
             placeholderTextColor="#000"
             className="font-Karla_400Regular py-2 border-b text-[22px]"
           />
@@ -88,7 +112,9 @@ const SignUp = () => {
 
         <View className="flex-row mx-5 mt-[9%]">
           <TextInput
+            value={age}
             keyboardType="numeric"
+            onChangeText={newAge => setAge(newAge)}
             placeholder={"Age"}
             placeholderTextColor="#000"
             className="font-Karla_400Regular w-[25%] mr-[27%] border-b text-2xl"
@@ -102,7 +128,7 @@ const SignUp = () => {
             setValue={setValue}
             setItems={setItems}
             style={{
-              backgroundColor: "transparent",
+              backgroundColor: "white",
               borderWidth: 0,
               borderBottomWidth: 1,
               borderBottomColor: "black",
@@ -117,11 +143,26 @@ const SignUp = () => {
             }}
           />
         </View>
-
         <View className="mx-3">
           <AppButton
             className="flex mt-12 mb-5 justify-center h-[50]"
-            onPress={() => router.push("/onboarding/basicInfo")}
+            onPress={async () => {
+            let response = await verifyUser(
+                email.trim(),
+                password.trim(),
+                firstName.trim(),
+                lastName.trim(),
+                phoneNumber,
+                age,
+                pronouns
+                );
+            if(response == "good"){
+                router.push("/onboarding/basicInfo")
+            }else{
+            alert(response)
+            }
+
+            }}
           >
             <Text className="font-Karla_400Regular text-[22]">
               Create Account
@@ -154,6 +195,7 @@ const SignUp = () => {
 
       </SafeAreaView>
     </LinearGradient>
+    </TouchableWithoutFeedback>
   );
 };
 
