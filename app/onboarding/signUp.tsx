@@ -18,10 +18,10 @@ import {
   moderateScale,
   verticalScale,
 } from "@/constants/Metrics";
-//import DropDownPicker from "react-native-dropdown-picker";
 import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import AppButton from "../../components/AppButton";
+import PronounSelector from "@/components/PronounSelector";
 import { Link, useRouter } from "expo-router";
 
 const SignUp = () => {
@@ -114,18 +114,10 @@ const SignUp = () => {
                     { width: "25%", marginRight: "27%" },
                   ]}
                 />
-                {/* <DropDownPicker
-                open={open}
-                value={value}
-                items={items}
-                setOpen={setOpen}
-                setValue={setValue}
-                setItems={setItems}
-                style={styles.dropDownPicker}
-                placeholder="Pronouns"
-                textStyle={styles.dropDownText}
-                dropDownContainerStyle={styles.dropDownContainer}
-                /> */}
+              </View>
+
+              <View>
+                <PronounSelector />
               </View>
             </View>
             <View style={styles.buttonContainer}>

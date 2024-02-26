@@ -11,7 +11,7 @@ const PronounSelector = () => {
         selectedValue={selectedPronoun}
         onValueChange={(itemValue, itemIndex) => setSelectedPronoun(itemValue)}
       >
-        <Picker.Item label="" value="" />
+        <Picker.Item label="Select Pronouns" value="Select Pronouns" />
         <Picker.Item label="She/her/Hers" value="she/her/hers" />
         <Picker.Item label="He/Him/His" value="he/him/his" />
         <Picker.Item label="They/Them/Theirs" value="they/them/theirs" />
