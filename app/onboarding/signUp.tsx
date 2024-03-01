@@ -22,23 +22,10 @@ import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import AppButton from "../../components/AppButton";
 import PronounSelector from "@/components/PronounSelector";
+import BackButton from "@/components/BackButton";
 import { Link, useRouter } from "expo-router";
 
 const SignUp = () => {
-  const pronouns = [
-    "",
-    "she/her/hers",
-    "he/him/his",
-    "they/them/theirs",
-    "other",
-  ];
-
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState(
-    pronouns.map((pronoun) => ({ label: pronoun, value: pronoun }))
-  );
-
   const [showPassword, setShowPassword] = useState(false);
 
   const router = useRouter();
@@ -61,6 +48,9 @@ const SignUp = () => {
             style={styles.container}
           >
             <View style={styles.welcomeTextContainer}>
+              <View style={styles.backButtonContainer}>
+                <BackButton />
+              </View>
               <Text style={styles.welcomeText}>Welcome</Text>
             </View>
 
@@ -118,8 +108,6 @@ const SignUp = () => {
                   <PronounSelector />
                 </View>
               </View>
-
-              <View></View>
             </View>
             <View style={styles.buttonContainer}>
               <AppButton
@@ -167,26 +155,32 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "transparent",
   },
-  welcomeTextContainer: {
-    marginTop: verticalScale(50),
-    marginBottom: verticalScale(30),
-    marginLeft: horizontalScale(25),
+  backButtonContainer: {
+    alignItems: "flex-start",
     backgroundColor: "transparent",
-    textAlign: "left",
+    alignSelf: "center",
+  },
+  welcomeTextContainer: {
+    marginTop: verticalScale(30),
+    marginBottom: verticalScale(20),
+    paddingHorizontal: horizontalScale(30),
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: "transparent",
   },
   welcomeText: {
     fontFamily: "karlaM",
-    fontSize: 44,
+    fontSize: moderateScale(44),
   },
   inputGroup: {
     alignItems: "center",
-    marginHorizontal: 20,
+    marginHorizontal: horizontalScale(20),
     backgroundColor: "transparent",
   },
   inputField: {
     fontFamily: "karlaR",
-    fontSize: 22,
-    paddingVertical: 10,
+    fontSize: moderateScale(22),
+    paddingVertical: moderateScale(10),
     borderBottomWidth: 1,
     borderBottomColor: "black",
     marginBottom: verticalScale(25),
@@ -202,23 +196,24 @@ const styles = StyleSheet.create({
   passwordIcon: {
     backgroundColor: "transparent",
     position: "absolute",
-    marginLeft: "90%",
+    right: horizontalScale(5),
     paddingBottom: verticalScale(15),
   },
   dropdownContainer: {
     flexDirection: "row",
     marginBottom: verticalScale(10),
     width: "90%",
+    justifyContent: "space-between",
     backgroundColor: "transparent",
   },
   dropDownPicker: {
     backgroundColor: "transparent",
     borderWidth: 0,
     width: "60%",
-    right: 40,
+    right: horizontalScale(35),
   },
   dropDownText: {
-    fontSize: 22,
+    fontSize: moderateScale(22),
   },
   dropDownContainer: {
     backgroundColor: "transparent",
@@ -228,7 +223,6 @@ const styles = StyleSheet.create({
     marginBottom: verticalScale(15),
     alignItems: "center",
     backgroundColor: "transparent",
-    fontFamily: "karlaR",
     zIndex: -1,
   },
   termsContainer: {
@@ -238,7 +232,7 @@ const styles = StyleSheet.create({
   },
   termsText: {
     fontFamily: "karlaL",
-    fontSize: 15,
+    fontSize: moderateScale(14),
     textAlign: "center",
   },
   termsLink: {
@@ -253,11 +247,12 @@ const styles = StyleSheet.create({
   },
   loginText: {
     fontFamily: "karlaR",
-    fontSize: 22,
+    fontSize: moderateScale(22),
+    right: horizontalScale(10),
   },
   loginLink: {
     fontFamily: "karlaB",
-    fontSize: 22,
+    fontSize: moderateScale(22),
     color: "#000",
     textDecorationLine: "underline",
     backgroundColor: "transparent",

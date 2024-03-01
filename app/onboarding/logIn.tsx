@@ -29,6 +29,16 @@ const LogIn = () => {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
 
+  const handleForgotPasswordPress = () => {
+    console.log("Navigating to Forgot Password Page");
+    router.push("/onboarding/forgotPassword");
+  };
+
+  const handleCreateAccountPress = () => {
+    console.log("Navigating to Create Account Page");
+    router.push("/onboarding/signUp");
+  };
+
   return (
     <LinearGradient colors={["#FFFFFF", "#0099CC"]} style={styles.gradient}>
       <SafeAreaView style={styles.container}>
@@ -73,7 +83,12 @@ const LogIn = () => {
               </View>
             </View>
             <TouchableOpacity style={styles.forgotPasswordContainer}>
-              <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+              <Text
+                style={styles.forgotPasswordText}
+                onPress={handleForgotPasswordPress}
+              >
+                Forgot Password?
+              </Text>
             </TouchableOpacity>
             <View style={styles.loginButton}>
               <AppButton
@@ -86,16 +101,12 @@ const LogIn = () => {
             </View>
             <View style={styles.newAccountContainer}>
               <Text style={styles.newAccountText}>New around here?</Text>
-              <Link href={"/onboarding/signUp"} asChild>
-                <TouchableOpacity
-                  style={{ backgroundColor: "transparent" }}
-                  onPress={() => router.push("/onboarding/signUp")}
-                >
-                  <Text style={styles.createAccountLink}>
-                    Create an account
-                  </Text>
-                </TouchableOpacity>
-              </Link>
+              <TouchableOpacity
+                onPress={handleCreateAccountPress}
+                style={{ backgroundColor: "transparent" }}
+              >
+                <Text style={styles.createAccountLink}>Create an account</Text>
+              </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
@@ -112,7 +123,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "transparent",
     justifyContent: "center",
-    paddingHorizontal: horizontalScale(20),
+    paddingHorizontal: horizontalScale(10),
   },
   logo: {
     alignItems: "center",
@@ -120,9 +131,9 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(30),
   },
   backButtonContainer: {
-    alignItems: "flex-start",
+    flexDirection: "row",
     backgroundColor: "transparent",
-    marginLeft: horizontalScale(20),
+    marginLeft: horizontalScale(10),
   },
   titleContainer: {
     marginTop: verticalScale(30),
