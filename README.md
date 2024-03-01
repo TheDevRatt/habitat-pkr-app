@@ -69,7 +69,9 @@
 
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://habitatpeterborough.ca/)
+<p align="center">
+  <img src="assets/images/startingScreen.png" alt="Product Screenshot">
+</p>
 
 Connectivity and Sustainability are the cornerstones of any successful initiative and PKRides aims to foster both along with a driven community among Habitat for Humanity Peterborough & Kawartha Region homeowners. This project, born from a collaboration with Trent University's COIS-4000Y capstone course, introduces a novel car-sharing solution aimed at alleviating transportation costs, optimizing space for housing development, and promoting environmental stewardship. It embodies our commitment in working with Habitat for Humanity in not just building homes, but also nurturing a supportive and resource-efficient community, reinforcing the mission ensuring everyone has a decent place to live.
 

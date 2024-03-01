@@ -114,11 +114,12 @@ const SignUp = () => {
                     { width: "25%", marginRight: "27%" },
                   ]}
                 />
+                <View style={styles.dropDownPicker}>
+                  <PronounSelector />
+                </View>
               </View>
 
-              <View>
-                <PronounSelector />
-              </View>
+              <View></View>
             </View>
             <View style={styles.buttonContainer}>
               <AppButton
@@ -213,10 +214,8 @@ const styles = StyleSheet.create({
   dropDownPicker: {
     backgroundColor: "transparent",
     borderWidth: 0,
-    borderBottomWidth: 1,
-    borderBottomColor: "black",
-    width: "50%",
-    right: 0,
+    width: "60%",
+    right: 40,
   },
   dropDownText: {
     fontSize: 22,
@@ -230,10 +229,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "transparent",
     fontFamily: "karlaR",
+    zIndex: -1,
   },
   termsContainer: {
     alignItems: "center",
     backgroundColor: "transparent",
+    zIndex: -1,
   },
   termsText: {
     fontFamily: "karlaL",
