@@ -180,8 +180,11 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 ## Contact
 
 Matthew Makary - [@LinkedIn](https://www.linkedin.com/in/matthew-makary-52b093249/) - Matthew_Makary@outlook.com
+
 Brady Gibson -
+
 Emma Villas -
+
 Rishit Arora -
 
 Project Link: [https://github.com/TheDevRatt/habitat-pkr-app](https://github.com/TheDevRatt/habitat-pkr-app)
