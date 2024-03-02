@@ -23,9 +23,9 @@ const ReportDamages = () => {
     });
 
     if (!pickerResult.cancelled) {
-      const imageResult = pickerResult.assets[0]; // Extract the first item from the assets array
-      const newUri = imageResult.uri + '?' + new Date().getTime(); // Add timestamp to URI
-      console.log('New photo URI:', newUri); // Log the new URI for debugging
+      const imageResult = pickerResult.assets[0]; 
+      const newUri = imageResult.uri + '?' + new Date().getTime(); 
+      console.log('New photo URI:', newUri); 
       setPhotos([...photos, newUri]);
     }
   };
