@@ -105,7 +105,7 @@ const BasicInfo = () => {
             borderRadius={20}
             widthPercentage={85}
             paddingVertical={10}
-            onPress={() => router.push("./onboarding/membership")}
+            onPress={() => router.push("../(tabs)/Account")}
           >
             <Text style={styles.nextButtonText}>Next</Text>
           </AppButton>
