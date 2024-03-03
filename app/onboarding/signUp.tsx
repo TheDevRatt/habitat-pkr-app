@@ -1,11 +1,3 @@
-import { useState } from "react";
-import {
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Platform,
-  StyleSheet,
-} from "react-native";
 import {
   Text,
   View,
@@ -18,13 +10,13 @@ import {
   moderateScale,
   verticalScale,
 } from "@/constants/Metrics";
-  SafeAreaView,
-  ScrollView,
-  Modal,
-  Button,
-  Alert,
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  KeyboardAvoidingView,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
+  Platform,
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { LinearGradient } from "expo-linear-gradient";
@@ -154,7 +146,7 @@ const SignUp = () => {
                         lastName.trim(),
                         phoneNumber,
                         age,
-                        pronouns
+                        //pronouns
                         );
                     if(response == "good"){
                         router.push("/onboarding/basicInfo")

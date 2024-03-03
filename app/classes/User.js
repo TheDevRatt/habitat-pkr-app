@@ -18,7 +18,7 @@ import {
     where
     } from "firebase/firestore";
 import { getStorage, ref, uploadBytes} from "firebase/storage";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AsyncStorage } from "@react-native-async-storage/async-storage";
 
 const NAME_MAX = 30;
 
@@ -150,7 +150,10 @@ const NAME_MAX = 30;
           .then((userCredential) => {
             // Signed up
             const user = userCredential.user;
-            // ...
+            sendEmailVerification(auth.currentUser)
+              .then(() => {
+                // Email verification sent
+              });
           })
           .catch((error) => {
             const errorCode = error.code;
@@ -169,7 +172,7 @@ const NAME_MAX = 30;
                 Approved: false
             });
             } catch (e) {
-              console.error("Error adding document: ", e);
+
             }
     }
     module.exports.addUser = addUser;
@@ -177,23 +180,43 @@ const NAME_MAX = 30;
     // User sign in
     async function signinUser(email, password){
 
+        // Check that a user account exists with the entered email
+        // if not, return error
+        let v;
+        try{
+            v = await userExists(email);
+        } catch(e){
+            return "An error has occurred";
+        }
+        if (v == false){
+            return "Incorrect email or password";
+        }
+
+        // Sign in the user
         const auth = getAuth();
-        signInWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-            // Signed in
-            const user = userCredential.user;
+        try{
+            await signInWithEmailAndPassword(auth, email, password)
+              .then((userCredential) => {
+                // Signed in
+                const user = userCredential.user;
+              })
+              .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(error);
+              });
+        }catch(e){
+            return "An error has occurred";
+        }
 
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            return errorMessage;
-          });
+        // Check that the email for the user has been verified
+        const user = auth.currentUser;
+        if(user.emailVerified == true){
+            return "email";
+        }
 
-
-
-
-
+        // User signed in and verified
+        return "good";
     }
     module.exports.signinUser = signinUser;
 
@@ -224,9 +247,9 @@ const NAME_MAX = 30;
     // for their email
     async function userExists(email){
 
-        const q = query(collection(db, "Users"), where("email", "==", email));
+        const q = query(collection(db, "users"), where("Email", "==", email));
         const querySnapshot = await getDocs(q);
-        if (querySnapshot.empty){return "No account exists with that email";}
+        if (querySnapshot.empty){return false;}
         else{return true;}
 
     }

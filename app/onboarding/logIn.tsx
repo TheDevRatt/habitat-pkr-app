@@ -1,21 +1,15 @@
-import React, { useState } from "react";
 import {
   View,
   Text,
   TouchableOpacity,
   TextInput,
   SafeAreaView,
-  TouchableWithoutFeedback,
-  Keyboard
-  TextInput,
-  TouchableOpacity,
 } from "@/components/Themed";
 import {
   horizontalScale,
   moderateScale,
   verticalScale,
 } from "@/constants/Metrics";
-
 import {
   StyleSheet,
   KeyboardAvoidingView,
@@ -29,12 +23,10 @@ import React, { useState, useRef } from "react";
 import PKRLogo from "../../components/PKRLogo";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import AppButton from "../../components/AppButton";
-import { Link, useRouter } from "expo-router";
 import { signinUser } from './../classes/User';
 import { getAuth } from "firebase/auth";
 import BackButton from "@/components/BackButton";
 import { Link, useRouter } from "expo-router"; // Import useRouter hook
-import PKRLogo from "@/components/PKRLogo";
 
 const LogIn = () => {
   const router = useRouter();
@@ -112,7 +104,28 @@ const [password, setPassword] = useState("");
               <AppButton
                 widthPercentage={85}
                 paddingVertical={10}
-                onPress={() => console.log("Login Button Pressed!")}
+                onPress={
+                async () => {
+                    let response = await signinUser(email.trim(),password.trim());
+                    console.log(response);
+                    if(response == "good"){
+
+                        const auth = getAuth();
+                        const user = auth.currentUser;
+
+                        if (user !== null) {
+                            // The user object has basic properties such as display name, email, etc.
+                            const userEmail = user.email;
+                            alert(userEmail);
+                        }
+                    }
+
+                    if(response == "email"){
+                        alert("Please close the app and verify your email then try again.");
+                    }
+                    alert(response);
+                }}
+
               >
                 Log In
               </AppButton>
@@ -120,17 +133,8 @@ const [password, setPassword] = useState("");
             <View style={styles.newAccountContainer}>
               <Text style={styles.newAccountText}>New around here?</Text>
               <TouchableOpacity
-                onPress={async () => {
-                    let response = await signinUser(email.trim(),password.trim());
-                    //alert(response)
-                    const auth = getAuth();
-                    const user = auth.currentUser;
-                    if (user !== null) {
-                        // The user object has basic properties such as display name, email, etc.
-                        const userEmail = user.email;
-                        alert(userEmail);
-                        }
-                        }}
+                onPress={handleCreateAccountPress}
+                style={{ backgroundColor: "transparent" }}
               >
                 <Text style={styles.createAccountLink}>Create an account</Text>
               </TouchableOpacity>
