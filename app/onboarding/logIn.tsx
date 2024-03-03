@@ -8,8 +8,10 @@ import {
 } from "@/components/Themed";
 import {
   horizontalScale,
+  moderateScale,
   verticalScale,
 } from "@/constants/Metrics";
+
 import {
   StyleSheet,
   KeyboardAvoidingView,
@@ -17,6 +19,7 @@ import {
   Keyboard,
   Platform,
 } from "react-native";
+
 import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import AppButton from "../../components/AppButton";

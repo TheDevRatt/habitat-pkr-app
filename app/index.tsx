@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   logo: {
-    marginTop: verticalScale(50),
+    marginTop: verticalScale(40),
   },
   title: {
     fontSize: moderateScale(90),

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
@@ -47,11 +47,13 @@ const SignUp = () => {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={styles.container}
           >
-            <View style={styles.welcomeTextContainer}>
+           <View style={styles.topContainer}>
               <View style={styles.backButtonContainer}>
                 <BackButton />
               </View>
+            <View style={styles.welcomeTextContainer}>
               <Text style={styles.welcomeText}>Welcome</Text>
+            </View>
             </View>
 
             <View style={styles.inputGroup}>
@@ -156,21 +158,28 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   backButtonContainer: {
-    alignItems: "flex-start",
     backgroundColor: "transparent",
-    alignSelf: "center",
+    justifyContent: "center", 
+    paddingLeft: 20, 
+  },
+  topContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: verticalScale(30), 
+    marginTop: verticalScale(15), 
+    backgroundColor: "transparent",
+
   },
   welcomeTextContainer: {
-    marginTop: verticalScale(30),
-    marginBottom: verticalScale(20),
-    paddingHorizontal: horizontalScale(30),
-    flexDirection: "row",
-    justifyContent: "space-between",
-    backgroundColor: "transparent",
+    flex: 1, 
+    alignItems: "center", 
+    backgroundColor:"transparent",
+    marginRight:verticalScale(50)
   },
   welcomeText: {
     fontFamily: "karlaM",
     fontSize: moderateScale(44),
+    textAlign: "center",
   },
   inputGroup: {
     alignItems: "center",
@@ -219,7 +228,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   buttonContainer: {
-    marginTop: verticalScale(10),
+    marginTop: verticalScale(20),
     marginBottom: verticalScale(15),
     alignItems: "center",
     backgroundColor: "transparent",
@@ -229,6 +238,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "transparent",
     zIndex: -1,
+    marginHorizontal:horizontalScale(25),
   },
   termsText: {
     fontFamily: "karlaL",

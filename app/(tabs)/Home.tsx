@@ -1,35 +1,105 @@
+import React from "react";
 import { StyleSheet } from "react-native";
-
-//import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from "@/components/Themed";
+import { LinearGradient } from "expo-linear-gradient";
+import { verticalScale } from "@/constants/Metrics";
 
-export default function Home() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Home</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      {/* <EditScreenInfo path="app/(tabs)/Home.tsx" /> */}
-    </View>
-  );
+interface CarProps {
+  name: string;
+  transmission: string;
+  pricePerDay: string;
+  pricePerHour: string;
 }
 
+const Home = () => {
+  const userName = "John";
+
+  return (
+    <LinearGradient colors={["#FFFFFF", "#59C9F0"]} style={styles.gradient}>
+      <View style={styles.container}>
+        <Text style={styles.greeting}>Hello, {userName}!</Text>
+        <Text style={styles.instructions}>Select a car to rent</Text>
+        <View style={styles.carList}>
+          <CarItem
+            name="Honda Civic"
+            transmission="Automatic"
+            pricePerDay="$150 per day"
+            pricePerHour="$22/hour"
+          />
+          <CarItem
+            name="Toyota Yaris"
+            transmission="Automatic"
+            pricePerDay="$130 per day"
+            pricePerHour="$20/hour"
+          />
+          <CarItem
+            name="Nissan Juke"
+            transmission="Automatic"
+            pricePerDay="$165 per day"
+            pricePerHour="$25/hour"
+          />
+        </View>
+      </View>
+    </LinearGradient>
+  );
+};
+
+const CarItem: React.FC<CarProps> = ({
+  name,
+  transmission,
+  pricePerDay,
+  pricePerHour,
+}) => {
+  return (
+    <View style={styles.carItem}>
+      <Text style={styles.carName}>{name}</Text>
+      <Text>{transmission}</Text>
+      <Text>{pricePerDay}</Text>
+      <Text>{pricePerHour}</Text>
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
-  container: {
+  gradient: {
     flex: 1,
     alignItems: "center",
+    width:"100%",
+    
+  },
+  container: {
+    marginTop:verticalScale(65),
+    alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "transparent",
+    width:"90%"
   },
-  title: {
-    fontSize: 20,
+  greeting: {
+    fontSize: 24,
     fontWeight: "bold",
+    marginBottom: 10,
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
+  instructions: {
+    fontSize: 18,
+    marginBottom: 20,
+  },
+  carList: {
+    marginTop:verticalScale(45),
+    width: "100%",
+    backgroundColor: "transparent",
+  },
+  carItem: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+  },
+  carName: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 5,
   },
 });
+
+export default Home;

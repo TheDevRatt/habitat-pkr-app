@@ -4,6 +4,7 @@ import AppButton from '../../components/AppButton';
 import * as ImagePicker from 'expo-image-picker';
 import AnalogClock from '../../components/AnalogClock';
 import { useRouter } from 'expo-router'; // import useRouter
+import cameraImg from "../../assets/images/camera.png";
 
 const ReservationEnding = () => {
   const [image, setImage] = useState(null);
@@ -16,7 +17,7 @@ const ReservationEnding = () => {
       aspect: [4, 3],
     });
 
-    if (!imageResult.cancelled) {
+    if (!imageResult.canceled) {
       setImage({ uri: imageResult.uri });
     }
   };
@@ -38,7 +39,7 @@ const ReservationEnding = () => {
       {/* Gas Level Photo */}
       <View style={styles.photoContainer}>
         <TouchableOpacity onPress={openCamera}>
-          {image ? <Image source={{ uri: image }} style={styles.image} /> : <Image source={require('../../components/images/camera.png')} style={styles.image} />}
+          {image ? <Image source={{ uri: image }} style={styles.image} /> : <Image source={cameraImg} style={styles.image} />}
         </TouchableOpacity>
         <Text style={styles.instructionText}>
           Please take a photo of the gas level on the dashboard
