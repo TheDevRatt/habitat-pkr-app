@@ -1,8 +1,22 @@
 import {
-  View,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform,
+  StyleSheet,
+} from "react-native";
+import {
   Text,
-  TouchableOpacity,
+  View,
+  SafeAreaView,
   TextInput,
+  TouchableOpacity,
+} from "@/components/Themed";
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from "@/constants/Metrics";
   SafeAreaView,
   ScrollView,
   Modal,
@@ -13,36 +27,26 @@ import {
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { LinearGradient } from "expo-linear-gradient";
-import { useState } from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import AppButton from "../../components/AppButton";
-import { SelectList } from "react-native-dropdown-select-list";
+import PronounSelector from "@/components/PronounSelector";
+import BackButton from "@/components/BackButton";
 import { Link, useRouter } from "expo-router";
 import {verifyUser} from './../classes/User';
 
 
 const SignUp = () => {
-  const pronouns = [
-    "",
-    "she/her/hers",
-    "he/him/his",
-    "they/them/theirs",
-    "other",
-  ];
-
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState(
-    pronouns.map((pronoun) => ({ label: pronoun, value: pronoun }))
-  );
-
   const [showPassword, setShowPassword] = useState(false);
 
   const router = useRouter();
-  const handleButtonPress = () => console.log("Button Pressed!");
   const handleTermsPress = () => {
-    console.log('Navigating to TermsAndConditions');
-    router.push("/onboarding/TermsAndConditions");
+    console.log("Navigating to TermsAndConditions");
+    router.push("/onboarding/termsAndConditions");
+  };
+
+  const handleLoginPress = () => {
+    console.log("Navigating to LogIn");
+    router.push("/onboarding/logIn");
   };
 
 
@@ -54,149 +58,248 @@ const SignUp = () => {
   const [age, setAge] = useState("");
 
   return (
-  <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-    <LinearGradient
-      colors={["#FFFFFF", "#0099CC"]}
-      start={{ x: 1, y: 0.3 }}
-      className="h-full"
-    >
-      <SafeAreaView className="m-3">
-        <View className="mt-4 mx-3">
-          <Text className="font-Karla_500Medium text-[40px]">Welcome</Text>
-        </View>
-
-        <View className="mt-[25] mx-5 space-y-[9.5%]">
-          <TextInput
-            value={firstName}
-            placeholder={"First Name"}
-            onChangeText={newFirstName => setFirstName(newFirstName)}
-            placeholderTextColor="#000"
-            className="font-Karla_400Regular py-2 border-b text-[22px]"
-          />
-          <TextInput
-            value={lastName}
-            placeholder={"Last Name"}
-            onChangeText={newLastName => setLastName(newLastName)}
-            placeholderTextColor="#000"
-            className="font-Karla_400Regular py-2 border-b text-[22px]"
-          />
-          <TextInput
-            value={email}
-            placeholder={"Email"}
-            onChangeText={newEmail => setEmail(newEmail)}
-            placeholderTextColor="#000"
-            className="font-Karla_400Regular py-2 border-b text-[22px]"
-          />
-          <View className="flex-row items-center border-b w-90">
-            <TextInput
-              value={password}
-              secureTextEntry={!showPassword}
-              placeholder={"Password"}
-              onChangeText={newPassword => setPassword(newPassword)}
-              placeholderTextColor="#000"
-              className="font-Karla_400Regular flex-1 py-2 text-[22px]"
-            />
-            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-              <FontAwesome name={showPassword ? "eye" : "eye-slash"} size={28} />
-            </TouchableOpacity>
-          </View>
-          <TextInput
-            value={phoneNumber}
-            keyboardType="numeric"
-            placeholder={"Phone Number"}
-            onChangeText={newPhoneNumber => setPhoneNumber(newPhoneNumber)}
-            placeholderTextColor="#000"
-            className="font-Karla_400Regular py-2 border-b text-[22px]"
-          />
-        </View>
-
-        <View className="flex-row mx-5 mt-[9%]">
-          <TextInput
-            value={age}
-            keyboardType="numeric"
-            onChangeText={newAge => setAge(newAge)}
-            placeholder={"Age"}
-            placeholderTextColor="#000"
-            className="font-Karla_400Regular w-[25%] mr-[27%] border-b text-2xl"
-          />
-
-          <DropDownPicker
-            open={open}
-            value={value}
-            items={items}
-            setOpen={setOpen}
-            setValue={setValue}
-            setItems={setItems}
-            style={{
-              backgroundColor: "white",
-              borderWidth: 0,
-              borderBottomWidth: 1,
-              borderBottomColor: "black",
-              width: "50%",
-              right: 0,
-            }}
-            placeholder="Pronouns"
-            textStyle={{ fontSize: 22, bottom: 0 }}
-            dropDownContainerStyle={{
-              backgroundColor: "rgb(153, 230, 255, 0.9)",
-              borderStyle: "solid",
-            }}
-          />
-        </View>
-        <View className="mx-3">
-          <AppButton
-            className="flex mt-12 mb-5 justify-center h-[50]"
-            onPress={async () => {
-            let response = await verifyUser(
-                email.trim(),
-                password.trim(),
-                firstName.trim(),
-                lastName.trim(),
-                phoneNumber,
-                age,
-                pronouns
-                );
-            if(response == "good"){
-                router.push("/onboarding/basicInfo")
-            }else{
-            alert(response)
-            }
-
-            }}
+    <LinearGradient colors={["#FFFFFF", "#0099CC"]} style={styles.gradient}>
+      <SafeAreaView style={styles.container}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={styles.container}
           >
-            <Text className="font-Karla_400Regular text-[22]">
-              Create Account
-            </Text>
-          </AppButton>
-        </View>
+            <View style={styles.welcomeTextContainer}>
+              <View style={styles.backButtonContainer}>
+                <BackButton />
+              </View>
+              <Text style={styles.welcomeText}>Welcome</Text>
+            </View>
 
-        <View className="m-0">
-          <Text className="font-Karla_300Light text-15 text-center">
-            By clicking 'Create Account' you agree to Habitat PKR's{" "}
-            <Text className="underline" onPress={handleTermsPress}>
-              terms and conditions
-            </Text>
-          </Text>
-        </View>
+            <View style={styles.inputGroup}>
+              <TextInput
+                value={firstName}
+                placeholder={"First Name"}
+                onChangeText={newFirstName => setFirstName(newFirstName)}
+                placeholderTextColor="#000"
+                style={styles.inputField}
+              />
+              <TextInput
+                value={lastName}
+                placeholder={"Last Name"}
+                onChangeText={newLastName => setLastName(newLastName)}
+                placeholderTextColor="#000"
+                style={styles.inputField}
+              />
+              <TextInput
+                value={email}
+                placeholder={"Email"}
+                onChangeText={newEmail => setEmail(newEmail)}
+                placeholderTextColor="#000"
+                style={styles.inputField}
+              />
+              <View style={styles.passwordField}>
+                <TextInput
+                  value={password}
+                  secureTextEntry={!showPassword}
+                  placeholder={"Password"}
+                  onChangeText={newPassword => setPassword(newPassword)}
+                  placeholderTextColor="#000"
+                  style={[styles.inputField, { flex: 1 }]}
+                />
+                <TouchableOpacity
+                  onPress={() => setShowPassword(!showPassword)}
+                  style={styles.passwordIcon}
+                >
+                  <FontAwesome
+                    name={showPassword ? "eye" : "eye-slash"}
+                    size={28}
+                  />
+                </TouchableOpacity>
+              </View>
+              <TextInput
+                value={phoneNumber}
+                keyboardType="numeric"
+                placeholder={"Phone Number"}
+                onChangeText={newPhoneNumber => setPhoneNumber(newPhoneNumber)}
+                placeholderTextColor="#000"
+                style={styles.inputField}
+              />
 
-        <View className="flex-row justify-center mt-8">
-          <Text className="font-Karla_400Regular text-xl">
-            Already have an account?
-          </Text>
-          <Link href={'/onboarding/logIn'} asChild>
-            <TouchableOpacity>
-              <Text className="font-Karla_700Bold text-xl text-link-blue underline">
-                {" "}
-                Log in
+              <View style={styles.dropdownContainer}>
+                <TextInput
+                  value={age}
+                  keyboardType="numeric"
+                  placeholder={"Age"}
+                  onChangeText={newAge => setAge(newAge)}
+                  placeholderTextColor="#000"
+                  style={[
+                    styles.inputField,
+                    { width: "25%", marginRight: "27%" },
+                  ]}
+                />
+                <View style={styles.dropDownPicker}>
+                  <PronounSelector />
+                </View>
+              </View>
+            </View>
+            <View style={styles.buttonContainer}>
+              <AppButton
+                widthPercentage={85}
+                paddingVertical={10}
+                onPress={async () => {
+                    let response = await verifyUser(
+                        email.trim(),
+                        password.trim(),
+                        firstName.trim(),
+                        lastName.trim(),
+                        phoneNumber,
+                        age,
+                        pronouns
+                        );
+                    if(response == "good"){
+                        router.push("/onboarding/basicInfo")
+                    }else{
+                        alert(response)
+                    }
+                }}
+              >
+                Create Account
+              </AppButton>
+            </View>
+
+            <View style={styles.termsContainer}>
+              <Text style={styles.termsText}>
+                By clicking 'Create Account' you agree to Habitat PKR's{" "}
+                <Text style={styles.termsLink} onPress={handleTermsPress}>
+                  terms and conditions
+                </Text>
               </Text>
-            </TouchableOpacity>
-          </Link>
-        </View>
+            </View>
 
+            <View style={styles.loginContainer}>
+              <Text style={styles.loginText}>Already have an account?</Text>
+              {/* Use TouchableOpacity directly for navigation */}
+              <TouchableOpacity
+                onPress={handleLoginPress}
+                style={{ backgroundColor: "transparent" }}
+              >
+                <Text style={styles.loginLink}>Log in</Text>
+              </TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
       </SafeAreaView>
     </LinearGradient>
-    </TouchableWithoutFeedback>
   );
 };
 
 export default SignUp;
+
+const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: "transparent",
+  },
+  backButtonContainer: {
+    alignItems: "flex-start",
+    backgroundColor: "transparent",
+    alignSelf: "center",
+  },
+  welcomeTextContainer: {
+    marginTop: verticalScale(30),
+    marginBottom: verticalScale(20),
+    paddingHorizontal: horizontalScale(30),
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: "transparent",
+  },
+  welcomeText: {
+    fontFamily: "karlaM",
+    fontSize: moderateScale(44),
+  },
+  inputGroup: {
+    alignItems: "center",
+    marginHorizontal: horizontalScale(20),
+    backgroundColor: "transparent",
+  },
+  inputField: {
+    fontFamily: "karlaR",
+    fontSize: moderateScale(22),
+    paddingVertical: moderateScale(10),
+    borderBottomWidth: 1,
+    borderBottomColor: "black",
+    marginBottom: verticalScale(25),
+    width: "90%",
+    backgroundColor: "transparent",
+  },
+  passwordField: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "90%",
+    backgroundColor: "transparent",
+  },
+  passwordIcon: {
+    backgroundColor: "transparent",
+    position: "absolute",
+    right: horizontalScale(5),
+    paddingBottom: verticalScale(15),
+  },
+  dropdownContainer: {
+    flexDirection: "row",
+    marginBottom: verticalScale(10),
+    width: "90%",
+    justifyContent: "space-between",
+    backgroundColor: "transparent",
+  },
+  dropDownPicker: {
+    backgroundColor: "transparent",
+    borderWidth: 0,
+    width: "60%",
+    right: horizontalScale(35),
+  },
+  dropDownText: {
+    fontSize: moderateScale(22),
+  },
+  dropDownContainer: {
+    backgroundColor: "transparent",
+  },
+  buttonContainer: {
+    marginTop: verticalScale(10),
+    marginBottom: verticalScale(15),
+    alignItems: "center",
+    backgroundColor: "transparent",
+    zIndex: -1,
+  },
+  termsContainer: {
+    alignItems: "center",
+    backgroundColor: "transparent",
+    zIndex: -1,
+  },
+  termsText: {
+    fontFamily: "karlaL",
+    fontSize: moderateScale(14),
+    textAlign: "center",
+  },
+  termsLink: {
+    textDecorationLine: "underline",
+    color: "#00126D",
+  },
+  loginContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: verticalScale(40),
+    backgroundColor: "transparent",
+  },
+  loginText: {
+    fontFamily: "karlaR",
+    fontSize: moderateScale(22),
+    right: horizontalScale(10),
+  },
+  loginLink: {
+    fontFamily: "karlaB",
+    fontSize: moderateScale(22),
+    color: "#000",
+    textDecorationLine: "underline",
+    backgroundColor: "transparent",
+  },
+});

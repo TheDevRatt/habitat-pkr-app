@@ -1,25 +1,15 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-
 import {
-  useFonts,
-  Karla_200ExtraLight,
-  Karla_300Light,
-  Karla_400Regular,
-  Karla_500Medium,
-  Karla_600SemiBold,
-  Karla_700Bold,
-  Karla_800ExtraBold,
-  Karla_200ExtraLight_Italic,
-  Karla_300Light_Italic,
-  Karla_400Regular_Italic,
-  Karla_500Medium_Italic,
-  Karla_600SemiBold_Italic,
-  Karla_700Bold_Italic,
-  Karla_800ExtraBold_Italic,
-} from "@expo-google-fonts/karla";
-
-import { SplashScreen, Stack, useRouter } from 'expo-router';
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
+import { useFonts } from "expo-font";
+import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+
+import { useColorScheme } from "@/components/useColorScheme";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -31,27 +21,25 @@ export const unstable_settings = {
   initialRouteName: "index",
 };
 
-
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  // font mapping
   const [loaded, error] = useFonts({
-    Karla_200ExtraLight,
-    Karla_300Light,
-    Karla_400Regular,
-    Karla_500Medium,
-    Karla_600SemiBold,
-    Karla_700Bold,
-    Karla_800ExtraBold,
-    Karla_200ExtraLight_Italic,
-    Karla_300Light_Italic,
-    Karla_400Regular_Italic,
-    Karla_500Medium_Italic,
-    Karla_600SemiBold_Italic,
-    Karla_700Bold_Italic,
-    Karla_800ExtraBold_Italic,
+    karlaB: require("../assets/fonts/Karla-Bold.ttf"),
+    karlaBI: require("../assets/fonts/Karla-BoldItalic.ttf"),
+    karlaEB: require("../assets/fonts/Karla-ExtraBold.ttf"),
+    karlaEBI: require("../assets/fonts/Karla-ExtraBoldItalic.ttf"),
+    karlaEL: require("../assets/fonts/Karla-ExtraLight.ttf"),
+    karlaELI: require("../assets/fonts/Karla-ExtraLightItalic.ttf"),
+    karlaI: require("../assets/fonts/Karla-Italic.ttf"),
+    karlaL: require("../assets/fonts/Karla-Light.ttf"),
+    karlaLI: require("../assets/fonts/Karla-LightItalic.ttf"),
+    karlaM: require("../assets/fonts/Karla-Medium.ttf"),
+    karlaMI: require("../assets/fonts/Karla-MediumItalic.ttf"),
+    karlaR: require("../assets/fonts/Karla-Regular.ttf"),
+    karlaSB: require("../assets/fonts/Karla-SemiBold.ttf"),
+    karlaSBI: require("../assets/fonts/Karla-SemiBoldItalic.ttf"),
   });
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
@@ -73,6 +61,8 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
+  // const colorScheme = useColorScheme();
+
   return (
    <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
@@ -83,10 +73,17 @@ function RootLayoutNav() {
         <Stack.Screen name="onboarding/membership" options={{ headerShown: false }} />
         <Stack.Screen name="onboarding/paymentInfo" options={{ headerShown: false }} />
         <Stack.Screen name="onboarding/TermsAndConditions" options={{ headerShown: false }} />
+        <Stack.Screen name="onboarding/ForgotPassword" options={{ headerShown: false }} />
+        <Stack.Screen name="Pickup/Pictures" options={{ headerShown: false }} />
+        <Stack.Screen name="Pickup/FinalPictures" options={{ headerShown: false }} />
+        <Stack.Screen name="Pickup/ActiveReservation" options={{ headerShown: false }} />
+        <Stack.Screen name="Pickup/ReportDamages" options={{ headerShown: false }} />
+        <Stack.Screen name="Pickup/DropOff" options={{ headerShown: false }} />
+        <Stack.Screen name="Pickup/ReservationEnding" options={{ headerShown: false }} />
+        <Stack.Screen name="Pickup/ReservationEnded" options={{ headerShown: false }} />
+        <Stack.Screen name="Pickup/UserReservation" options={{ headerShown: false }} />
+        <Stack.Screen name="Pickup/forfeited" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: "modal" }} />
       </Stack>
   );
 }
-
-
-
