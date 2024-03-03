@@ -49,7 +49,7 @@ const FinalPictures = () => {
           {gasLevelImage ? (
             <Image source={{ uri: gasLevelImage }} style={styles.photo} />
           ) : (
-            <Image source={require('../../components/images/camera.png')} style={styles.cameraIcon} />
+            //<Image source={require('../../components/images/camera.png')} style={styles.cameraIcon} />
           )}
           <Text style={styles.photoText}>Please take a photo of the gas level on the dashboard</Text>
         </View>
