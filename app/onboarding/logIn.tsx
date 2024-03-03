@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Text,
   View,
@@ -7,10 +8,8 @@ import {
 } from "@/components/Themed";
 import {
   horizontalScale,
-  moderateScale,
   verticalScale,
 } from "@/constants/Metrics";
-import React, { useState } from "react";
 import {
   StyleSheet,
   KeyboardAvoidingView,
@@ -22,11 +21,11 @@ import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import AppButton from "../../components/AppButton";
 import BackButton from "@/components/BackButton";
-import { Link, useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router"; // Import useRouter hook
 import PKRLogo from "@/components/PKRLogo";
 
 const LogIn = () => {
-  const router = useRouter();
+  const router = useRouter(); 
   const [showPassword, setShowPassword] = useState(false);
 
   const handleForgotPasswordPress = () => {
