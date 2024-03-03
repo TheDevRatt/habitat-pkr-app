@@ -12,8 +12,10 @@ import {
 } from "@/components/Themed";
 import {
   horizontalScale,
+  moderateScale,
   verticalScale,
 } from "@/constants/Metrics";
+
 import {
   StyleSheet,
   KeyboardAvoidingView,
@@ -21,6 +23,7 @@ import {
   Keyboard,
   Platform,
 } from "react-native";
+
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState, useRef } from "react";
 import PKRLogo from "../../components/PKRLogo";

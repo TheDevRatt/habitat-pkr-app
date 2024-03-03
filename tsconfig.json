@@ -1,18 +1,21 @@
 {
   "extends": "expo/tsconfig.base",
-    "compilerOptions": {
-      "allowJs": true,
-      "strict": true,
-      "paths": {
-        "@/*": [
-          "./*"
-        ]
-      }
-    },
-      "include": [
-        "**/*.ts",
-        "**/*.tsx",
-        ".expo/types/**/*.ts",
-        "expo-env.d.ts"
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "types": [],
+    "typeRoots": ["node_modules/@types"],
+    "strict": true,
+    "paths": {
+      "@/*": [
+        "./*"
       ]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
+  ]
 }

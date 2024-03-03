@@ -16,7 +16,10 @@ const Card: React.FC<CardProps> = ({ children }) => {
   const selectedStyle = isSelected ? styles.selected : null;
 
   return (
-    <TouchableOpacity onPress={handlePress}>
+    <TouchableOpacity
+      onPress={handlePress}
+      style={{ backgroundColor: "transparent" }}
+    >
       <View style={[styles.containerStyle, selectedStyle]}>{children}</View>
     </TouchableOpacity>
   );
@@ -32,20 +35,21 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.4,
     shadowRadius: 1.0,
     elevation: 1,
-    backgroundColor: "#D3F0FA", // Light pastel blue background color
+    backgroundColor: "#D3F0FA",
     marginTop: 10,
     height: 167,
     width: 326,
     borderRadius: 22,
-    fontFamily: "karlaR", // Assuming this is the font you want to use
+    fontFamily: "karlaR",
   },
   selected: {
-    shadowColor: "#FFA500", // Orange color
+    shadowColor: "#E55D25",
     shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.8,
-    shadowRadius: 4,
-    borderWidth: 2, // You can adjust the border width
-    borderColor: "#FFA500", // Orange color
+    shadowOpacity: 1,
+    shadowRadius: 10,
+    elevation: 6,
+    borderWidth: 2,
+    borderColor: "transparent",
   },
 });
 

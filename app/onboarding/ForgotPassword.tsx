@@ -5,7 +5,7 @@ import PKRLogo from "../../components/PKRLogo";
 import AppButton from "../../components/AppButton";
 import { router } from "expo-router";
 
-const ForgotPassword = ({ navigation }) => {
+const ForgotPassword = () => {
   const handleResetPassword = () => {
     console.log("Password reset link sent");
   };

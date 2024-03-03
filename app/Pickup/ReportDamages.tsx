@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import AppButton from '../../components/AppButton';
 import * as ImagePicker from 'expo-image-picker';
+import cameraImg from "../../assets/images/camera.png";
 
 const ReportDamages = () => {
   const [description, setDescription] = useState('');
@@ -22,7 +23,7 @@ const ReportDamages = () => {
       aspect: [4, 3],
     });
 
-    if (!pickerResult.cancelled) {
+    if (!pickerResult.canceled) {
       const imageResult = pickerResult.assets[0]; 
       const newUri = imageResult.uri + '?' + new Date().getTime(); 
       console.log('New photo URI:', newUri); 
@@ -71,7 +72,7 @@ const ReportDamages = () => {
 
       <View style={styles.cameraRow}>
         <TouchableOpacity onPress={openCamera}>
-          <Image source={require('../../components/images/camera.png')} style={styles.cameraIcon} />
+          <Image source={cameraImg} style={styles.cameraIcon} />
         </TouchableOpacity>
         <Text style={styles.cameraLabel}>
           Attach photos of the accident/damages

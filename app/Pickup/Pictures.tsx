@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import AppButton from '../../components/AppButton';
+import cameraImg from "../../assets/images/camera.png";
 
 const PicturesPage = () => {
   const [frontImage, setFrontImage] = useState(null);
@@ -30,7 +31,7 @@ const PicturesPage = () => {
       aspect: [4, 3],
     });
   
-    if (!pickerResult.cancelled) {
+    if (!pickerResult.canceled) {
       const imageResult = pickerResult.assets[0]; 
       const newUri = imageResult.uri + '?' + new Date().getTime(); 
       console.log('New photo URI:', newUri); 
@@ -39,11 +40,11 @@ const PicturesPage = () => {
   };
   
 
-  const renderImage = (imageUri) => {
+  const renderImage = (imageUri: string | null | undefined) => {
     return imageUri ? (
       <Image source={{ uri: imageUri }} style={styles.photo} key={imageUri} />
     ) : (
-      <Image source={require('../../components/images/camera.png')} style={styles.cameraIcon} />
+      <Image source={cameraImg} style={styles.cameraIcon} />
     );
   };
 
