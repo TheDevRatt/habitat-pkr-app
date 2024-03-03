@@ -114,7 +114,9 @@ const SignUp = () => {
             <View style={styles.buttonContainer}>
               <AppButton
                 widthPercentage={85}
-                paddingVertical={10}
+                paddingVertical={11}
+                borderRadius={25}
+                textStyle={{ fontSize: 25}}
                 onPress={() => router.push("/onboarding/basicInfo")}
               >
                 Create Account
@@ -132,7 +134,6 @@ const SignUp = () => {
 
             <View style={styles.loginContainer}>
               <Text style={styles.loginText}>Already have an account?</Text>
-              {/* Use TouchableOpacity directly for navigation */}
               <TouchableOpacity
                 onPress={handleLoginPress}
                 style={{ backgroundColor: "transparent" }}
@@ -160,7 +161,7 @@ const styles = StyleSheet.create({
   backButtonContainer: {
     backgroundColor: "transparent",
     justifyContent: "center", 
-    paddingLeft: 20, 
+    paddingLeft: horizontalScale(20), 
   },
   topContainer: {
     flexDirection: "row",
@@ -257,7 +258,7 @@ const styles = StyleSheet.create({
   },
   loginText: {
     fontFamily: "karlaR",
-    fontSize: moderateScale(22),
+    fontSize: moderateScale(20),
     right: horizontalScale(10),
   },
   loginLink: {
