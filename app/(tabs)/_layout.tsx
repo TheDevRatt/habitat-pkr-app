@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   },
   tabBarStyle: {
     position: "absolute",
-    bottom: Platform.OS === "android" ? verticalScale(30) : verticalScale(50), // Adjust bottom padding for platform
+    bottom: Platform.OS === "android" ? verticalScale(10) : verticalScale(30), // Adjust bottom padding for platform
     left: horizontalScale(10),
     right: horizontalScale(10),
     backgroundColor: "#0099CC",
