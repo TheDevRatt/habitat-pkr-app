@@ -1,13 +1,32 @@
-import React from "react";
+import React, {Component, useEffect} from "react";
 import { StyleSheet, View } from "react-native";
 import { SafeAreaView, Text } from "@/components/Themed";
 import { LinearGradient } from "expo-linear-gradient";
 import { horizontalScale, moderateScale, verticalScale } from "@/constants/Metrics";
+import {NavigationContainer, useIsFocused } from '@react-navigation/native';
+import { auth } from "@/firebase";
+
+//function HomeScreen(){
+    //const isFocused = useIsFocused();
+    //useEffect(() => {
+      //if (isFocused) {
+      //console.log("hello");
+        // Perform actions you want when the screen is focused.
+        // This could be fetching data, re-rendering components, or any other refresh logic.
+        //const user = auth.currentUser;
+        //let userName;
+          //if (user !== null) {
+            //userName = user.displayName;
+          //}
+      //}
+    //}, [isFocused]);
+//}
 import { Ionicons } from "@expo/vector-icons";
 import CarCard from "@/components/CarCard";
 
 const Home = () => {
-  const firstName = "John";
+
+  const firstName = "placeholder";
 
   return (
     <LinearGradient colors={["#FFFFFF", "#59C9F0"]} style={styles.gradient}>
