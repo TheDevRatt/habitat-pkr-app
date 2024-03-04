@@ -24,7 +24,7 @@ import PKRLogo from "../../components/PKRLogo";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import AppButton from "../../components/AppButton";
 import { signinUser } from './../classes/User';
-import { getAuth } from "firebase/auth";
+import { auth } from "@/firebase";
 import BackButton from "@/components/BackButton";
 import { Link, useRouter } from "expo-router"; // Import useRouter hook
 
@@ -107,23 +107,21 @@ const [password, setPassword] = useState("");
                 onPress={
                 async () => {
                     let response = await signinUser(email.trim(),password.trim());
-                    console.log(response);
                     if(response == "good"){
 
-                        const auth = getAuth();
                         const user = auth.currentUser;
 
                         if (user !== null) {
                             // The user object has basic properties such as display name, email, etc.
-                            const userEmail = user.email;
-                            alert(userEmail);
+                            //const userEmail = user.email;
+                            //alert(userEmail);
+                            router.push("/(tabs)/Home");
                         }
-                    }
-
-                    if(response == "email"){
+                    }else if(response == "email"){
                         alert("Please close the app and verify your email then try again.");
+                    }else{
+                        alert(response);
                     }
-                    alert(response);
                 }}
 
               >

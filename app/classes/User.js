@@ -1,4 +1,3 @@
-import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import {
     getAuth,
@@ -6,7 +5,8 @@ import {
     getReactNativePersistence,
     initializeAuth,
     sendEmailVerification,
-    signInWithEmailAndPassword
+    signInWithEmailAndPassword,
+    updateProfile
     } from 'firebase/auth';
 import {
     collection,
@@ -20,25 +20,11 @@ import {
 import { getStorage, ref, uploadBytes} from "firebase/storage";
 import { AsyncStorage } from "@react-native-async-storage/async-storage";
 
+import { db, auth } from '@/firebase';
+
 const NAME_MAX = 30;
 
-    export const firebaseConfig = {
-    apiKey: "AIzaSyCVuRXK0tDtijz_9PWz9Y5icQU4kt7iqQw",
-    authDomain: "pkrides-d3c59.firebaseapp.com",
-    databaseURL: "https://pkrides-d3c59-default-rtdb.firebaseio.com",
-    projectId: "pkrides-d3c59",
-    storageBucket: "pkrides-d3c59.appspot.com",
-    messagingSenderId: "539323902826",
-    appId: "1:539323902826:web:c43816f1c18112bd369313",
-    measurementId: "G-RRQCR4ZZBJ"
-    };
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    export const auth = initializeAuth(app, {
-      persistence: getReactNativePersistence(AsyncStorage),
-    });
-    const storage = getStorage();
+const storage = getStorage();
 
     async function verifyUser(email, password, firstName, lastName, phoneNumber, age, pronouns){
 
@@ -160,7 +146,7 @@ const NAME_MAX = 30;
             const errorMessage = error.message;
             // ..
           });
-          try{
+        try{
             const docRef = await addDoc(collection(db, "users"),{
 
                 FirstName: firstName,
@@ -174,6 +160,17 @@ const NAME_MAX = 30;
             } catch (e) {
 
             }
+        updateProfile(auth.currentUser, {
+          displayName: firstName }).then(() => {
+          // Username updated
+        }).catch((error) => {
+          // An error occurred
+        });
+
+
+
+
+
     }
     module.exports.addUser = addUser;
 
@@ -211,7 +208,7 @@ const NAME_MAX = 30;
 
         // Check that the email for the user has been verified
         const user = auth.currentUser;
-        if(user.emailVerified == true){
+        if(user.emailVerified == false){
             return "email";
         }
 
@@ -219,6 +216,19 @@ const NAME_MAX = 30;
         return "good";
     }
     module.exports.signinUser = signinUser;
+
+
+    async function userState(){
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const uid = user.uid;
+      } else {
+        router.push("/index");
+      }
+    });
+    }
+    module.exports.userState = userState;
+
 
     async function addLicence(file){
 
@@ -231,10 +241,6 @@ const NAME_MAX = 30;
         });
 
     }
-
-
-
-
 
 
 
@@ -255,7 +261,7 @@ const NAME_MAX = 30;
     }
     module.exports.userExists = userExists;
 
-    // TODO add increased functionality
+    // Return current users first name
     async function readUserName(email){
         const q = query(collection(db, "users"), where("Email", "==", email));
         const querySnapshot = await getDocs(q);
