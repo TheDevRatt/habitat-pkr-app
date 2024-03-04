@@ -29,6 +29,8 @@ import TermsIcon from "@/components/TermsIcons";
 import SettingsIcon from "@/components/SettingsIcon";
 import ArrowIcon from "@/components/ArrowIcon";
 import TotalRidesBorder from "@/components/TotalRidesBorder";
+import RoadIconO from "@/components/RoadIconO";
+import ProfileContainer from "@/components/ProfileContainer";
 
 import { Link, useRouter } from "expo-router";
 
@@ -80,13 +82,21 @@ const Profile = () => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.profileHeader}>
-        <Text style={styles.profileTitle}>Profile</Text>
         <TouchableOpacity onPress={handleImagePress}></TouchableOpacity>
-        <Text style={styles.profileName}>{user.name}</Text>
+        <Text style={styles.profileTitle}>Profile</Text>
+        <View style={styles.profileContainer}>
+          <ProfileContainer style={styles.profileImage} />
+          <Text style={styles.profileName}>{user.name}</Text>
+        </View>
+
         <View style={styles.totalRidesContainer}>
-          <Text style={styles.totalRidesText}>
-            {user.totalRides} Total Rides
-          </Text>
+          <RoadIconO style={styles.iconStyle} />
+          <View style={{ alignItems: "center" }}>
+            <Text style={{ fontSize: 50, fontWeight: "bold" }}>
+              {user.totalRides}
+            </Text>
+            <Text style={{ fontSize: 20, fontWeight: "300" }}>Total Rides</Text>
+          </View>
         </View>
       </View>
 
@@ -177,7 +187,7 @@ const styles = StyleSheet.create({
   },
   profileHeader: {
     alignItems: "center",
-    paddingVertical: 20,
+    paddingVertical: verticalScale(15),
     borderColor: "#ccc",
   },
   profileTitle: {
@@ -188,25 +198,47 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
-    backgroundColor: "#e1e4e8", // A placeholder color for the image
+    backgroundColor: "#e1e4e8",
+    marginRight: 20, // Adds space between the image and the name
+  },
+  profileContainer: {
+    flexDirection: "row",
+    alignItems: "center", // This will ensure the text is centered to the image
+    justifyContent: "center", // Center the content horizontally in the container
+    paddingTop: 10, // Adjust as needed
   },
   profileName: {
     fontSize: 24,
     fontWeight: "bold",
-    marginTop: 10,
+    // Remove alignItems as it's not a valid style for Text component, adjust margin if needed
   },
   totalRidesContainer: {
-    padding: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    paddingTop: 5,
+    paddingBottom: 5,
+    paddingLeft: 20,
+    paddingRight: 20,
     borderRadius: 20,
-    backgroundColor: "#f0f1f3", // A placeholder background color
-    marginTop: 10,
+    backgroundColor: "white",
+    marginTop: 20,
+    shadowColor: "#0081ACB2",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 1,
+    shadowRadius: 5,
+    elevation: 10,
+  },
+  iconStyle: {
+    marginRight: 10, // Adjust as needed for spacing between icon and number
+    marginBottom: 20,
   },
   totalRidesText: {
     fontSize: 16,
   },
   button: {
     flexDirection: "row", // Align items in a row
-    paddingVertical: 15,
+    paddingVertical: verticalScale(15), // Add padding to the top and bottom
     paddingHorizontal: 30, // Adjust padding as needed
     alignItems: "center", // Center items vertically
     justifyContent: "space-between",
