@@ -1,104 +1,109 @@
 import React from "react";
-import { StyleSheet } from "react-native";
-import { Text, View } from "@/components/Themed";
+import { StyleSheet, View } from "react-native";
+import { SafeAreaView, Text } from "@/components/Themed";
 import { LinearGradient } from "expo-linear-gradient";
-import { verticalScale } from "@/constants/Metrics";
-
-interface CarProps {
-  name: string;
-  transmission: string;
-  pricePerDay: string;
-  pricePerHour: string;
-}
+import { horizontalScale, moderateScale, verticalScale } from "@/constants/Metrics";
+import { Ionicons } from "@expo/vector-icons";
+import CarCard from "@/components/CarCard";
 
 const Home = () => {
-  const userName = "John";
+  const firstName = "John";
 
   return (
     <LinearGradient colors={["#FFFFFF", "#59C9F0"]} style={styles.gradient}>
-      <View style={styles.container}>
-        <Text style={styles.greeting}>Hello, {userName}!</Text>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <View style={styles.smallImage} />
+          <Text style={styles.greeting}>Hello, {firstName}!</Text>
+          <Ionicons name="notifications" size={24} color="black" />
+        </View>
         <Text style={styles.instructions}>Select a car to rent</Text>
+        {/* Search Bar - To be implemented */}
+        <View style={styles.filterLogos}>
+          {/* Logos - To be implemented */}
+        </View>
+        <Text style={styles.location}>All cars - Location</Text>
         <View style={styles.carList}>
-          <CarItem
-            name="Honda Civic"
+          <CarCard
+            make="Honda"
+            model="Civic"
             transmission="Automatic"
-            pricePerDay="$150 per day"
-            pricePerHour="$22/hour"
+            dailyRate={150}
+            hourlyRate={22}
+            imageUrl={require("@/assets/images/carImagesTEMP/image 8.png")}
           />
-          <CarItem
-            name="Toyota Yaris"
+          <CarCard
+            make="Toyota"
+            model="Yaris"
             transmission="Automatic"
-            pricePerDay="$130 per day"
-            pricePerHour="$20/hour"
+            dailyRate={130}
+            hourlyRate={20}
+            imageUrl={require("@/assets/images/carImagesTEMP/image 9.png")}
           />
-          <CarItem
-            name="Nissan Juke"
+          <CarCard
+            make="Nissan"
+            model="Juke"
             transmission="Automatic"
-            pricePerDay="$165 per day"
-            pricePerHour="$25/hour"
+            dailyRate={165}
+            hourlyRate={25}
+            imageUrl={require("@/assets/images/carImagesTEMP/image 10.png")}
           />
         </View>
-      </View>
+      </SafeAreaView>
     </LinearGradient>
-  );
-};
-
-const CarItem: React.FC<CarProps> = ({
-  name,
-  transmission,
-  pricePerDay,
-  pricePerHour,
-}) => {
-  return (
-    <View style={styles.carItem}>
-      <Text style={styles.carName}>{name}</Text>
-      <Text>{transmission}</Text>
-      <Text>{pricePerDay}</Text>
-      <Text>{pricePerHour}</Text>
-    </View>
   );
 };
 
 const styles = StyleSheet.create({
   gradient: {
     flex: 1,
-    alignItems: "center",
-    width:"100%",
-    
   },
   container: {
-    marginTop:verticalScale(65),
+    flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    marginTop: verticalScale(20),
+    paddingTop: verticalScale(20),
     backgroundColor: "transparent",
-    width:"90%"
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: verticalScale(20),
+  },
+  smallImage: {
+    width: 30,
+    height: 30,
+    backgroundColor: "gray", 
   },
   greeting: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 10,
+    fontSize: moderateScale(24),
+    fontFamily: "karlaEB",
+    marginLeft: 10,
+    marginRight: "auto",
   },
   instructions: {
-    fontSize: 18,
+    fontSize: moderateScale(22),
     marginBottom: 20,
+    marginTop: 10,
+    marginLeft:horizontalScale(60),
+    width:"100%",
+    fontFamily:"karlaM",
+  },
+  location: {
+    fontSize: moderateScale(20),
+    fontFamily:"karlaR",
+    marginLeft:horizontalScale(60),
+    width:"100%"
   },
   carList: {
-    marginTop:verticalScale(45),
     width: "100%",
+    marginBottom:verticalScale(20),
     backgroundColor: "transparent",
   },
-  carItem: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    padding: 10,
+  filterLogos: {
+    flexDirection: "row",
     marginBottom: 10,
-  },
-  carName: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 5,
   },
 });
 

@@ -14,9 +14,6 @@ export default function ModalScreen() {
       <SafeAreaView style={styles.container}>
         <View style={styles.container}>
           <View
-            style={styles.separator}
-            lightColor="#eee"
-            darkColor="rgba(255,255,255,0.1)"
           />
           <View style={styles.box}>
             <View style={styles.boxStyles}>
@@ -27,9 +24,7 @@ export default function ModalScreen() {
               </Text>
             </View>
           </View>
-          {/* Use a light status bar on iOS to account for the black space above the modal */}
-          <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
-        </View>
+         </View>
       </SafeAreaView>
     </LinearGradient>
   );
