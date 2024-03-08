@@ -8,8 +8,8 @@ import {
   View as DefaultView,
   TouchableOpacity as DefaultTouchableOpacity,
   TextInput as DefaultTextInput,
-  SafeAreaView as DefaultSafeAreaView, 
-  Image as DefaultImage
+  SafeAreaView as DefaultSafeAreaView,
+  Image as DefaultImage,
 } from "react-native";
 
 import Colors from "@/constants/Colors";
@@ -26,8 +26,7 @@ export type TouchableOpacityProps = ThemeProps &
   DefaultTouchableOpacity["props"];
 export type TextInputProps = ThemeProps & DefaultTextInput["props"];
 export type SafeAreaViewProps = ThemeProps & DefaultSafeAreaView["props"];
-export type ImageProps = ThemeProps &
-DefaultImage["props"];
+export type ImageProps = ThemeProps & DefaultImage["props"];
 
 export function useThemeColor(
   props: { light?: string; dark?: string },
@@ -83,10 +82,7 @@ export function TextInput(props: TextInputProps) {
   );
 
   return (
-    <DefaultTextInput
-      style={[{ backgroundColor }, style]}
-      {...otherProps}
-    />
+    <DefaultTextInput style={[{ backgroundColor }, style]} {...otherProps} />
   );
 }
 
@@ -98,10 +94,7 @@ export function SafeAreaView(props: SafeAreaViewProps) {
   );
 
   return (
-    <DefaultSafeAreaView
-      style={[{ backgroundColor }, style]}
-      {...otherProps}
-    />
+    <DefaultSafeAreaView style={[{ backgroundColor }, style]} {...otherProps} />
   );
 }
 
@@ -112,10 +105,5 @@ export function Image(props: ImageProps) {
     "background"
   );
 
-  return (
-    <DefaultImage
-      style={[{ backgroundColor }, style]}
-      {...otherProps}
-    />
-  );
+  return <DefaultImage style={[{ backgroundColor }, style]} {...otherProps} />;
 }

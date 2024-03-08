@@ -1,6 +1,6 @@
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
-import { Text, View, SafeAreaView } from "@/components/components(old)/Themed";
+import { Text, View, SafeAreaView } from "@/components/Themed";
 import { Link, useRouter } from "expo-router";
 import * as AppleAuthentication from "expo-apple-authentication";
 import { StyleSheet } from "react-native";
@@ -45,16 +45,12 @@ export default function HomeScreen() {
         </Text>
         <View style={styles.buttonContainer}>
           <View style={styles.button}>
-            <AppButton
-              onPress={() => router.push("/onboarding/logIn")}
-            >
+            <AppButton onPress={() => router.push("/onboarding/logIn")}>
               Log In
             </AppButton>
           </View>
           <View style={styles.button}>
-            <AppButton
-              onPress={() => router.push("/onboarding/signUp")}
-            >
+            <AppButton onPress={() => router.push("/onboarding/signUp")}>
               Sign Up
             </AppButton>
           </View>
@@ -62,19 +58,23 @@ export default function HomeScreen() {
         <DividerWithText />
 
         <View style={styles.externalButtonContainer}>
-        <View style={styles.externalButton}>
-          <AppButton
-            widthPercentage={40} 
-            onPress={handleGoogleSignIn} // Call the Google Sign In function when pressed
-            icon="google"
-          >
-            Google
-          </AppButton>
+          <View style={styles.externalButton}>
+            <AppButton
+              widthPercentage={40}
+              onPress={handleGoogleSignIn} // Call the Google Sign In function when pressed
+              icon="google"
+            >
+              Google
+            </AppButton>
           </View>
           <View style={styles.externalButton}>
-          <AppButton widthPercentage={40} onPress={handleAppleSignIn} icon="apple">
-            Apple
-          </AppButton>
+            <AppButton
+              widthPercentage={40}
+              onPress={handleAppleSignIn}
+              icon="apple"
+            >
+              Apple
+            </AppButton>
           </View>
         </View>
       </SafeAreaView>
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   logo: {
-    marginTop: verticalScale(4),
+    marginTop: verticalScale(50),
   },
   title: {
     fontSize: moderateScale(90),
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginVertical: verticalScale(15),
     backgroundColor: "transparent",
-    marginBottom:verticalScale(35)
+    marginBottom: verticalScale(35),
   },
   button: {
     marginVertical: moderateScale(15),

@@ -2,11 +2,7 @@
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import {
-  Text,
-  View,
-  TouchableOpacity,
-} from "@/components/components(old)/Themed";
+import { Text, View, TouchableOpacity } from "@/components/Themed";
 import { FontAwesome5 } from "@expo/vector-icons";
 
 // Defining the types of props to be used
@@ -17,12 +13,12 @@ interface ButtonProps {
   icon?: string; // Change this to accept a FontAwesome icon name
   backgroundColor?: string;
   borderColor?: string;
-  widthPercentage?:number;
+  widthPercentage?: number;
   borderWidth?: number;
   borderRadius?: number;
-  paddingVertical?:number;
+  paddingVertical?: number;
   textStyle?: object;
-  borderStyle?: "solid" | "dotted" | "dashed" | undefined; 
+  borderStyle?: "solid" | "dotted" | "dashed" | undefined;
 }
 
 // Destructuring the props and merging the classNames together so that you can override or add to the default button styling.
@@ -40,7 +36,6 @@ export default function AppButton({
   borderStyle = undefined,
   ...props
 }: ButtonProps) {
-
   const screenWidth = Dimensions.get("window").width;
   const width = (screenWidth * widthPercentage) / 100;
 
@@ -55,7 +50,7 @@ export default function AppButton({
           width,
           borderWidth,
           borderRadius,
-          paddingVertical
+          paddingVertical,
         },
       ]}
       onPress={onPress}
@@ -73,7 +68,6 @@ export default function AppButton({
         )}
         <Text style={[styles.text, textStyle]}>{children}</Text>
       </View>
-      
     </TouchableOpacity>
   );
 }
@@ -91,13 +85,11 @@ const styles = StyleSheet.create({
   },
   button: {
     paddingVertical: 8,
-
   },
   text: {
     textAlign: "center",
     color: "black",
     fontSize: 30,
     fontFamily: "karlaR",
-
   },
 });

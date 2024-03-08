@@ -1,12 +1,11 @@
 import { StyleSheet } from "react-native";
 
-//import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from "@/components/components(old)/Themed";
+import { Text, View } from "@/components/Themed";
 
 export default function Admin() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
+      <Text style={styles.title}>Admin Page</Text>
       <View
         style={styles.separator}
         lightColor="#eee"

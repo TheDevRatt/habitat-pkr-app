@@ -1,12 +1,12 @@
 import { StyleSheet } from "react-native";
 
 //import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from "@/components/components(old)/Themed";
+import { Text, View } from "@/components/Themed";
 
 export default function Bookings() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
+      <Text style={styles.title}>Bookings Page</Text>
       <View
         style={styles.separator}
         lightColor="#eee"

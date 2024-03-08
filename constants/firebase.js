@@ -1,6 +1,6 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 import { collection, addDoc } from "firebase/firestore";
 
 // Your web app's Firebase configuration
@@ -13,26 +13,25 @@ const firebaseConfig = {
   storageBucket: "pkrides-d3c59.appspot.com",
   messagingSenderId: "539323902826",
   appId: "1:539323902826:web:c43816f1c18112bd369313",
-  measurementId: "G-RRQCR4ZZBJ"
+  measurementId: "G-RRQCR4ZZBJ",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-
 // Example for adding to the data base
 // https://firebase.google.com/docs/firestore/quickstart#web-modular-api_1
 //async function addUser(){
-    //try {
-      //const docRef = await addDoc(collection(db, "Users"), {
-        //first: "John",
-        //last: "Doe",
-        //born: 1950
-      //});
-      //console.log("Document written with ID: ", docRef.id);
-    //} catch (e) {
-      //console.error("Error adding document: ", e);
-    //}
+//try {
+//const docRef = await addDoc(collection(db, "Users"), {
+//first: "John",
+//last: "Doe",
+//born: 1950
+//});
+//console.log("Document written with ID: ", docRef.id);
+//} catch (e) {
+//console.error("Error adding document: ", e);
+//}
 //}
 //addUser();

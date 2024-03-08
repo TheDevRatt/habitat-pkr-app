@@ -9,7 +9,7 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 
-import { useColorScheme } from "@/components/components(old)/useColorScheme";
+import { useColorScheme } from "@/components/useColorScheme";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -66,16 +66,28 @@ function RootLayoutNav() {
   return (
     // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
     <Stack>
-    <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    <Stack.Screen name="index" options={{ headerShown: false }} />
-    <Stack.Screen name="onboarding/signUp" options={{ headerShown: false }} />
-    <Stack.Screen name="onboarding/logIn" options={{ headerShown: false }} />
-    <Stack.Screen name="onboarding/basicInfo" options={{ headerShown: false }} />
-    <Stack.Screen name="onboarding/membership" options={{ headerShown: false }} />
-    <Stack.Screen name="onboarding/paymentInfo" options={{ headerShown: false }} />
-    <Stack.Screen name="onboarding/TermsAndConditions" options={{ headerShown: false }} />
-    <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-  </Stack>
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="onboarding/signUp" options={{ headerShown: false }} />
+      <Stack.Screen name="onboarding/logIn" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="onboarding/basicInfo"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="onboarding/membership"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="onboarding/paymentInfo"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="onboarding/termsAndConditions"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+    </Stack>
     // </ThemeProvider>
   );
 }
