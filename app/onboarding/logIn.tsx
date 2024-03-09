@@ -26,7 +26,7 @@ import AppButton from "../../components/AppButton";
 import { signinUser } from './../classes/User';
 import { auth } from "@/firebase";
 import BackButton from "@/components/BackButton";
-import { Link, useRouter } from "expo-router"; // Import useRouter hook
+import { Link, useRouter, Stack } from "expo-router"; // Import useRouter hook
 
 const LogIn = () => {
   const router = useRouter();

@@ -223,7 +223,7 @@ const storage = getStorage();
       if (user) {
         const uid = user.uid;
       } else {
-        router.push("/index");
+        router.push("/onboarding/login");
       }
     });
     }
