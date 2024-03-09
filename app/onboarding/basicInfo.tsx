@@ -15,24 +15,47 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import * as ImagePicker from "expo-image-picker";
-import { Camera } from "expo-camera";
+import { Camera, CameraType } from "expo-camera";
 import AppButton from "../../components/AppButton";
 import { Link, useRouter } from "expo-router";
 import DriversLicenseLogo from "@/components/DriversLicenseLogo";
 import InsuranceLogo from "@/components/InsuranceLogo";
+//import storage from '@react-native-firebase/storage';
+import * as Progress from 'react-native-progress';
+import { uploadToFirebase } from './../classes/ImageUpload';
+
+//const [startCamera,setStartCamera] = React.useState(false)
+let photoLicence, photoInsurance;
 
 const BasicInfo = () => {
   const router = useRouter();
 
   const openCamera = async () => {
-    const { status } = await Camera.requestPermissionsAsync();
+    const { status } = await Camera.requestCameraPermissionsAsync();
     if (status === "granted") {
-      let result = await ImagePicker.launchCameraAsync();
-      console.log(result);
+        try {
+              const cameraResp = await ImagePicker.launchCameraAsync({
+                allowsEditing: true,
+                mediaTypes: ImagePicker.MediaTypeOptions.All,
+                quality: 1,
+              });
+
+              if (!cameraResp.canceled) {
+                const { uri } = cameraResp.assets[0];
+                const fileName = uri.split("/").pop();
+                const uploadResp = await uploadToFirebase(uri, fileName, (v) =>
+                  console.log(v)
+                );
+                console.log(uploadResp);
+              }
+            } catch (e) {
+              alert("Error Uploading Image " + e.message);
+            }
     } else {
-      console.log("Camera permission not granted");
+      alert("Camera permission not granted");
     }
   };
+
 
   const openFilePicker = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -43,6 +66,7 @@ const BasicInfo = () => {
       console.log("File picker permission not granted");
     }
   };
+
 
   return (
     <LinearGradient colors={["#FFFFFF", "#0099CC"]} style={styles.gradient}>

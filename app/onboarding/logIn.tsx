@@ -114,9 +114,9 @@ const [password, setPassword] = useState("");
 
                         if (user !== null) {
                             // The user object has basic properties such as display name, email, etc.
-                            //const userEmail = user.email;
-                            //alert(userEmail);
-                            router.push("/(tabs)/Home");
+                            //router.push("/(tabs)/Home");
+                            router.push("/onboarding/basicInfo");
+
                         }
                     }else if(response == "email"){
                         alert("Please close the app and verify your email then try again.");

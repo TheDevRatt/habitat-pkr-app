@@ -17,14 +17,11 @@ import {
     query,
     where
     } from "firebase/firestore";
-import { getStorage, ref, uploadBytes} from "firebase/storage";
 import { AsyncStorage } from "@react-native-async-storage/async-storage";
 
 import { db, auth } from '@/firebase';
 
 const NAME_MAX = 30;
-
-const storage = getStorage();
 
     async function verifyUser(email, password, firstName, lastName, phoneNumber, age, pronouns){
 
@@ -167,12 +164,10 @@ const storage = getStorage();
           // An error occurred
         });
 
-
-
-
-
     }
     module.exports.addUser = addUser;
+
+
 
     // User sign in
     async function signinUser(email, password){
@@ -228,19 +223,6 @@ const storage = getStorage();
     });
     }
     module.exports.userState = userState;
-
-
-    async function addLicence(file){
-
-        // Create a reference to 'licence.jpg'
-        const licenceRef = ref(storage, 'licence.jpg');
-
-        // 'file' comes from the Blob or File API
-        uploadBytes(licenceRef, file).then((snapshot) => {
-          console.log('Uploaded a blob or file!');
-        });
-
-    }
 
 
 
