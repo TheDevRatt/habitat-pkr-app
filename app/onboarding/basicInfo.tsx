@@ -20,53 +20,19 @@ import AppButton from "../../components/AppButton";
 import { Link, useRouter } from "expo-router";
 import DriversLicenseLogo from "@/components/DriversLicenseLogo";
 import InsuranceLogo from "@/components/InsuranceLogo";
-//import storage from '@react-native-firebase/storage';
 import * as Progress from 'react-native-progress';
-import { uploadToFirebase } from './../classes/ImageUpload';
-
-//const [startCamera,setStartCamera] = React.useState(false)
-let photoLicence, photoInsurance;
+import { openCamera, openFilePicker } from './../classes/CloudStorage';
+import { auth } from "@/firebase";
 
 const BasicInfo = () => {
+
+    const user = auth.currentUser;
+        let userID = "placeholder";
+        if (user !== null) {
+            userID = user.uid;
+        }
+
   const router = useRouter();
-
-  const openCamera = async () => {
-    const { status } = await Camera.requestCameraPermissionsAsync();
-    if (status === "granted") {
-        try {
-              const cameraResp = await ImagePicker.launchCameraAsync({
-                allowsEditing: true,
-                mediaTypes: ImagePicker.MediaTypeOptions.All,
-                quality: 1,
-              });
-
-              if (!cameraResp.canceled) {
-                const { uri } = cameraResp.assets[0];
-                const fileName = uri.split("/").pop();
-                const uploadResp = await uploadToFirebase(uri, fileName, (v) =>
-                  console.log(v)
-                );
-                console.log(uploadResp);
-              }
-            } catch (e) {
-              alert("Error Uploading Image " + e.message);
-            }
-    } else {
-      alert("Camera permission not granted");
-    }
-  };
-
-
-  const openFilePicker = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status === "granted") {
-      let result = await ImagePicker.launchImageLibraryAsync();
-      console.log(result);
-    } else {
-      console.log("File picker permission not granted");
-    }
-  };
-
 
   return (
     <LinearGradient colors={["#FFFFFF", "#0099CC"]} style={styles.gradient}>
@@ -80,7 +46,9 @@ const BasicInfo = () => {
           <View style={styles.buttonGroup}>
             <View style={styles.camera}>
               <AppButton
-                onPress={openCamera}
+                onPress={() => {
+                  openCamera(userID,"Insurance");
+                }}
                 backgroundColor="transparent"
                 widthPercentage={45}
                 borderStyle="dashed"
@@ -93,7 +61,9 @@ const BasicInfo = () => {
               </AppButton>
             </View>
             <AppButton
-              onPress={openFilePicker}
+              onPress={() => {
+                openFilePicker(userID,"License");
+              }}
               backgroundColor="transparent"
               widthPercentage={45}
               borderStyle="dashed"
@@ -111,7 +81,9 @@ const BasicInfo = () => {
           <InsuranceLogo style={styles.logoI} />
           <View style={styles.buttonGroup}>
             <AppButton
-              onPress={openFilePicker}
+              onPress={() => {
+              openFilePicker(userID, "Insurance");
+              }}
               backgroundColor="transparent"
               widthPercentage={45}
               borderStyle="dashed"

@@ -6,7 +6,7 @@ const PronounSelector = () => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
-    { label: "She/her/Hers", value: "she/her/hers" },
+    { label: "She/Her/Hers", value: "she/her/hers" },
     { label: "He/Him/His", value: "he/him/his" },
     { label: "They/Them/Theirs", value: "they/them/theirs" },
     { label: "Other", value: "other" },
@@ -16,7 +16,7 @@ const PronounSelector = () => {
     <View>
       <DropDownPicker
         open={open}
-        value={value}
+        value={pronouns}
         items={items}
         setOpen={setOpen}
         setValue={setValue}

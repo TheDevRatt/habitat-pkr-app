@@ -118,7 +118,7 @@ const NAME_MAX = 30;
             return "Please select your pronouns";
         }
 
-        await addUser(email, password, firstName, lastName, phoneNumber, age, pronouns)
+        await addUser(email, password, firstName, lastName, phoneNumber, pronouns)
         return "good";
     }
     module.exports.verifyUser = verifyUser;
