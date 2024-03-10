@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
   button: {
     marginVertical: moderateScale(15),
     backgroundColor: "transparent",
+    fontFamily:"karlaR"
   },
   externalButtonContainer: {
     flexDirection: "row",

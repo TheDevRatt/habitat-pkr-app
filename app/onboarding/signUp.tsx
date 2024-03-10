@@ -25,7 +25,7 @@ import AppButton from "../../components/AppButton";
 import PronounSelector from "@/components/PronounSelector";
 import BackButton from "@/components/BackButton";
 import { Link, useRouter } from "expo-router";
-import {verifyUser} from './../classes/User';
+import {verifyUser} from './../classes/User.js';
 
 
 const SignUp = () => {
@@ -138,7 +138,9 @@ const SignUp = () => {
             <View style={styles.buttonContainer}>
               <AppButton
                 widthPercentage={85}
-                paddingVertical={10}
+                paddingVertical={11}
+                borderRadius={25}
+                textStyle={{ fontSize: 25}}
                 onPress={async () => {
                     let response = await verifyUser(
                         email.trim(),
@@ -170,7 +172,6 @@ const SignUp = () => {
 
             <View style={styles.loginContainer}>
               <Text style={styles.loginText}>Already have an account?</Text>
-              {/* Use TouchableOpacity directly for navigation */}
               <TouchableOpacity
                 onPress={handleLoginPress}
                 style={{ backgroundColor: "transparent" }}
@@ -197,8 +198,8 @@ const styles = StyleSheet.create({
   },
   backButtonContainer: {
     backgroundColor: "transparent",
-    justifyContent: "center",
-    paddingLeft: 20,
+    justifyContent: "center", 
+    paddingLeft: horizontalScale(20), 
   },
   topContainer: {
     flexDirection: "row",
@@ -295,7 +296,7 @@ const styles = StyleSheet.create({
   },
   loginText: {
     fontFamily: "karlaR",
-    fontSize: moderateScale(22),
+    fontSize: moderateScale(20),
     right: horizontalScale(10),
   },
   loginLink: {

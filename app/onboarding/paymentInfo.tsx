@@ -1,82 +1,132 @@
 import React, { useState } from "react";
-import { StyleSheet } from "react-native";
-import {
-  Text,
-  View,
-  SafeAreaView,
-  TextInput,
-  TouchableOpacity,
-} from "@/components/Themed";
-import {
-  horizontalScale,
-  moderateScale,
-  verticalScale,
-} from "@/constants/Metrics";
+import { StyleSheet, ScrollView } from "react-native";
+import { Text, View, SafeAreaView, TextInput } from "@/components/Themed";
 import { LinearGradient } from "expo-linear-gradient";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import AppButton from "../../components/AppButton";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import PaymentCard from "@/components/paymentCard";
+import {
+  verticalScale,
+  moderateScale,
+  horizontalScale,
+} from "@/constants/Metrics";
 import { Picker } from "@react-native-picker/picker";
 
 const PaymentInfo = () => {
   const router = useRouter();
 
-  const [selectedMonth, setSelectedMonth] = useState('');
-  const [selectedYear, setSelectedYear] = useState('');
+  const [month, setMonth] = useState("");
+  const [year, setYear] = useState("");
+  const [cardNumber, setCardNumber] = useState("");
+
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const years = Array.from({ length: 10 }, (_, i) => (2024 + i).toString());
 
   const handleOpenModal = () => {
-    router.push('/onboarding/restricted');
+    router.push("/onboarding/restricted");
+  };
+
+  const formatCardNumber = (value) => {
+    // Remove non-numeric characters
+    const numericValue = value.replace(/\D/g, "");
+    // Add a space after every 4 characters
+    const formattedValue = numericValue.replace(/(\d{4})/g, "$1 ").trim();
+    return formattedValue;
+  };
+
+  const handleChangeCardNumber = (value) => {
+    // Update the card number input value with formatted value
+    const formattedValue = formatCardNumber(value);
+    // Update the input value
+    setCardNumber(formattedValue);
   };
 
   return (
     <LinearGradient colors={["#FFFFFF", "#0099CC"]} style={styles.gradient}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>Add Payment Information</Text>
-      </View>
-      <View style={{ backgroundColor: "transparent" }}>
-        <PaymentCard />
-        <View style={styles.itemContainer}></View>
-      </View>
-      <Text style={styles.dividerText}> OR </Text>
-      <Text style={styles.cardTitle}> Enter Card Details </Text>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "transparent" }}>
+        <ScrollView contentContainerStyle={styles.container}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>Add Payment Information</Text>
+          </View>
+          <View style={styles.cardContainer}>
+            <PaymentCard />
+          </View>
+          <Text style={styles.dividerText}> OR </Text>
+          <Text style={styles.cardTitle}> Enter Card Details </Text>
 
-      <View style={styles.containerInput}>
-        <View style={styles.row}>
-          <Text style={styles.labelInput}>Cardholder Name</Text>
-          <TextInput style={styles.input} />
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.labelInput}>Card Number</Text>
-          <TextInput style={styles.input} keyboardType="numeric" />
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.labelInput}>Expiration Date</Text>
-          <Picker
-            style={styles.picker}
-            selectedValue={selectedMonth}
-            onValueChange={(itemValue, itemIndex) => setSelectedMonth(itemValue)}
+          <View style={styles.containerInput}>
+            <View style={styles.row}>
+              <Text style={styles.labelInput}>Cardholder Name</Text>
+              <TextInput style={styles.input} />
+            </View>
+            <View style={styles.rowCard}>
+              <View style={styles.line}>
+                <Text style={styles.labelInput}>Card Number</Text>
+                <TextInput
+                  style={styles.input}
+                  keyboardType="numeric"
+                  onChangeText={handleChangeCardNumber}
+                  value={cardNumber}
+                  maxLength={19} // Maximum length considering spaces
+                />
+              </View>
+              <View style={styles.line}>
+                <Text style={styles.labelInput}>CVC</Text>
+                <TextInput
+                  style={[styles.input, styles.cvcInput]}
+                  keyboardType="numeric"
+                />
+              </View>
+            </View>
+
+            <View style={styles.row}>
+              <Text style={styles.labelInputExpiration}>Expiration Date</Text>
+              <View style={styles.inlineInput}>
+                <Picker
+                  selectedValue={month}
+                  onValueChange={(itemValue) => setMonth(itemValue)}
+                  style={styles.inlinePicker}
+                >
+                  {months.map((m) => (
+                    <Picker.Item key={m} label={m} value={m} />
+                  ))}
+                </Picker>
+                <Picker
+                  selectedValue={year}
+                  onValueChange={(itemValue) => setYear(itemValue)}
+                  style={styles.inlinePicker}
+                >
+                  {years.map((y) => (
+                    <Picker.Item key={y} label={y} value={y} />
+                  ))}
+                </Picker>
+              </View>
+            </View>
+          </View>
+          <AppButton
+            backgroundColor="white"
+            widthPercentage={85}
+            borderRadius={20}
+            onPress={handleOpenModal}
           >
-            <Picker.Item label="Month" value="" />
-            <Picker.Item label="January" value="01" />
-            <Picker.Item label="February" value="02" />
-          </Picker>
-
-          <Text style={styles.labelInput}>CVC</Text>
-          <TextInput
-            style={[styles.input, styles.cvcInput]}
-            keyboardType="numeric"
-          />
-        </View>
-      </View>
-      <AppButton
-        backgroundColor="white"
-        widthPercentage={45}
-        borderRadius={20}
-        onPress={handleOpenModal}
-      >
-        Submit
-      </AppButton>
+            Submit
+          </AppButton>
+        </ScrollView>
+      </SafeAreaView>
     </LinearGradient>
   );
 };
@@ -84,101 +134,84 @@ const PaymentInfo = () => {
 const styles = StyleSheet.create({
   gradient: {
     flex: 1,
+  },
+  container: {
     alignItems: "center",
+    paddingBottom: verticalScale(20),
   },
   titleContainer: {
-    marginTop: verticalScale(70),
-    marginBottom: verticalScale(30),
+    marginTop: verticalScale(10),
+    marginBottom: verticalScale(20),
     backgroundColor: "transparent",
-    textAlign: "left",
   },
   title: {
     fontFamily: "karlaM",
     fontSize: moderateScale(44),
   },
-  itemContainer: {
+  cardContainer: {
+    width: "100%",
     alignItems: "center",
-    width: horizontalScale(300),
     marginBottom: verticalScale(30),
     backgroundColor: "transparent",
   },
-  label: {
-    fontSize: moderateScale(22),
-    fontFamily: "karlaM",
-    borderBottomWidth: 1,
-    marginTop: verticalScale(5),
-    marginBottom: -verticalScale(10),
-    alignItems: "center",
-    backgroundColor: "transparent",
-  },
-  logoL: {
-    marginBottom: verticalScale(0),
-  },
-  logoI: {
-    marginVertical: verticalScale(40),
-  },
-
-  buttonGroup: {
-    backgroundColor: "transparent",
-    alignItems: "center",
-  },
-
-  buttonText: {
-    fontSize: moderateScale(18),
-    fontFamily: "karlaR",
-    borderBottomWidth: 1,
-    textAlign: "center",
-  },
-  camera: {
-    marginBottom: verticalScale(12),
-    backgroundColor: "transparent",
-  },
-  nextButtonContainer: {
-    marginTop: verticalScale(2),
-    borderRadius: 10,
-  },
-  nextButtonText: {
-    fontSize: moderateScale(22),
-    fontFamily: "karlaR",
-  },
-
-  containerInput: {
-    width: "90%",
-    backgroundColor: "transparent",
-    fontFamily: "karlaR",
-  },
-  row: {
-    flexDirection: "column",
-    marginBottom: 20,
-    backgroundColor: "transparent",
-  },
-  labelInput: {
-    alignItems: "flex-start",
-  },
-  input: {
-    flex: 2,
-    borderBottomWidth: 1,
-    borderBottomColor: "black",
-    width: "90%",
-    paddingVertical: verticalScale(10),
-    backgroundColor: "transparent",
-    fontSize: moderateScale(14),
-  },
-  picker: {
-    flex: 1,
-    height: 50,
-  },
-  cvcInput: {
-    width: "90%",
-  },
   dividerText: {
-    marginVertical: verticalScale(5),
+    marginBottom: verticalScale(15),
   },
   cardTitle: {
     fontSize: moderateScale(20),
     fontFamily: "karlaM",
-    marginVertical: verticalScale(15),
-    marginBottom: verticalScale(35),
+    marginBottom: verticalScale(20),
+  },
+  containerInput: {
+    width: "90%",
+    backgroundColor: "transparent",
+    margin:0,
+  },
+  row: {
+    marginBottom: verticalScale(20),
+    backgroundColor: "transparent",
+  },
+  rowCard: {
+    flexDirection: "row",
+    backgroundColor: "transparent",
+    justifyContent: "space-between",
+  },
+  line: {
+    backgroundColor: "transparent",
+    width: "60%",
+    marginBottom: verticalScale(20),
+    marginRight: horizontalScale(50),
+  },
+  labelInput: {
+    fontSize: moderateScale(16),
+    marginBottom: verticalScale(5),
+    backgroundColor: "transparent",
+  },
+  labelInputExpiration:{
+    fontSize: moderateScale(16),
+    backgroundColor: "transparent",
+    position:"absolute",
+    marginTop:verticalScale(5)
+  },
+  input: {
+    borderBottomWidth: 1,
+    borderBottomColor: "black",
+    paddingVertical: verticalScale(10),
+    fontSize: moderateScale(14),
+    backgroundColor: "transparent",
+    flex: 1,
+  },
+  inlineInput: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: "transparent",
+  },
+  inlinePicker: {
+    width: "50%",
+  },
+  cvcInput: {
+    width: "40%",
   },
 });
 

@@ -17,10 +17,10 @@ const ProfileContainer = (props: any) => (
     {...props}
   >
     <Rect
-      width={99}
-      height={99}
-      x={0.5}
-      y={0.5}
+      width={props.width}
+      height={props.height}
+      x={0}
+      y={0}
       fill="url(#a)"
       stroke="#000"
       rx={9.5}

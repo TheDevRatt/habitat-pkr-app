@@ -96,7 +96,7 @@ const BasicInfo = () => {
           <AppButton
             borderRadius={20}
             widthPercentage={85}
-            paddingVertical={10}
+            paddingVertical={11}
             onPress={() => router.push("/onboarding/membership")}
           >
             <Text style={styles.nextButtonText}>Next</Text>
@@ -166,7 +166,8 @@ const styles = StyleSheet.create({
   },
   nextButtonContainer: {
     marginTop: verticalScale(2),
-    borderRadius:10
+    backgroundColor: "transparent",
+
   },
   nextButtonText: {
     fontSize: moderateScale(22),

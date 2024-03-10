@@ -42,8 +42,9 @@ const Membership = () => {
         </View>
         <View style={styles.buttonContainer}>
           <AppButton
+           borderRadius={20}
            widthPercentage={85}
-           paddingVertical={12}
+           paddingVertical={11}
            onPress={() => router.push("/onboarding/paymentInfo")}
           >
             <Text style={styles.buttonText}>Continue</Text>
@@ -60,8 +61,6 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   container: {
-    margin:  moderateScale(4),
-    flex: 1,
     alignItems: 'center',
     backgroundColor: "transparent",
   },
@@ -80,40 +79,32 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     marginVertical: verticalScale(25),
-    backgroundColor: "transparent",
   },
   cardTitle: {
     fontFamily: 'karlaR',
     textAlign:'center',
     fontSize: moderateScale(28),
-    paddingVertical: 8,
-    margin: 4,
     backgroundColor: "transparent",
+    marginTop:verticalScale(10),
   },
   cardPrice: {
     fontFamily: 'karlaM',
     textAlign:'center',
     fontSize: moderateScale(40),
-    margin: 4,
+    marginVertical:verticalScale(15),
   },
   cardDescription: {
     fontFamily: 'karlaR',
     textAlign:'center',
     fontSize: moderateScale(20),
-    margin: 4,
-    marginTop: 0,
   },
   buttonContainer: {
     marginTop: verticalScale(55),
-    width: '80%',
     backgroundColor: "transparent",
-  },
-  button: {
-    paddingVertical: 16,
   },
   buttonText: {
     fontFamily: 'karlaR',
-    fontSize: 22,
+    fontSize: 24,
   },
 });
 
