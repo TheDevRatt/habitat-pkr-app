@@ -26,7 +26,10 @@ import AppButton from "../../components/AppButton";
 import { signinUser } from './../classes/User';
 import { auth } from "@/firebase";
 import BackButton from "@/components/BackButton";
-import { Link, useRouter } from "expo-router"; // Import useRouter hook
+import { Link, useRouter, Stack } from "expo-router"; // Import useRouter hook
+
+
+//const auth = getAuth();
 
 const LogIn = () => {
   const router = useRouter();
@@ -108,21 +111,25 @@ const [password, setPassword] = useState("");
                 onPress={
                 async () => {
                     let response = await signinUser(email.trim(),password.trim());
+
                     if(response == "good"){
+                        router.push("/(tabs)/Home");
 
-                        const user = auth.currentUser;
-
-                        if (user !== null) {
-                            // The user object has basic properties such as display name, email, etc.
-                            //const userEmail = user.email;
-                            //alert(userEmail);
-                            router.push("/(tabs)/Home");
-                        }
                     }else if(response == "email"){
                         alert("Please close the app and verify your email then try again.");
+
+                    }else if(response == "basicinfo"){
+                        router.push("/onboarding/basicInfo");
+
+                    }else if(response == "An error has occurred"){
+                        alert("An error has occurred, please try again")
+
                     }else{
                         alert(response);
                     }
+
+
+
                 }}
 
               >

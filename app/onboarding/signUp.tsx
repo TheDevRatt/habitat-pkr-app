@@ -49,6 +49,7 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [age, setAge] = useState("");
+  const [pronouns, setPronouns] = useState("");
 
   return (
     <LinearGradient colors={["#FFFFFF", "#0099CC"]} style={styles.gradient}>
@@ -147,8 +148,7 @@ const SignUp = () => {
                         firstName.trim(),
                         lastName.trim(),
                         phoneNumber,
-                        age,
-                        //pronouns
+                        pronouns
                         );
                     if(response == "good"){
                         router.push("/onboarding/basicInfo")

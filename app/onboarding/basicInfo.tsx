@@ -14,35 +14,21 @@ import {
 } from "@/constants/Metrics";
 import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import * as ImagePicker from "expo-image-picker";
-import { Camera } from "expo-camera";
 import AppButton from "../../components/AppButton";
 import { Link, useRouter } from "expo-router";
 import DriversLicenseLogo from "@/components/DriversLicenseLogo";
 import InsuranceLogo from "@/components/InsuranceLogo";
+import * as Progress from 'react-native-progress';
+import { openCamera, openFilePicker } from './../classes/CloudStorage';
+import { auth } from '@/firebase';
+
 
 const BasicInfo = () => {
+
+  const user = auth.currentUser;
+  let userID = user.uid;
+
   const router = useRouter();
-
-  const openCamera = async () => {
-    const { status } = await Camera.requestPermissionsAsync();
-    if (status === "granted") {
-      let result = await ImagePicker.launchCameraAsync();
-      console.log(result);
-    } else {
-      console.log("Camera permission not granted");
-    }
-  };
-
-  const openFilePicker = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status === "granted") {
-      let result = await ImagePicker.launchImageLibraryAsync();
-      console.log(result);
-    } else {
-      console.log("File picker permission not granted");
-    }
-  };
 
   return (
     <LinearGradient colors={["#FFFFFF", "#0099CC"]} style={styles.gradient}>
@@ -56,7 +42,9 @@ const BasicInfo = () => {
           <View style={styles.buttonGroup}>
             <View style={styles.camera}>
               <AppButton
-                onPress={openCamera}
+                onPress={() => {
+                  openCamera(userID,"License");
+                }}
                 backgroundColor="transparent"
                 widthPercentage={45}
                 borderStyle="dashed"
@@ -69,7 +57,9 @@ const BasicInfo = () => {
               </AppButton>
             </View>
             <AppButton
-              onPress={openFilePicker}
+              onPress={() => {
+                openFilePicker(userID,"License");
+              }}
               backgroundColor="transparent"
               widthPercentage={45}
               borderStyle="dashed"
@@ -87,7 +77,9 @@ const BasicInfo = () => {
           <InsuranceLogo style={styles.logoI} />
           <View style={styles.buttonGroup}>
             <AppButton
-              onPress={openFilePicker}
+              onPress={() => {
+              openFilePicker(userID, "Insurance");
+              }}
               backgroundColor="transparent"
               widthPercentage={45}
               borderStyle="dashed"

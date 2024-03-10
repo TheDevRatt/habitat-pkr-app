@@ -6,7 +6,8 @@ import {
     initializeAuth,
     sendEmailVerification,
     signInWithEmailAndPassword,
-    updateProfile
+    updateProfile,
+    onAuthStateChanged
     } from 'firebase/auth';
 import {
     collection,
@@ -17,16 +18,15 @@ import {
     query,
     where
     } from "firebase/firestore";
-import { getStorage, ref, uploadBytes} from "firebase/storage";
 import { AsyncStorage } from "@react-native-async-storage/async-storage";
+import { Link, useRouter } from "expo-router";
+import { fileExists } from './../classes/CloudStorage';
 
-import { db, auth } from '@/firebase';
+import { db,auth } from '@/firebase';
 
 const NAME_MAX = 30;
 
-const storage = getStorage();
-
-    async function verifyUser(email, password, firstName, lastName, phoneNumber, age, pronouns){
+    async function verifyUser(email, password, firstName, lastName, phoneNumber, pronouns){
 
         // Check first name input
 
@@ -80,7 +80,7 @@ const storage = getStorage();
         // Check that user doesn't already exist by email
         let v;
         try{
-            v = await userExists(email);
+            v = await getUserExists(email);
         } catch(e){
             return "An error has occurred";
         }
@@ -108,34 +108,24 @@ const storage = getStorage();
             return "Please a valid 10-digit phone number";
         }
 
-
-
-        // Age
-
-
-
-        // Pronouns
-
         // Check that pronouns is not empty
         if (pronouns = ""){
             return "Please select your pronouns";
         }
 
-        await addUser(email, password, firstName, lastName, phoneNumber, age, pronouns)
+        await addUser(email, password, firstName, lastName, phoneNumber, pronouns)
         return "good";
     }
-    module.exports.verifyUser = verifyUser;
 
 
 
     // Add user to firebase function
-    async function addUser(email, password, firstName, lastName, phoneNumber, age, pronouns){
-
-        const auth = getAuth();
-        createUserWithEmailAndPassword(auth, email, password)
+    async function addUser(email, password, firstName, lastName, phoneNumber, pronouns){
+        let user;
+        await createUserWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
             // Signed up
-            const user = userCredential.user;
+            user = userCredential.user;
             sendEmailVerification(auth.currentUser)
               .then(() => {
                 // Email verification sent
@@ -147,13 +137,12 @@ const storage = getStorage();
             // ..
           });
         try{
-            const docRef = await addDoc(collection(db, "users"),{
-
+            user = auth.currentUser;
+            await setDoc(doc(db, "users", user.uid),{
                 FirstName: firstName,
                 LastName: lastName,
                 Email: email,
                 Phone: phoneNumber,
-                Age: age,
                 Pronouns: pronouns,
                 Approved: false
             });
@@ -167,12 +156,9 @@ const storage = getStorage();
           // An error occurred
         });
 
-
-
-
-
     }
-    module.exports.addUser = addUser;
+
+
 
     // User sign in
     async function signinUser(email, password){
@@ -181,7 +167,7 @@ const storage = getStorage();
         // if not, return error
         let v;
         try{
-            v = await userExists(email);
+            v = await getUserExists(email);
         } catch(e){
             return "An error has occurred";
         }
@@ -190,7 +176,6 @@ const storage = getStorage();
         }
 
         // Sign in the user
-        const auth = getAuth();
         try{
             await signInWithEmailAndPassword(auth, email, password)
               .then((userCredential) => {
@@ -212,37 +197,45 @@ const storage = getStorage();
             return "email";
         }
 
+        // Check if user has submitted both their license and insurance,
+        // if not they will be redirected to basic info to submit it
+        let lic = await fileExists(user.uid, "gs://pkrides-d3c59.appspot.com/License");
+        let ins = await fileExists(user.uid, "gs://pkrides-d3c59.appspot.com/Insurance");
+        if(lic == false || ins == false)
+        {
+            return "basicinfo";
+        }
+
         // User signed in and verified
         return "good";
     }
-    module.exports.signinUser = signinUser;
 
-
-    async function userState(){
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        const uid = user.uid;
-      } else {
-        router.push("/index");
-      }
-    });
-    }
-    module.exports.userState = userState;
-
-
-    async function addLicence(file){
-
-        // Create a reference to 'licence.jpg'
-        const licenceRef = ref(storage, 'licence.jpg');
-
-        // 'file' comes from the Blob or File API
-        uploadBytes(licenceRef, file).then((snapshot) => {
-          console.log('Uploaded a blob or file!');
-        });
-
+    // Return user ID
+    async function getUserID(){
+        const user = auth.currentUser;
+        return user.uid;
     }
 
 
+    async function getUserVerified(email){
+
+        const q = query(collection(db, "users"), where("Email", "==", email));
+        const querySnapshot = await getDocs(q);
+        return doc.data().Approved;
+    }
+
+
+
+    //const router = useRouter();
+    //async function userState(){
+        //onAuthStateChanged(auth, (user) => {
+          //if (user) {
+            //const uid = user.uid;
+          //} else {
+            //router.push("/onboarding/logIn");
+          //}
+        //});
+    //}
 
     //TODO updateUser function
     //async function updateUser(){
@@ -251,7 +244,7 @@ const storage = getStorage();
 
     // Function to check if a user exists by searching
     // for their email
-    async function userExists(email){
+    async function getUserExists(email){
 
         const q = query(collection(db, "users"), where("Email", "==", email));
         const querySnapshot = await getDocs(q);
@@ -259,7 +252,6 @@ const storage = getStorage();
         else{return true;}
 
     }
-    module.exports.userExists = userExists;
 
     // Return current users first name
     async function readUserName(email){
@@ -267,4 +259,15 @@ const storage = getStorage();
         const querySnapshot = await getDocs(q);
         return doc.data().FirstName;
     }
-    module.exports.readUserName = readUserName;
+
+
+
+export {
+    verifyUser,
+    addUser,
+    signinUser,
+    getUserID,
+    getUserVerified,
+    getUserExists,
+    readUserName
+}
