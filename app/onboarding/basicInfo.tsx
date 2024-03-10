@@ -77,7 +77,7 @@ const BasicInfo = () => {
           </View>
         </View>
         <View style={styles.nextButtonContainer}>
-          <AppButton borderRadius={20} widthPercentage={85} paddingVertical={10} onPress={() => router.push("/onboarding/membership")}>
+          <AppButton borderRadius={20} widthPercentage={85} paddingVertical={10} onPress={() => router.push("/onboarding/membership)}>
             <Text style={styles.nextButtonText}>Next</Text>
           </AppButton>
         </View>

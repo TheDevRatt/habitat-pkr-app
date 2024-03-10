@@ -17,7 +17,7 @@ const ReservationEnding = () => {
     });
 
     if (!imageResult.cancelled) {
-      setImage({ uri: imageResult.uri });
+      setImage(imageResult.uri);
     }
   };
 
@@ -78,14 +78,14 @@ const ReservationEnding = () => {
             <Text style={styles.modalText}>You've successfully completed your booking.</Text>
             <Text style={styles.modalText}>{"\n"}To see more details please go to “My Reservations” and select the appropriate booking.</Text>
             <TouchableOpacity
-  style={styles.modalButton}
-  onPress={() => {
-    setModalVisible(false); // close the modal
-    router.push('/Pickup/UserReservation'); // navigate to Pickup/UserReservation
-  }}
->
-  <Text style={styles.modalButtonText}>Go to My Reservations</Text>
-</TouchableOpacity>
+              style={styles.modalButton}
+              onPress={() => {
+                setModalVisible(false); // close the modal
+                router.push('/Pickup/UserReservation'); // navigate to Pickup/UserReservation
+              }}
+            >
+              <Text style={styles.modalButtonText}>Go to My Reservations</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>

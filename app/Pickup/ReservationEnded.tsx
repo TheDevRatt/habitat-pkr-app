@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import AppButton from '../../components/AppButton';
+import { useRouter } from "expo-router";
 
 const ReservationEnded = () => {
   const [frontImage, setFrontImage] = useState(null);
   const [backImage, setBackImage] = useState(null);
   const [rightImage, setRightImage] = useState(null);
   const [leftImage, setLeftImage] = useState(null);
+  const router = useRouter();
 
   const handleSubmission = () => {
     console.log('Photos submitted!');
@@ -15,6 +17,7 @@ const ReservationEnded = () => {
     console.log('Back Image:', backImage);
     console.log('Right Image:', rightImage);
     console.log('Left Image:', leftImage);
+    router.push('Pickup/ReservationEnding');
   };
 
   const openCamera = async (setImage) => {
@@ -31,9 +34,9 @@ const ReservationEnded = () => {
     });
   
     if (!pickerResult.cancelled) {
-      const imageResult = pickerResult.assets[0]; // Extract the first item from the assets array
-      const newUri = imageResult.uri + '?' + new Date().getTime(); // Add timestamp to URI
-      console.log('New photo URI:', newUri); // Log the new URI for debugging
+      const imageResult = pickerResult.assets[0]; 
+      const newUri = imageResult.uri + '?' + new Date().getTime(); 
+      console.log('New photo URI:', newUri); 
       setImage(newUri);
     }
   };
@@ -90,7 +93,7 @@ const ReservationEnded = () => {
         style={styles.submitButton}
         onPress={handleSubmission}
       >
-        Submit
+        <Text style={styles.buttonText}>Submit</Text>
       </AppButton>
     </View>
   );
@@ -115,8 +118,9 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   cameraIcon: {
-    width: 60,
-    height: 60,
+    width: 90,
+    height: 90,
+    marginRight:20
   },
   photoText: {
     flexShrink: 1,
@@ -129,6 +133,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginRight: 10,
   },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
+  },
   submitButton: {
     height: 50,
     width: '90%',
@@ -137,7 +145,6 @@ const styles = StyleSheet.create({
     marginTop: 30,
     backgroundColor: 'orange', 
     borderRadius: 25, 
-    color: 'white', 
   },
 });
 

@@ -83,6 +83,8 @@ function RootLayoutNav() {
         <Stack.Screen name="Pickup/ReservationEnded" options={{ headerShown: false }} />
         <Stack.Screen name="Pickup/UserReservation" options={{ headerShown: false }} />
         <Stack.Screen name="Pickup/forfeited" options={{ headerShown: false }} />
+        <Stack.Screen name="Pickup/Reservation" options={{ headerShown: false }} />
+        <Stack.Screen name="Pickup/Overtime" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: "modal" }} />
       </Stack>
   );

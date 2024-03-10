@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import AppButton from '../../components/AppButton';
+import { useRouter } from "expo-router"; // import useRouter
 
 const FinalPictures = () => {
   const [gasLevelImage, setGasLevelImage] = useState(null);
+  const router = useRouter(); // initialize router
 
   const handleSubmission = () => {
     if (!gasLevelImage) {
@@ -14,6 +16,7 @@ const FinalPictures = () => {
 
     console.log('Final photos submitted!');
     console.log('Gas Level Image:', gasLevelImage);
+    router.push('Pickup/ActiveReservation'); // navigate to Pickup/ActiveReservation
   };
 
   const openCamera = async () => {
@@ -100,7 +103,7 @@ const styles = StyleSheet.create({
   cameraIcon: {
     width: 60,
     height: 60,
-    marginRight: 10,
+    marginRight: 30,
   },
   photoText: {
     flexShrink: 1,
