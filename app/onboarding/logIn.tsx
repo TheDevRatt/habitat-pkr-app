@@ -29,7 +29,6 @@ import BackButton from "@/components/BackButton";
 import { Link, useRouter, Stack } from "expo-router"; // Import useRouter hook
 
 
-//const auth = getAuth();
 
 const LogIn = () => {
   const router = useRouter();
