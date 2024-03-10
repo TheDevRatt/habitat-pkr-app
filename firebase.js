@@ -1,4 +1,4 @@
-import { initializeApp, getApp } from "firebase/app";
+import { initializeApp, getApp, getApps } from "firebase/app";
 import {initializeAuth, getAuth, getReactNativePersistence } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
@@ -16,7 +16,8 @@ export const firebaseConfig = {
     measurementId: "G-RRQCR4ZZBJ"
     };
 
-export const app = initializeApp(firebaseConfig);
+
+const app = !getApps().length ? initializeApp( firebaseConfig ) : getApp();
 export const db = getFirestore(app);
 export const auth = initializeAuth(app, {
     persistence: getReactNativePersistence(ReactNativeAsyncStorage)
