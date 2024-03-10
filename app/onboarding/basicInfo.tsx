@@ -14,23 +14,18 @@ import {
 } from "@/constants/Metrics";
 import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import * as ImagePicker from "expo-image-picker";
-import { Camera, CameraType } from "expo-camera";
 import AppButton from "../../components/AppButton";
 import { Link, useRouter } from "expo-router";
 import DriversLicenseLogo from "@/components/DriversLicenseLogo";
 import InsuranceLogo from "@/components/InsuranceLogo";
 import * as Progress from 'react-native-progress';
 import { openCamera, openFilePicker } from './../classes/CloudStorage';
-import { auth } from "@/firebase";
+import { userID } from "./../classes/User";
+
 
 const BasicInfo = () => {
 
-    const user = auth.currentUser;
-        let userID = "placeholder";
-        if (user !== null) {
-            userID = user.uid;
-        }
+  const userID = userID();
 
   const router = useRouter();
 
@@ -47,7 +42,7 @@ const BasicInfo = () => {
             <View style={styles.camera}>
               <AppButton
                 onPress={() => {
-                  openCamera(userID,"Insurance");
+                  openCamera(userID,"License");
                 }}
                 backgroundColor="transparent"
                 widthPercentage={45}

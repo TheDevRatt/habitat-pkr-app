@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 import { Text, View } from "@/components/Themed";
 import { LinearGradient } from "expo-linear-gradient";
 import { verticalScale } from "@/constants/Metrics";
-
 import { auth } from "@/firebase";
 
 interface CarProps {

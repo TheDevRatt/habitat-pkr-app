@@ -28,6 +28,9 @@ import { auth } from "@/firebase";
 import BackButton from "@/components/BackButton";
 import { Link, useRouter, Stack } from "expo-router"; // Import useRouter hook
 
+
+//const auth = getAuth();
+
 const LogIn = () => {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
@@ -114,8 +117,8 @@ const [password, setPassword] = useState("");
 
                         if (user !== null) {
                             // The user object has basic properties such as display name, email, etc.
-                            //router.push("/(tabs)/Home");
-                            router.push("/onboarding/basicInfo");
+                            router.push("/(tabs)/Home");
+                            //router.push("/onboarding/basicInfo");
 
                         }
                     }else if(response == "email"){

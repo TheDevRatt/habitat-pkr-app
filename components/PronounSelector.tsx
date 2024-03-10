@@ -16,7 +16,7 @@ const PronounSelector = () => {
     <View>
       <DropDownPicker
         open={open}
-        value={pronouns}
+        value={value}
         items={items}
         setOpen={setOpen}
         setValue={setValue}

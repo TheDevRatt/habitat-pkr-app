@@ -6,7 +6,8 @@ import {
     initializeAuth,
     sendEmailVerification,
     signInWithEmailAndPassword,
-    updateProfile
+    updateProfile,
+    onAuthStateChanged
     } from 'firebase/auth';
 import {
     collection,
@@ -18,12 +19,15 @@ import {
     where
     } from "firebase/firestore";
 import { AsyncStorage } from "@react-native-async-storage/async-storage";
+import { Link, useRouter } from "expo-router";
 
-import { db, auth } from '@/firebase';
+import { app, db,
+auth
+} from '@/firebase';
 
 const NAME_MAX = 30;
 
-    async function verifyUser(email, password, firstName, lastName, phoneNumber, age, pronouns){
+    async function verifyUser(email, password, firstName, lastName, phoneNumber, pronouns){
 
         // Check first name input
 
@@ -105,14 +109,6 @@ const NAME_MAX = 30;
             return "Please a valid 10-digit phone number";
         }
 
-
-
-        // Age
-
-
-
-        // Pronouns
-
         // Check that pronouns is not empty
         if (pronouns = ""){
             return "Please select your pronouns";
@@ -126,13 +122,12 @@ const NAME_MAX = 30;
 
 
     // Add user to firebase function
-    async function addUser(email, password, firstName, lastName, phoneNumber, age, pronouns){
-
-        const auth = getAuth();
-        createUserWithEmailAndPassword(auth, email, password)
+    async function addUser(email, password, firstName, lastName, phoneNumber, pronouns){
+        let user;
+        await createUserWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
             // Signed up
-            const user = userCredential.user;
+            user = userCredential.user;
             sendEmailVerification(auth.currentUser)
               .then(() => {
                 // Email verification sent
@@ -144,13 +139,12 @@ const NAME_MAX = 30;
             // ..
           });
         try{
-            const docRef = await addDoc(collection(db, "users"),{
-
+            user = auth.currentUser;
+            await setDoc(doc(db, "users", user.uid),{
                 FirstName: firstName,
                 LastName: lastName,
                 Email: email,
                 Phone: phoneNumber,
-                Age: age,
                 Pronouns: pronouns,
                 Approved: false
             });
@@ -185,7 +179,6 @@ const NAME_MAX = 30;
         }
 
         // Sign in the user
-        const auth = getAuth();
         try{
             await signInWithEmailAndPassword(auth, email, password)
               .then((userCredential) => {
@@ -213,18 +206,27 @@ const NAME_MAX = 30;
     module.exports.signinUser = signinUser;
 
 
-    async function userState(){
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        const uid = user.uid;
-      } else {
-        router.push("/onboarding/login");
-      }
-    });
+    async function userID(){
+        const user = auth.currentUser;
+        return user.uid;
     }
-    module.exports.userState = userState;
+    module.exports.userID = userID;
 
 
+
+
+
+    //const router = useRouter();
+    //async function userState(){
+        //onAuthStateChanged(auth, (user) => {
+          //if (user) {
+            //const uid = user.uid;
+          //} else {
+            //router.push("/onboarding/logIn");
+          //}
+        //});
+    //}
+   //module.exports.userState = userState;
 
     //TODO updateUser function
     //async function updateUser(){
