@@ -86,7 +86,26 @@ const storage = getStorage();
         }
     };
 
-export {uploadToFirebase, openCamera, openFilePicker};
+    // Check if a file exists
+    async function fileExists(fileName, location){
+        const filepath = (location + '/' + fileName);
+        //console.log(filepath);
+        const docRef = ref(storage, filepath);
+        try{
+            await getDownloadURL(docRef);
+            return true;
+        }catch(e){
+            return false;
+        }
+    };
+
+
+
+
+
+
+
+export {uploadToFirebase, openCamera, openFilePicker, fileExists};
 
 
 

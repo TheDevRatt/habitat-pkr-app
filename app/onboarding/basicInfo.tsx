@@ -20,12 +20,13 @@ import DriversLicenseLogo from "@/components/DriversLicenseLogo";
 import InsuranceLogo from "@/components/InsuranceLogo";
 import * as Progress from 'react-native-progress';
 import { openCamera, openFilePicker } from './../classes/CloudStorage';
-import { userID } from "./../classes/User";
+import { auth } from '@/firebase';
 
 
 const BasicInfo = () => {
 
-  const userID = userID();
+  const user = auth.currentUser;
+  let userID = user.uid;
 
   const router = useRouter();
 

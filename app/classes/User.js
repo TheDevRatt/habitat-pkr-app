@@ -20,10 +20,9 @@ import {
     } from "firebase/firestore";
 import { AsyncStorage } from "@react-native-async-storage/async-storage";
 import { Link, useRouter } from "expo-router";
+import { fileExists } from './../classes/CloudStorage';
 
-import { app, db,
-auth
-} from '@/firebase';
+import { db,auth } from '@/firebase';
 
 const NAME_MAX = 30;
 
@@ -81,7 +80,7 @@ const NAME_MAX = 30;
         // Check that user doesn't already exist by email
         let v;
         try{
-            v = await userExists(email);
+            v = await getUserExists(email);
         } catch(e){
             return "An error has occurred";
         }
@@ -117,7 +116,6 @@ const NAME_MAX = 30;
         await addUser(email, password, firstName, lastName, phoneNumber, pronouns)
         return "good";
     }
-    module.exports.verifyUser = verifyUser;
 
 
 
@@ -159,7 +157,6 @@ const NAME_MAX = 30;
         });
 
     }
-    module.exports.addUser = addUser;
 
 
 
@@ -170,7 +167,7 @@ const NAME_MAX = 30;
         // if not, return error
         let v;
         try{
-            v = await userExists(email);
+            v = await getUserExists(email);
         } catch(e){
             return "An error has occurred";
         }
@@ -200,19 +197,32 @@ const NAME_MAX = 30;
             return "email";
         }
 
+        // Check if user has submitted both their license and insurance,
+        // if not they will be redirected to basic info to submit it
+        let lic = await fileExists(user.uid, "gs://pkrides-d3c59.appspot.com/License");
+        let ins = await fileExists(user.uid, "gs://pkrides-d3c59.appspot.com/Insurance");
+        if(lic == false || ins == false)
+        {
+            return "basicinfo";
+        }
+
         // User signed in and verified
         return "good";
     }
-    module.exports.signinUser = signinUser;
 
-
-    async function userID(){
+    // Return user ID
+    async function getUserID(){
         const user = auth.currentUser;
         return user.uid;
     }
-    module.exports.userID = userID;
 
 
+    async function getUserVerified(email){
+
+        const q = query(collection(db, "users"), where("Email", "==", email));
+        const querySnapshot = await getDocs(q);
+        return doc.data().Approved;
+    }
 
 
 
@@ -226,7 +236,6 @@ const NAME_MAX = 30;
           //}
         //});
     //}
-   //module.exports.userState = userState;
 
     //TODO updateUser function
     //async function updateUser(){
@@ -235,7 +244,7 @@ const NAME_MAX = 30;
 
     // Function to check if a user exists by searching
     // for their email
-    async function userExists(email){
+    async function getUserExists(email){
 
         const q = query(collection(db, "users"), where("Email", "==", email));
         const querySnapshot = await getDocs(q);
@@ -243,7 +252,6 @@ const NAME_MAX = 30;
         else{return true;}
 
     }
-    module.exports.userExists = userExists;
 
     // Return current users first name
     async function readUserName(email){
@@ -251,4 +259,15 @@ const NAME_MAX = 30;
         const querySnapshot = await getDocs(q);
         return doc.data().FirstName;
     }
-    module.exports.readUserName = readUserName;
+
+
+
+export {
+    verifyUser,
+    addUser,
+    signinUser,
+    getUserID,
+    getUserVerified,
+    getUserExists,
+    readUserName
+}
