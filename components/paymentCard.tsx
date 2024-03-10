@@ -6,17 +6,10 @@ import cameraImg from "@/assets/images/camera.png";
 
 
 const PaymentCard = () => {
-  const [isSelected, setIsSelected] = useState(false);
-
-  const handlePress = () => {
-    setIsSelected(!isSelected);
-  };
-
 
   return (
     <View style={styles.containerStyle}>
       <TouchableOpacity
-        onPress={handlePress}
         style={{ backgroundColor: "transparent" }}
       >
         <View style={styles.cameraIconContainer}>

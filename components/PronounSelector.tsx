@@ -22,7 +22,15 @@ const PronounSelector = () => {
         setValue={setValue}
         setItems={setItems}
         placeholder="Select your pronouns"
-        style={{ borderWidth: 1, backgroundColor: "transparent", zIndex: 3000 }}
+        style={{
+          borderWidth: 1,
+          backgroundColor: "transparent",
+          zIndex: 3000,
+          borderTopColor: "transparent",
+          borderLeftColor: "transparent",
+          borderRightColor: "transparent",
+          borderRadius:0,
+        }}
         dropDownContainerStyle={{
           borderWidth: 1,
           backgroundColor: "#fff",

@@ -102,7 +102,7 @@ const BasicInfo = () => {
         <View style={styles.nextButtonContainer}>
           <AppButton
             widthPercentage={85}
-            paddingVertical={10}
+            paddingVertical={11}
             onPress={() => router.push("/onboarding/membership")}
           >
             <Text>Next</Text>
@@ -174,9 +174,12 @@ const styles = StyleSheet.create({
     marginBottom: verticalScale(30),
   },
   nextButtonContainer: {
-    alignItems: "center",
+    marginTop: verticalScale(2),
     backgroundColor: "transparent",
-    marginTop: verticalScale(50),
+  },
+  nextButtonText: {
+    fontSize: moderateScale(22),
+    fontFamily: "karlaR",
   },
 });
 
