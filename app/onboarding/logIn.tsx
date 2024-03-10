@@ -1,16 +1,15 @@
 import {
-  Text,
   View,
-  SafeAreaView,
-  TextInput,
+  Text,
   TouchableOpacity,
+  TextInput,
+  SafeAreaView,
 } from "@/components/Themed";
 import {
   horizontalScale,
   moderateScale,
   verticalScale,
 } from "@/constants/Metrics";
-import React, { useState } from "react";
 import {
   StyleSheet,
   KeyboardAvoidingView,
@@ -18,12 +17,19 @@ import {
   Keyboard,
   Platform,
 } from "react-native";
+
 import { LinearGradient } from "expo-linear-gradient";
+import React, { useState, useRef } from "react";
+import PKRLogo from "../../components/PKRLogo";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import AppButton from "../../components/AppButton";
+import { signinUser } from './../classes/User';
+import { auth } from "@/firebase";
 import BackButton from "@/components/BackButton";
-import { Link, useRouter } from "expo-router";
-import PKRLogo from "@/components/PKRLogo";
+import { Link, useRouter, Stack } from "expo-router"; // Import useRouter hook
+
+
+//const auth = getAuth();
 
 const LogIn = () => {
   const router = useRouter();
@@ -39,6 +45,9 @@ const LogIn = () => {
     console.log("Navigating to Create Account Page");
     router.push("/onboarding/signUp");
   };
+
+const [email, setEmail] = useState("");
+const [password, setPassword] = useState("");
 
   return (
     <LinearGradient colors={["#FFFFFF", "#0099CC"]} style={styles.gradient}>
@@ -62,6 +71,8 @@ const LogIn = () => {
             <View style={styles.inputContainer}>
               <TextInput
                 placeholder={"Email"}
+                value={email}
+                onChangeText={newEmail => setEmail(newEmail)}
                 placeholderTextColor="#000"
                 style={styles.inputField}
               />
@@ -70,6 +81,8 @@ const LogIn = () => {
                   secureTextEntry={!showPassword}
                   placeholder={"Password"}
                   placeholderTextColor="#000"
+                  value={password}
+                  onChangeText={newPassword => setPassword(newPassword)}
                   style={[styles.inputField, { flex: 1 }]}
                 />
                 <TouchableOpacity
@@ -95,7 +108,30 @@ const LogIn = () => {
               <AppButton
                 widthPercentage={85}
                 paddingVertical={10}
-                onPress={() => console.log("Login Button Pressed!")}
+                onPress={
+                async () => {
+                    let response = await signinUser(email.trim(),password.trim());
+
+                    if(response == "good"){
+                        router.push("/(tabs)/Home");
+
+                    }else if(response == "email"){
+                        alert("Please close the app and verify your email then try again.");
+
+                    }else if(response == "basicinfo"){
+                        router.push("/onboarding/basicInfo");
+
+                    }else if(response == "An error has occurred"){
+                        alert("An error has occurred, please try again")
+
+                    }else{
+                        alert(response);
+                    }
+
+
+
+                }}
+
               >
                 Log In
               </AppButton>

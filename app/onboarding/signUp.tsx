@@ -1,11 +1,3 @@
-import { useState } from "react";
-import {
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Platform,
-  StyleSheet,
-} from "react-native";
 import {
   Text,
   View,
@@ -18,12 +10,23 @@ import {
   moderateScale,
   verticalScale,
 } from "@/constants/Metrics";
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform,
+} from "react-native";
+import DropDownPicker from "react-native-dropdown-picker";
 import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import AppButton from "../../components/AppButton";
 import PronounSelector from "@/components/PronounSelector";
 import BackButton from "@/components/BackButton";
 import { Link, useRouter } from "expo-router";
+import {verifyUser} from './../classes/User';
+
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -39,6 +42,15 @@ const SignUp = () => {
     router.push("/onboarding/logIn");
   };
 
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [age, setAge] = useState("");
+  const [pronouns, setPronouns] = useState("");
+
   return (
     <LinearGradient colors={["#FFFFFF", "#0099CC"]} style={styles.gradient}>
       <SafeAreaView style={styles.container}>
@@ -47,33 +59,43 @@ const SignUp = () => {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={styles.container}
           >
-            <View style={styles.welcomeTextContainer}>
+           <View style={styles.topContainer}>
               <View style={styles.backButtonContainer}>
                 <BackButton />
               </View>
+            <View style={styles.welcomeTextContainer}>
               <Text style={styles.welcomeText}>Welcome</Text>
+            </View>
             </View>
 
             <View style={styles.inputGroup}>
               <TextInput
+                value={firstName}
                 placeholder={"First Name"}
+                onChangeText={newFirstName => setFirstName(newFirstName)}
                 placeholderTextColor="#000"
                 style={styles.inputField}
               />
               <TextInput
+                value={lastName}
                 placeholder={"Last Name"}
+                onChangeText={newLastName => setLastName(newLastName)}
                 placeholderTextColor="#000"
                 style={styles.inputField}
               />
               <TextInput
+                value={email}
                 placeholder={"Email"}
+                onChangeText={newEmail => setEmail(newEmail)}
                 placeholderTextColor="#000"
                 style={styles.inputField}
               />
               <View style={styles.passwordField}>
                 <TextInput
+                  value={password}
                   secureTextEntry={!showPassword}
                   placeholder={"Password"}
+                  onChangeText={newPassword => setPassword(newPassword)}
                   placeholderTextColor="#000"
                   style={[styles.inputField, { flex: 1 }]}
                 />
@@ -88,16 +110,20 @@ const SignUp = () => {
                 </TouchableOpacity>
               </View>
               <TextInput
+                value={phoneNumber}
                 keyboardType="numeric"
                 placeholder={"Phone Number"}
+                onChangeText={newPhoneNumber => setPhoneNumber(newPhoneNumber)}
                 placeholderTextColor="#000"
                 style={styles.inputField}
               />
 
               <View style={styles.dropdownContainer}>
                 <TextInput
+                  value={age}
                   keyboardType="numeric"
                   placeholder={"Age"}
+                  onChangeText={newAge => setAge(newAge)}
                   placeholderTextColor="#000"
                   style={[
                     styles.inputField,
@@ -113,7 +139,21 @@ const SignUp = () => {
               <AppButton
                 widthPercentage={85}
                 paddingVertical={10}
-                onPress={() => router.push("/onboarding/basicInfo")}
+                onPress={async () => {
+                    let response = await verifyUser(
+                        email.trim(),
+                        password.trim(),
+                        firstName.trim(),
+                        lastName.trim(),
+                        phoneNumber,
+                        pronouns
+                        );
+                    if(response == "good"){
+                        router.push("/onboarding/basicInfo")
+                    }else{
+                        alert(response)
+                    }
+                }}
               >
                 Create Account
               </AppButton>
@@ -156,21 +196,28 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   backButtonContainer: {
-    alignItems: "flex-start",
     backgroundColor: "transparent",
-    alignSelf: "center",
+    justifyContent: "center",
+    paddingLeft: 20,
+  },
+  topContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: verticalScale(30),
+    marginTop: verticalScale(15),
+    backgroundColor: "transparent",
+
   },
   welcomeTextContainer: {
-    marginTop: verticalScale(30),
-    marginBottom: verticalScale(20),
-    paddingHorizontal: horizontalScale(30),
-    flexDirection: "row",
-    justifyContent: "space-between",
-    backgroundColor: "transparent",
+    flex: 1,
+    alignItems: "center",
+    backgroundColor:"transparent",
+    marginRight:verticalScale(50)
   },
   welcomeText: {
     fontFamily: "karlaM",
     fontSize: moderateScale(44),
+    textAlign: "center",
   },
   inputGroup: {
     alignItems: "center",
@@ -219,7 +266,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   buttonContainer: {
-    marginTop: verticalScale(10),
+    marginTop: verticalScale(20),
     marginBottom: verticalScale(15),
     alignItems: "center",
     backgroundColor: "transparent",
@@ -229,6 +276,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "transparent",
     zIndex: -1,
+    marginHorizontal:horizontalScale(25),
   },
   termsText: {
     fontFamily: "karlaL",
