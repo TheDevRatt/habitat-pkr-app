@@ -42,7 +42,7 @@ const LogIn = () => {
   const handleForgotPasswordPress = () => {
     console.log("Navigating to Forgot Password Page");
     // Once forgot password is added this error should go away.
-    router.push("/onboarding/forgotPassword");
+    router.push("/onboarding/ForgotPassword");
   };
 
   const handleCreateAccountPress = () => {
