@@ -72,7 +72,7 @@ const Profile = () => {
   };
   const handleTermsPress = () => {
     console.log("Navigating to Terms & Conditions");
-    //router.push("/tabs/Account/Settings");
+    router.push("/onboarding/termsAndConditions");
   };
   const handleSettingsPress = () => {
     console.log("Navigating to Settings");
@@ -85,7 +85,7 @@ const Profile = () => {
         <TouchableOpacity onPress={handleImagePress}></TouchableOpacity>
         <Text style={styles.profileTitle}>Profile</Text>
         <View style={styles.profileContainer}>
-          <ProfileContainer style={styles.profileImage} />
+          <ProfileContainer width={99} height={99} style={styles.profileImage} />
           <Text style={styles.profileName}>{user.name}</Text>
         </View>
 
@@ -157,7 +157,7 @@ const Profile = () => {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => handleRideHistoryPress()}
+        onPress={() => handleTermsPress()}
       >
         <View style={styles.iconContainer}>
           <TermsIcon />
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center", // This will ensure the text is centered to the image
     justifyContent: "center", // Center the content horizontally in the container
-    paddingTop: 10, // Adjust as needed
+    paddingTop: 16, // Adjust as needed
   },
   profileName: {
     fontSize: 24,

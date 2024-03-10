@@ -11,6 +11,7 @@ import AccountIcon from "@/components/AccountIcon";
 import AccountIconActive from "@/components/AccountIconActive";
 import AdminIcon from "@/components/AdminIcon";
 import AdminIconActive from "@/components/AdminIconActive";
+import { MaterialIcons } from '@expo/vector-icons';
 
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
@@ -35,7 +36,7 @@ function TabBarIcon({ name, isActive }: { name: string; isActive: boolean }) {
           <AccountIcon />
         )
       ) : null}
-      {name === "admin" ? isActive ? <AdminIconActive /> : <AdminIcon /> : null}
+      {name === "admin" ? isActive ? <MaterialIcons name="admin-panel-settings" size={50} color="white" /> : <MaterialIcons name="admin-panel-settings" size={50} color="black" /> : null}
     </View>
   );
 }

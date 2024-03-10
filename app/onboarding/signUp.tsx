@@ -25,7 +25,7 @@ import AppButton from "../../components/AppButton";
 import PronounSelector from "@/components/PronounSelector";
 import BackButton from "@/components/BackButton";
 import { Link, useRouter } from "expo-router";
-import {verifyUser} from './../classes/User';
+import {verifyUser} from './../classes/User.js';
 
 
 const SignUp = () => {
