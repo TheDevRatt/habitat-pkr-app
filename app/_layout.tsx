@@ -9,7 +9,6 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 
-// import { useColorScheme } from "@/components/components(old)/useColorScheme";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -85,6 +84,8 @@ function RootLayoutNav() {
         <Stack.Screen name="Pickup/forfeited" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: "modal" }} />
         <Stack.Screen name="onboarding/restricted" options={{ headerShown: false }} />
+        <Stack.Screen name="bookings/[id]"  options={{ headerShown: false }} />
+
       </Stack>
   );
 }

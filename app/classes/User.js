@@ -199,12 +199,12 @@ const NAME_MAX = 30;
 
         // Check if user has submitted both their license and insurance,
         // if not they will be redirected to basic info to submit it
-        let lic = await fileExists(user.uid, "gs://pkrides-d3c59.appspot.com/License");
-        let ins = await fileExists(user.uid, "gs://pkrides-d3c59.appspot.com/Insurance");
-        if(lic == false || ins == false)
-        {
-            return "basicinfo";
-        }
+        // let lic = await fileExists(user.uid, "gs://pkrides-d3c59.appspot.com/License");
+        // let ins = await fileExists(user.uid, "gs://pkrides-d3c59.appspot.com/Insurance");
+        // if(lic == false || ins == false)
+        // {
+        //     return "basicinfo";
+        // }
 
         // User signed in and verified
         return "good";
