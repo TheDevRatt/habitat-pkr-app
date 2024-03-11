@@ -14,6 +14,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from "@/components/Themed";
+import { Link, useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import {
   horizontalScale,
@@ -37,6 +38,9 @@ if (
 }
 
 const Home = () => {
+  const router = useRouter();
+
+
   const user = auth.currentUser;
   let userName = " ";
 
@@ -71,7 +75,6 @@ const Home = () => {
       hourlyRate: 25,
       imageUrl: require("@/assets/images/carImagesTEMP/image 10.png"),
     },
-    // Add more car data as needed
   ];
 
   const [filter, setFilter] = useState("all");
@@ -82,6 +85,10 @@ const Home = () => {
   const handleFilterPress = (selectedFilter: any) => {
     setFilter(selectedFilter);
   };
+
+  const goToBooking = (carId : number) => {
+    router.push({ pathname: "/home/${carId}"});
+}
 
   const filterOptions = [
     { label: "All", value: "all" },
@@ -183,7 +190,7 @@ const Home = () => {
         <View style={styles.carList}>
           <ScrollView style={styles.carCardScroll}>
             {filteredCars.map((car, index) => (
-              <TouchableOpacity style={{backgroundColor:"transparent"}}>
+              <TouchableOpacity style={{backgroundColor:"transparent"}}  onPress={() => goToBooking(index)}>
               <CarCard
                 key={index}
                 make={car.make}

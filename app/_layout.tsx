@@ -85,6 +85,7 @@ function RootLayoutNav() {
         <Stack.Screen name="modal" options={{ presentation: "modal" }} />
         <Stack.Screen name="onboarding/restricted" options={{ headerShown: false }} />
         <Stack.Screen name="bookings/[id]"  options={{ headerShown: false }} />
+        <Stack.Screen name="home/[id]"  options={{ headerShown: false }} />
 
       </Stack>
   );

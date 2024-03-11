@@ -34,7 +34,7 @@ const Bookings = () => {
       time: 5,
       unit: "days",
       bookingId: "74374432",
-      bookingComplete: false, // Set booking completion status
+      bookingComplete: false, 
       imageUrl: require("@/assets/images/carImagesTEMP/image 13.png"),
     },
     {
@@ -46,7 +46,7 @@ const Bookings = () => {
       time: 2,
       unit: "days",
       bookingId: "74374432",
-      bookingComplete: true, // Set booking completion status
+      bookingComplete: true, 
       imageUrl: require("@/assets/images/carImagesTEMP/image 13.png"),
     },
     {
@@ -58,10 +58,9 @@ const Bookings = () => {
       time: 2,
       unit: "days",
       bookingId: "74374793",
-      bookingComplete: false, // Set booking completion status
+      bookingComplete: false, 
       imageUrl: require("@/assets/images/carImagesTEMP/image 10.png"),
     },
-    // Add more bookings as needed
   ];
 
   const currentBookings = bookings.filter(
