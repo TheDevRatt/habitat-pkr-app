@@ -16,6 +16,7 @@ import {
   moderateScale,
   verticalScale,
 } from "@/constants/Metrics";
+import BackButton from "@/components/BackButton";
 
 const Membership = () => {
   const router = useRouter();
@@ -33,6 +34,10 @@ const Membership = () => {
       style={styles.gradient}
     >
       <SafeAreaView style={styles.container}>
+        <View style={styles.backButtonContainer}>
+          <BackButton />
+        </View>
+
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Membership</Text>
         </View>
@@ -94,6 +99,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: horizontalScale(10),
   },
+  backButtonContainer: {
+    flexDirection: "row",
+    backgroundColor: "transparent",
+    marginLeft: horizontalScale(20),
+  },
   titleContainer: {
     alignItems: "center",
     backgroundColor: "transparent",
@@ -109,7 +119,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontFamily: "karlaM",
-    marginVertical: verticalScale(30),
+    marginVertical: verticalScale(40),
     fontSize: moderateScale(26),
   },
   cardContainer: {
