@@ -28,21 +28,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 import ProfileContainer from "@/components/ProfileContainer";
 
-//function HomeScreen(){
-//const isFocused = useIsFocused();
-//useEffect(() => {
-//if (isFocused) {
-//console.log("hello");
-// Perform actions you want when the screen is focused.
-// This could be fetching data, re-rendering components, or any other refresh logic.
-//const user = auth.currentUser;
-//let userName;
-//if (user !== null) {
-//userName = user.displayName;
-//}
-//}
-//}, [isFocused]);
-//}
+
 if (
   Platform.OS === "android" &&
   UIManager.setLayoutAnimationEnabledExperimental
@@ -51,7 +37,13 @@ if (
 }
 
 const Home = () => {
-  const firstName = "John";
+  const user = auth.currentUser;
+  let userName = "placeholder";
+
+  if (user !== null) {
+    userName = user.displayName;
+  }
+
   const location = "Ptbo region";
 
   const carData = [
@@ -128,7 +120,7 @@ const Home = () => {
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <ProfileContainer width={50} height={50} style={styles.smallImage} />
-          <Text style={styles.greeting}>Hello, {firstName}!</Text>
+          <Text style={styles.greeting}>Hello, {userName}!</Text>
           <EvilIcons name="bell" size={35} color="black" />
         </View>
         <View style={styles.searchContainer}>

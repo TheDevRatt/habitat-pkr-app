@@ -33,7 +33,6 @@ import { Link, useRouter, Stack } from "expo-router"; // Import useRouter hook
 // Email: fovoyej775@fashlend.com
 // Password: Password123!
 
-//const auth = getAuth();
 
 const LogIn = () => {
   const router = useRouter();
