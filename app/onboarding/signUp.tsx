@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: verticalScale(30),
-    marginTop: verticalScale(15),
+    marginTop: verticalScale(30),
     backgroundColor: "transparent",
   },
   welcomeTextContainer: {
