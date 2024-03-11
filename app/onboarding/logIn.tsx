@@ -28,12 +28,6 @@ import { auth } from "@/firebase";
 import BackButton from "@/components/BackButton";
 import { Link, useRouter, Stack } from "expo-router"; // Import useRouter hook
 
-//Sample Account for testing the Log-in feature:
-
-// Email: fovoyej775@fashlend.com
-// Password: Password123!
-
-
 const LogIn = () => {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);

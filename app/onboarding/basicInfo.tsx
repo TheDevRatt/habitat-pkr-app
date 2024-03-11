@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: moderateScale(22),
     fontFamily: "karlaM",
-    marginTop: verticalScale(20),
+    marginTop: verticalScale(30),
     alignItems: "center",
     backgroundColor: "transparent",
   },
@@ -174,7 +174,8 @@ const styles = StyleSheet.create({
     marginBottom: verticalScale(30),
   },
   nextButtonContainer: {
-    marginTop: verticalScale(2),
+    alignItems: "center",
+    marginTop: verticalScale(30),
     backgroundColor: "transparent",
   },
   nextButtonText: {
