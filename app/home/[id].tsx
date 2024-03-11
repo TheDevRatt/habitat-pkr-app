@@ -4,6 +4,8 @@ import { StyleSheet, View, Image, ScrollView } from "react-native";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { SafeAreaView, Text } from "@/components/Themed";
 import AppButton from "@/components/AppButton";
+
+import { Stack, useRouter, useLocalSearchParams } from "expo-router";
 import {
   horizontalScale,
   moderateScale,
@@ -17,6 +19,8 @@ const Details = () => {
   const goBack = () => {
     navigation.goBack(); // Navigate to the previous screen
   };
+  const router = useRouter();
+
 
   const Details = {
     make: "Honda",
@@ -85,7 +89,8 @@ const Details = () => {
                 backgroundColor="#E55D25"
                 widthPercentage={50}
                 textStyle={{ color: "white" }}
-                onPress={() => console.log("Rent Now")}
+                // onPress={() => console.log("Rent Now")}
+                onPress={() => router.push("/home/Payment")}
               >
                 Rent Now
               </AppButton>

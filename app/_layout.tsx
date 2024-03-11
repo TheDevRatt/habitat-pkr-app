@@ -86,7 +86,8 @@ function RootLayoutNav() {
         <Stack.Screen name="onboarding/restricted" options={{ headerShown: false }} />
         <Stack.Screen name="bookings/[id]"  options={{ headerShown: false }} />
         <Stack.Screen name="home/[id]"  options={{ headerShown: false }} />
-
+        <Stack.Screen name="home/Booking"  options={{ headerShown: false }} />
+        <Stack.Screen name="home/Payment"  options={{ headerShown: false }} />
       </Stack>
   );
 }
