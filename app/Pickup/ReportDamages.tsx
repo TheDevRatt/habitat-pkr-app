@@ -24,7 +24,7 @@ const ReportDamages = () => {
       aspect: [4, 3],
     });
 
-    if (!pickerResult.canceled) {
+    if (!pickerResult.cancelled) {
       const imageResult = pickerResult.assets[0]; 
       const newUri = imageResult.uri + '?' + new Date().getTime(); 
       console.log('New photo URI:', newUri); 
@@ -82,7 +82,7 @@ const ReportDamages = () => {
 
       <View style={styles.cameraRow}>
         <TouchableOpacity onPress={openCamera}>
-          <Image source={cameraImg} style={styles.cameraIcon} />
+          <Image source={require('../../components/CameraIcon.tsx')} style={styles.cameraIcon} />
         </TouchableOpacity>
         <Text style={styles.cameraLabel}>
           Attach photos of the accident/damages
@@ -187,4 +187,3 @@ const styles = StyleSheet.create({
 });
 
 export default ReportDamages;
-
