@@ -9,7 +9,7 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 
-import { useColorScheme } from "@/components/components(old)/useColorScheme";
+// import { useColorScheme } from "@/components/components(old)/useColorScheme";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -18,7 +18,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "index",
+  initialRouteName: "(tabs)",
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -72,8 +72,8 @@ function RootLayoutNav() {
         <Stack.Screen name="onboarding/basicInfo" options={{ headerShown: false }} />
         <Stack.Screen name="onboarding/membership" options={{ headerShown: false }} />
         <Stack.Screen name="onboarding/paymentInfo" options={{ headerShown: false }} />
-        <Stack.Screen name="onboarding/TermsAndConditions" options={{ headerShown: false }} />
-        <Stack.Screen name="onboarding/ForgotPassword" options={{ headerShown: false }} />
+        <Stack.Screen name="onboarding/termsAndConditions" options={{ headerShown: false }} />
+        <Stack.Screen name="onboarding/forgotPassword" options={{ headerShown: false }} />
         <Stack.Screen name="Pickup/Pictures" options={{ headerShown: false }} />
         <Stack.Screen name="Pickup/FinalPictures" options={{ headerShown: false }} />
         <Stack.Screen name="Pickup/ActiveReservation" options={{ headerShown: false }} />
@@ -86,6 +86,7 @@ function RootLayoutNav() {
         <Stack.Screen name="Pickup/Reservation" options={{ headerShown: false }} />
         <Stack.Screen name="Pickup/Overtime" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+        <Stack.Screen name="onboarding/restricted" options={{ headerShown: false }} />
       </Stack>
   );
 }

@@ -32,7 +32,7 @@ const FinalPictures = () => {
       aspect: [4, 3],
     });
 
-    if (!pickerResult.cancelled) {
+    if (!pickerResult.canceled) {
       const imageResult = pickerResult.assets[0]; // Extract the first item from the assets array
       const newUri = imageResult.uri + '?' + new Date().getTime(); // Add timestamp to URI
       console.log('New photo URI:', newUri); // Log the new URI for debugging
@@ -52,7 +52,7 @@ const FinalPictures = () => {
           {gasLevelImage ? (
             <Image source={{ uri: gasLevelImage }} style={styles.photo} />
           ) : (
-            <Image source={require('../../components/images/camera.png')} style={styles.cameraIcon} />
+            <Image source={cameraImg} style={styles.cameraIcon} />
           )}
           <Text style={styles.photoText}>Please take a photo of the gas level on the dashboard</Text>
         </View>

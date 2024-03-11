@@ -1,88 +1,151 @@
-import React, { useState } from "react";
 import {
-  Text,
   View,
-  SafeAreaView,
-  TextInput,
+  Text,
   TouchableOpacity,
-} from "@/components/components(old)/Themed";
+  TextInput,
+  SafeAreaView,
+} from "@/components/Themed";
 import {
   horizontalScale,
+  moderateScale,
   verticalScale,
 } from "@/constants/Metrics";
-import { StyleSheet } from "react-native";
+import {
+  StyleSheet,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform,
+} from "react-native";
+
 import { LinearGradient } from "expo-linear-gradient";
+import React, { useState, useRef } from "react";
+import PKRLogo from "../../components/PKRLogo";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import AppButton from "../../components/AppButton";
-import { Link, useRouter } from "expo-router"; // Import useRouter hook
-import PKRLogo from "@/components/PKRLogo";
+import { signinUser } from './../classes/User';
+import { auth } from "@/firebase";
+import BackButton from "@/components/BackButton";
+import { Link, useRouter, Stack } from "expo-router"; // Import useRouter hook
+
+
 
 const LogIn = () => {
-  const router = useRouter(); 
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleForgotPassword = () => {
-    // Navigate to the Forgot Password page
-    router.navigate("/onboarding/ForgotPassword");
+  const handleForgotPasswordPress = () => {
+    console.log("Navigating to Forgot Password Page");
+    // Once forgot password is added this error should go away.
+    router.push("/onboarding/forgotPassword");
   };
+
+  const handleCreateAccountPress = () => {
+    console.log("Navigating to Create Account Page");
+    router.push("/onboarding/signUp");
+  };
+
+const [email, setEmail] = useState("");
+const [password, setPassword] = useState("");
 
   return (
     <LinearGradient colors={["#FFFFFF", "#0099CC"]} style={styles.gradient}>
       <SafeAreaView style={styles.container}>
-        <View style={styles.logo}>
-          <PKRLogo />
-        </View>
-
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>Welcome back!</Text>
-        </View>
-        <View style={styles.inputContainer}>
-          <TextInput
-            placeholder={"Email"}
-            placeholderTextColor="#000"
-            style={styles.inputField}
-          />
-          <View style={styles.passwordField}>
-            <TextInput
-              secureTextEntry={!showPassword}
-              placeholder={"Password"}
-              placeholderTextColor="#000"
-              style={[styles.inputField, { flex: 1 }]}
-            />
-            <TouchableOpacity
-              onPress={() => setShowPassword(!showPassword)}
-              style={styles.passwordIcon}
-            >
-              <FontAwesome
-                name={showPassword ? "eye" : "eye-slash"}
-                size={28}
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <TouchableOpacity
-          style={styles.forgotPasswordContainer}
-          onPress={handleForgotPassword} // Navigate to the Forgot Password page
-        >
-          <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-        </TouchableOpacity>
-        <View style={styles.loginButton}>
-          <AppButton
-            widthPercentage={85}
-            paddingVertical={10}
-            onPress={() => console.log("Login Button Pressed!")}
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={styles.container}
           >
-            Log In
-          </AppButton>
-        </View>
-        <View style={styles.newAccountContainer}>
-          <Text style={styles.newAccountText}>New around here?</Text>
-          <Link href={"/onboarding/signUp"} asChild>
-            <TouchableOpacity style={{backgroundColor:"transparent"}}>
-              <Text style={styles.createAccountLink}>Create an account</Text>
+            <View style={styles.backButtonContainer}>
+              <BackButton />
+            </View>
+
+            <View style={styles.logo}>
+              <PKRLogo />
+            </View>
+
+            <View style={styles.titleContainer}>
+              <Text style={styles.title}>Welcome back!</Text>
+            </View>
+            <View style={styles.inputContainer}>
+              <TextInput
+                placeholder={"Email"}
+                value={email}
+                onChangeText={newEmail => setEmail(newEmail)}
+                placeholderTextColor="#000"
+                style={styles.inputField}
+              />
+              <View style={styles.passwordField}>
+                <TextInput
+                  secureTextEntry={!showPassword}
+                  placeholder={"Password"}
+                  placeholderTextColor="#000"
+                  value={password}
+                  onChangeText={newPassword => setPassword(newPassword)}
+                  style={[styles.inputField, { flex: 1 }]}
+                />
+                <TouchableOpacity
+                  onPress={() => setShowPassword(!showPassword)}
+                  style={styles.passwordIcon}
+                >
+                  <FontAwesome
+                    name={showPassword ? "eye" : "eye-slash"}
+                    size={28}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+            <TouchableOpacity style={styles.forgotPasswordContainer}>
+              <Text
+                style={styles.forgotPasswordText}
+                onPress={handleForgotPasswordPress}
+              >
+                Forgot Password?
+              </Text>
             </TouchableOpacity>
-          </Link>
-        </View>
+            <View style={styles.loginButton}>
+              <AppButton
+                widthPercentage={85}
+                paddingVertical={10}
+                onPress={
+                async () => {
+                    let response = await signinUser(email.trim(),password.trim());
+
+                    if(response == "good"){
+                        router.push("/(tabs)/Home");
+
+                    }else if(response == "email"){
+                        alert("Please close the app and verify your email then try again.");
+
+                    }else if(response == "basicinfo"){
+                        router.push("/onboarding/basicInfo");
+
+                    }else if(response == "An error has occurred"){
+                        alert("An error has occurred, please try again")
+
+                    }else{
+                        alert(response);
+                    }
+
+
+
+                }}
+
+              >
+                Log In
+              </AppButton>
+            </View>
+            <View style={styles.newAccountContainer}>
+              <Text style={styles.newAccountText}>New around here?</Text>
+              <TouchableOpacity
+                onPress={handleCreateAccountPress}
+                style={{ backgroundColor: "transparent" }}
+              >
+                <Text style={styles.createAccountLink}>Create an account</Text>
+              </TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
       </SafeAreaView>
     </LinearGradient>
   );
@@ -95,21 +158,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "transparent",
+    justifyContent: "center",
+    paddingHorizontal: horizontalScale(10),
   },
   logo: {
     alignItems: "center",
     backgroundColor: "transparent",
-    marginTop: verticalScale(20),
+    marginTop: verticalScale(30),
+  },
+  backButtonContainer: {
+    flexDirection: "row",
+    backgroundColor: "transparent",
+    marginLeft: horizontalScale(10),
   },
   titleContainer: {
-    marginTop: verticalScale(50),
-    marginBottom: verticalScale(30),
-    marginLeft: horizontalScale(26),
+    marginTop: verticalScale(30),
+    marginBottom: verticalScale(20),
+    alignItems: "center",
     backgroundColor: "transparent",
   },
   title: {
     fontFamily: "karlaM",
-    fontSize: 44,
+    fontSize: moderateScale(40),
   },
   inputContainer: {
     alignItems: "center",
@@ -118,11 +188,11 @@ const styles = StyleSheet.create({
   },
   inputField: {
     fontFamily: "karlaR",
-    fontSize: 22,
-    paddingVertical: 10,
+    fontSize: moderateScale(20),
+    paddingVertical: verticalScale(10),
     borderBottomWidth: 1,
     borderBottomColor: "black",
-    marginBottom: 25,
+    marginBottom: verticalScale(25),
     width: "90%",
     backgroundColor: "transparent",
   },
@@ -135,22 +205,18 @@ const styles = StyleSheet.create({
   passwordIcon: {
     backgroundColor: "transparent",
     position: "absolute",
-    marginLeft: "90%",
+    right: horizontalScale(5),
     paddingBottom: verticalScale(15),
   },
-  eyeIcon: {
-    position: "absolute",
-    right: 0,
-    paddingBottom: 15,
-  },
   forgotPasswordContainer: {
-    marginLeft: "50%",
-    marginBottom: 20,
+    alignSelf: "flex-end",
+    marginRight: horizontalScale(35),
+    marginVertical: verticalScale(10),
     backgroundColor: "transparent",
   },
   forgotPasswordText: {
     fontFamily: "karlaR",
-    fontSize: 18,
+    fontSize: moderateScale(16),
     textDecorationLine: "underline",
     color: "#00126D",
   },
@@ -160,17 +226,17 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(35),
   },
   newAccountContainer: {
-    marginTop:  verticalScale(60),
+    marginTop: verticalScale(60),
     alignItems: "center",
     backgroundColor: "transparent",
   },
   newAccountText: {
     fontFamily: "karlaR",
-    fontSize: 20,
+    fontSize: moderateScale(18),
   },
   createAccountLink: {
     fontFamily: "karlaB",
-    fontSize: 20,
+    fontSize: moderateScale(18),
     textDecorationLine: "underline",
     color: "#000",
     backgroundColor: "transparent",

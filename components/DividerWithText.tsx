@@ -1,9 +1,6 @@
 import React from "react";
-import {StyleSheet } from "react-native";
-import {
-  Text,
-  View,
-} from "@/components/components(old)/Themed";
+import { StyleSheet } from "react-native";
+import { Text, View } from "@/components/Themed";
 import {
   horizontalScale,
   moderateScale,
@@ -25,7 +22,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor:"transparent"
+    backgroundColor: "transparent",
   },
   line: {
     flex: 1,
@@ -35,7 +32,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: "karlaL",
-    fontSize: 16, 
+    fontSize: 16,
     color: "black",
     paddingHorizontal: 2,
   },

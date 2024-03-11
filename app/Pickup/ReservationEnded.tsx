@@ -22,12 +22,12 @@ const ReservationEnded = () => {
 
   const openCamera = async (setImage) => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-  
+
     if (permissionResult.granted === false) {
-      alert('Permission to access camera is required!');
+      alert("Permission to access camera is required!");
       return;
     }
-  
+
     const pickerResult = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       aspect: [4, 3],
@@ -40,27 +40,26 @@ const ReservationEnded = () => {
       setImage(newUri);
     }
   };
-  
 
   const renderImage = (imageUri) => {
     return imageUri ? (
       <Image source={{ uri: imageUri }} style={styles.photo} key={imageUri} />
     ) : (
-      <Image source={require('../../components/images/camera.png')} style={styles.cameraIcon} />
+      <Image source={cameraImg} style={styles.cameraIcon} />
     );
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>
-        Reservation Ended
-      </Text>
+      <Text style={styles.title}>Reservation Ended</Text>
 
       {/* Front Photo */}
       <TouchableOpacity onPress={() => openCamera(setFrontImage)}>
         <View style={styles.photoContainer}>
           {renderImage(frontImage)}
-          <Text style={styles.photoText}>Please take a photo of the front of the car</Text>
+          <Text style={styles.photoText}>
+            Please take a photo of the front of the car
+          </Text>
         </View>
       </TouchableOpacity>
 
@@ -68,7 +67,9 @@ const ReservationEnded = () => {
       <TouchableOpacity onPress={() => openCamera(setBackImage)}>
         <View style={styles.photoContainer}>
           {renderImage(backImage)}
-          <Text style={styles.photoText}>Please take a photo of the back of the car</Text>
+          <Text style={styles.photoText}>
+            Please take a photo of the back of the car
+          </Text>
         </View>
       </TouchableOpacity>
 
@@ -76,7 +77,9 @@ const ReservationEnded = () => {
       <TouchableOpacity onPress={() => openCamera(setRightImage)}>
         <View style={styles.photoContainer}>
           {renderImage(rightImage)}
-          <Text style={styles.photoText}>Please take a photo of the right side of the car</Text>
+          <Text style={styles.photoText}>
+            Please take a photo of the right side of the car
+          </Text>
         </View>
       </TouchableOpacity>
 
@@ -84,13 +87,15 @@ const ReservationEnded = () => {
       <TouchableOpacity onPress={() => openCamera(setLeftImage)}>
         <View style={styles.photoContainer}>
           {renderImage(leftImage)}
-          <Text style={styles.photoText}>Please take a photo of the left side of the car</Text>
+          <Text style={styles.photoText}>
+            Please take a photo of the left side of the car
+          </Text>
         </View>
       </TouchableOpacity>
 
       {/* Submit Button */}
       <AppButton
-        style={styles.submitButton}
+        // style={styles.submitButton}
         onPress={handleSubmission}
       >
         <Text style={styles.buttonText}>Submit</Text>
@@ -103,18 +108,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: 'white', 
+    backgroundColor: "white",
   },
   title: {
     fontSize: 30,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 30,
     marginTop: 80,
-    textAlign: 'center',
+    textAlign: "center",
   },
   photoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 40,
   },
   cameraIcon: {
@@ -125,7 +130,7 @@ const styles = StyleSheet.create({
   photoText: {
     flexShrink: 1,
     fontSize: 22,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   photo: {
     width: 60,
@@ -139,9 +144,9 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     height: 50,
-    width: '90%',
-    justifyContent: 'center',
-    alignSelf: 'center',
+    width: "90%",
+    justifyContent: "center",
+    alignSelf: "center",
     marginTop: 30,
     backgroundColor: 'orange', 
     borderRadius: 25, 
