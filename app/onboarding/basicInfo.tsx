@@ -24,7 +24,7 @@ import BackButton from "@/components/BackButton";
 
 const BasicInfo = () => {
   const user = auth.currentUser;
-  let userID = user.uid;
+  let userID = user?.uid;
 
   const router = useRouter();
 
