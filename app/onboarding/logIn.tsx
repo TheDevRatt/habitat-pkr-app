@@ -23,12 +23,10 @@ import React, { useState, useRef } from "react";
 import PKRLogo from "../../components/PKRLogo";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import AppButton from "../../components/AppButton";
-import { signinUser } from './../classes/User';
+import { signinUser } from "./../classes/User";
 import { auth } from "@/firebase";
 import BackButton from "@/components/BackButton";
 import { Link, useRouter, Stack } from "expo-router"; // Import useRouter hook
-
-
 
 const LogIn = () => {
   const router = useRouter();
@@ -45,8 +43,8 @@ const LogIn = () => {
     router.push("/onboarding/signUp");
   };
 
-const [email, setEmail] = useState("");
-const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <LinearGradient colors={["#FFFFFF", "#0099CC"]} style={styles.gradient}>
@@ -71,7 +69,7 @@ const [password, setPassword] = useState("");
               <TextInput
                 placeholder={"Email"}
                 value={email}
-                onChangeText={newEmail => setEmail(newEmail)}
+                onChangeText={(newEmail) => setEmail(newEmail)}
                 placeholderTextColor="#000"
                 style={styles.inputField}
               />
@@ -81,7 +79,7 @@ const [password, setPassword] = useState("");
                   placeholder={"Password"}
                   placeholderTextColor="#000"
                   value={password}
-                  onChangeText={newPassword => setPassword(newPassword)}
+                  onChangeText={(newPassword) => setPassword(newPassword)}
                   style={[styles.inputField, { flex: 1 }]}
                 />
                 <TouchableOpacity
@@ -107,30 +105,26 @@ const [password, setPassword] = useState("");
               <AppButton
                 widthPercentage={85}
                 paddingVertical={10}
-                onPress={
-                async () => {
-                    let response = await signinUser(email.trim(),password.trim());
+                onPress={async () => {
+                  let response = await signinUser(
+                    email.trim(),
+                    password.trim()
+                  );
 
-                    if(response == "good"){
-                        router.push("/(tabs)/Home");
-
-                    }else if(response == "email"){
-                        alert("Please close the app and verify your email then try again.");
-
-                    }else if(response == "basicinfo"){
-                        router.push("/onboarding/basicInfo");
-
-                    }else if(response == "An error has occurred"){
-                        alert("An error has occurred, please try again")
-
-                    }else{
-                        alert(response);
-                    }
-
-
-
+                  if (response == "good") {
+                    router.push("/(tabs)/Home");
+                  } else if (response == "email") {
+                    alert(
+                      "Please close the app and verify your email then try again."
+                    );
+                  } else if (response == "basicinfo") {
+                    router.push("/onboarding/basicInfo");
+                  } else if (response == "An error has occurred") {
+                    alert("An error has occurred, please try again");
+                  } else {
+                    alert(response);
+                  }
                 }}
-
               >
                 Log In
               </AppButton>

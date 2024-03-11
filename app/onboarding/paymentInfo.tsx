@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { StyleSheet, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform,
+} from "react-native";
 import { Text, View, SafeAreaView, TextInput } from "@/components/Themed";
 import { LinearGradient } from "expo-linear-gradient";
 import AppButton from "../../components/AppButton";
@@ -10,6 +16,8 @@ import {
   moderateScale,
   horizontalScale,
 } from "@/constants/Metrics";
+import BackButton from "@/components/BackButton";
+
 import { Picker } from "@react-native-picker/picker";
 
 const PaymentInfo = () => {
@@ -18,6 +26,8 @@ const PaymentInfo = () => {
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
   const [cardNumber, setCardNumber] = useState("");
+  const [cardName, setCardName] = useState("");
+  const [cardCVC, setCardCVC] = useState("");
 
   const months = [
     "January",
@@ -40,7 +50,7 @@ const PaymentInfo = () => {
     router.push("/onboarding/restricted");
   };
 
-  const formatCardNumber = (value) => {
+  const formatCardNumber = (value: any) => {
     // Remove non-numeric characters
     const numericValue = value.replace(/\D/g, "");
     // Add a space after every 4 characters
@@ -48,84 +58,143 @@ const PaymentInfo = () => {
     return formattedValue;
   };
 
-  const handleChangeCardNumber = (value) => {
+  const handleChangeCardNumber = (value: any) => {
     // Update the card number input value with formatted value
     const formattedValue = formatCardNumber(value);
     // Update the input value
     setCardNumber(formattedValue);
   };
 
+  const handleChangeCardName = (value: any) => {
+    setCardName(value);
+  };
+
+  const handleChangeCardCVC = (value: any) => {
+    setCardCVC(value);
+  };
+
   return (
     <LinearGradient colors={["#FFFFFF", "#0099CC"]} style={styles.gradient}>
       <SafeAreaView style={{ flex: 1, backgroundColor: "transparent" }}>
-        <ScrollView contentContainerStyle={styles.container}>
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>Add Payment Information</Text>
-          </View>
-          <View style={styles.cardContainer}>
-            <PaymentCard />
-          </View>
-          <Text style={styles.dividerText}> OR </Text>
-          <Text style={styles.cardTitle}> Enter Card Details </Text>
-
-          <View style={styles.containerInput}>
-            <View style={styles.row}>
-              <Text style={styles.labelInput}>Cardholder Name</Text>
-              <TextInput style={styles.input} />
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={styles.container}
+          >
+            <View style={styles.backButtonContainer}>
+              <BackButton />
             </View>
-            <View style={styles.rowCard}>
-              <View style={styles.line}>
-                <Text style={styles.labelInput}>Card Number</Text>
+
+            <View style={styles.titleContainer}>
+              <Text style={styles.title}>Payment Information</Text>
+            </View>
+
+            {/* <View style={styles.cardContainer}>
+            <PaymentCard />
+          </View> */}
+
+            {/* <Text style={styles.dividerText}> OR </Text> */}
+
+            <View style={styles.subtitleContainer}>
+              <Text style={styles.subtitle}> Enter Card Details </Text>
+            </View>
+
+            <View style={styles.inputGroup}>
+              <TextInput
+                value={cardName}
+                placeholder={"Cardholder Name"}
+                style={styles.inputField}
+                placeholderTextColor="#000"
+                onChangeText={handleChangeCardName}
+              />
+
+              <View style={styles.inputContainer}>
                 <TextInput
-                  style={styles.input}
-                  keyboardType="numeric"
-                  onChangeText={handleChangeCardNumber}
                   value={cardNumber}
+                  placeholder={"Card Number"}
+                  style={styles.cardInput}
+                  keyboardType="numeric"
+                  placeholderTextColor="#000"
+                  onChangeText={handleChangeCardNumber}
                   maxLength={19} // Maximum length considering spaces
                 />
-              </View>
-              <View style={styles.line}>
-                <Text style={styles.labelInput}>CVC</Text>
+
                 <TextInput
-                  style={[styles.input, styles.cvcInput]}
+                  value={cardCVC}
+                  placeholder={"CVC"}
+                  style={styles.cvcInput}
                   keyboardType="numeric"
+                  placeholderTextColor="#000"
+                  onChangeText={handleChangeCardCVC}
+                  maxLength={3} // Maximum length considering spaces
                 />
               </View>
             </View>
 
-            <View style={styles.row}>
-              <Text style={styles.labelInputExpiration}>Expiration Date</Text>
-              <View style={styles.inlineInput}>
-                <Picker
-                  selectedValue={month}
-                  onValueChange={(itemValue) => setMonth(itemValue)}
-                  style={styles.inlinePicker}
-                >
-                  {months.map((m) => (
-                    <Picker.Item key={m} label={m} value={m} />
-                  ))}
-                </Picker>
-                <Picker
-                  selectedValue={year}
-                  onValueChange={(itemValue) => setYear(itemValue)}
-                  style={styles.inlinePicker}
-                >
-                  {years.map((y) => (
-                    <Picker.Item key={y} label={y} value={y} />
-                  ))}
-                </Picker>
+            <View style={styles.containerInput}>
+              {/* <View style={styles.row}>
+                <Text style={styles.labelInput}>Cardholder Name</Text>
+                <TextInput style={styles.input} />
+              </View>
+              <View style={styles.rowCard}>
+                <View style={styles.line}>
+                  <Text style={styles.labelInput}>Card Number</Text>
+                  <TextInput
+                    style={styles.input}
+                    keyboardType="numeric"
+                    onChangeText={handleChangeCardNumber}
+                    value={cardNumber}
+                    maxLength={19} // Maximum length considering spaces
+                  />
+                </View>
+                <View style={styles.line}>
+                  <Text style={styles.labelInput}>CVC</Text>
+                  <TextInput
+                    style={[styles.input, styles.cvcInput]}
+                    keyboardType="numeric"
+                  />
+                </View>
+              </View> */}
+
+              <View style={styles.expirationContainer}>
+                <Text style={styles.expirationText}>Expiration Date:</Text>
+              </View>
+
+              <View style={styles.row}>
+                <View style={styles.inlineInput}>
+                  <Picker
+                    selectedValue={month}
+                    onValueChange={(itemValue) => setMonth(itemValue)}
+                    style={styles.inlinePicker}
+                  >
+                    {months.map((m) => (
+                      <Picker.Item key={m} label={m} value={m} />
+                    ))}
+                  </Picker>
+                  <Picker
+                    selectedValue={year}
+                    onValueChange={(itemValue) => setYear(itemValue)}
+                    style={styles.inlinePicker}
+                  >
+                    {years.map((y) => (
+                      <Picker.Item key={y} label={y} value={y} />
+                    ))}
+                  </Picker>
+                </View>
               </View>
             </View>
-          </View>
-          <AppButton
-            backgroundColor="white"
-            widthPercentage={85}
-            borderRadius={20}
-            onPress={handleOpenModal}
-          >
-            Submit
-          </AppButton>
-        </ScrollView>
+            <View style={styles.submitButton}>
+              <AppButton
+                backgroundColor="white"
+                widthPercentage={85}
+                borderRadius={20}
+                onPress={handleOpenModal}
+              >
+                Submit
+              </AppButton>
+            </View>
+          </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
       </SafeAreaView>
     </LinearGradient>
   );
@@ -136,22 +205,62 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    alignItems: "center",
-    paddingBottom: verticalScale(20),
+    flex: 1,
+    backgroundColor: "transparent",
+    justifyContent: "center",
+    paddingHorizontal: horizontalScale(10),
   },
   titleContainer: {
-    marginTop: verticalScale(10),
+    marginTop: verticalScale(30),
     marginBottom: verticalScale(20),
+    alignItems: "center",
     backgroundColor: "transparent",
+  },
+  backButtonContainer: {
+    flexDirection: "row",
+    backgroundColor: "transparent",
+    marginLeft: horizontalScale(10),
   },
   title: {
     fontFamily: "karlaM",
+    textAlign: "center",
     fontSize: moderateScale(44),
+    ...Platform.select({
+      ios: {
+        marginBottom: verticalScale(20),
+      },
+      android: {
+        marginBottom: verticalScale(20),
+      },
+    }),
   },
-  cardContainer: {
-    width: "100%",
+  subtitleContainer: {
+    marginBottom: verticalScale(40),
+    backgroundColor: "transparent",
     alignItems: "center",
-    marginBottom: verticalScale(30),
+  },
+  subtitle: {
+    backgroundColor: "transparent",
+    fontSize: moderateScale(20),
+  },
+  inputContainer: {
+    flexDirection: "row",
+    width: "100%",
+    backgroundColor: "transparent",
+    justifyContent: "space-between",
+  },
+  inputField: {
+    fontFamily: "karlaR",
+    fontSize: moderateScale(22),
+    borderBottomWidth: 1,
+    borderBottomColor: "black",
+    marginBottom: verticalScale(40),
+    width: "100%",
+    backgroundColor: "transparent",
+  },
+  inputGroup: {
+    alignItems: "center",
+    marginHorizontal: horizontalScale(20),
     backgroundColor: "transparent",
   },
   dividerText: {
@@ -160,15 +269,14 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: moderateScale(20),
     fontFamily: "karlaM",
-    marginBottom: verticalScale(20),
+    marginBottom: verticalScale(30),
   },
   containerInput: {
-    width: "90%",
+    marginTop: verticalScale(30),
     backgroundColor: "transparent",
-    margin:0,
   },
   row: {
-    marginBottom: verticalScale(20),
+    marginBottom: verticalScale(50),
     backgroundColor: "transparent",
   },
   rowCard: {
@@ -179,7 +287,7 @@ const styles = StyleSheet.create({
   line: {
     backgroundColor: "transparent",
     width: "60%",
-    marginBottom: verticalScale(20),
+    marginBottom: verticalScale(50),
     marginRight: horizontalScale(50),
   },
   labelInput: {
@@ -187,11 +295,19 @@ const styles = StyleSheet.create({
     marginBottom: verticalScale(5),
     backgroundColor: "transparent",
   },
-  labelInputExpiration:{
-    fontSize: moderateScale(16),
+  expirationContainer: {
     backgroundColor: "transparent",
-    position:"absolute",
-    marginTop:verticalScale(5)
+    ...Platform.select({
+      ios: {},
+      android: {
+        marginBottom: verticalScale(10),
+      },
+    }),
+  },
+  expirationText: {
+    fontSize: moderateScale(20),
+    paddingLeft: horizontalScale(15),
+    backgroundColor: "transparent",
   },
   input: {
     borderBottomWidth: 1,
@@ -208,10 +324,37 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   inlinePicker: {
-    width: "50%",
+    ...Platform.select({
+      ios: {
+        width: "50%",
+      },
+      android: {
+        width: "50%",
+      },
+    }),
   },
   cvcInput: {
-    width: "40%",
+    fontFamily: "karlaR",
+    fontSize: moderateScale(22),
+    marginLeft: horizontalScale(10),
+    borderBottomWidth: 1,
+    borderBottomColor: "black",
+    marginBottom: verticalScale(25),
+    width: "15%",
+    backgroundColor: "transparent",
+  },
+  cardInput: {
+    fontFamily: "karlaR",
+    fontSize: moderateScale(22),
+    borderBottomWidth: 1,
+    borderBottomColor: "black",
+    marginBottom: verticalScale(25),
+    width: "80%",
+    backgroundColor: "transparent",
+  },
+  submitButton: {
+    alignItems: "center",
+    backgroundColor: "transparent",
   },
 });
 

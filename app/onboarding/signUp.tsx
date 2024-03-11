@@ -25,8 +25,7 @@ import AppButton from "../../components/AppButton";
 import PronounSelector from "@/components/PronounSelector";
 import BackButton from "@/components/BackButton";
 import { Link, useRouter } from "expo-router";
-import {verifyUser} from './../classes/User.js';
-
+import { verifyUser } from "./../classes/User.js";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -42,7 +41,7 @@ const SignUp = () => {
     router.push("/onboarding/logIn");
   };
 
-  const formatPhoneNumber = (value) => {
+  const formatPhoneNumber = (value: any) => {
     // Remove non-numeric characters
     const numericValue = value.replace(/\D/g, "");
     // Add a space after every 4 characters
@@ -66,34 +65,34 @@ const SignUp = () => {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={styles.container}
           >
-           <View style={styles.topContainer}>
+            <View style={styles.topContainer}>
               <View style={styles.backButtonContainer}>
                 <BackButton />
               </View>
-            <View style={styles.welcomeTextContainer}>
-              <Text style={styles.welcomeText}>Welcome</Text>
-            </View>
+              <View style={styles.welcomeTextContainer}>
+                <Text style={styles.welcomeText}>Welcome</Text>
+              </View>
             </View>
 
             <View style={styles.inputGroup}>
               <TextInput
                 value={firstName}
                 placeholder={"First Name"}
-                onChangeText={newFirstName => setFirstName(newFirstName)}
+                onChangeText={(newFirstName) => setFirstName(newFirstName)}
                 placeholderTextColor="#000"
                 style={styles.inputField}
               />
               <TextInput
                 value={lastName}
                 placeholder={"Last Name"}
-                onChangeText={newLastName => setLastName(newLastName)}
+                onChangeText={(newLastName) => setLastName(newLastName)}
                 placeholderTextColor="#000"
                 style={styles.inputField}
               />
               <TextInput
                 value={email}
                 placeholder={"Email"}
-                onChangeText={newEmail => setEmail(newEmail)}
+                onChangeText={(newEmail) => setEmail(newEmail)}
                 placeholderTextColor="#000"
                 style={styles.inputField}
               />
@@ -102,7 +101,7 @@ const SignUp = () => {
                   value={password}
                   secureTextEntry={!showPassword}
                   placeholder={"Password"}
-                  onChangeText={newPassword => setPassword(newPassword)}
+                  onChangeText={(newPassword) => setPassword(newPassword)}
                   placeholderTextColor="#000"
                   style={[styles.inputField, { flex: 1 }]}
                 />
@@ -121,9 +120,11 @@ const SignUp = () => {
                 keyboardType="numeric"
                 placeholder={"Phone Number"}
                 onChangeText={(newPhoneNumber) => {
-                  const formattedPhoneNumber = formatPhoneNumber(newPhoneNumber);
-                  setPhoneNumber(formattedPhoneNumber);}}
-                  placeholderTextColor="#000"
+                  const formattedPhoneNumber =
+                    formatPhoneNumber(newPhoneNumber);
+                  setPhoneNumber(formattedPhoneNumber);
+                }}
+                placeholderTextColor="#000"
                 style={styles.inputField}
               />
 
@@ -132,7 +133,7 @@ const SignUp = () => {
                   value={age}
                   keyboardType="numeric"
                   placeholder={"Age"}
-                  onChangeText={newAge => setAge(newAge)}
+                  onChangeText={(newAge) => setAge(newAge)}
                   placeholderTextColor="#000"
                   style={[
                     styles.inputField,
@@ -149,21 +150,21 @@ const SignUp = () => {
                 widthPercentage={85}
                 paddingVertical={11}
                 borderRadius={25}
-                textStyle={{ fontSize: 25}}
+                textStyle={{ fontSize: 25 }}
                 onPress={async () => {
-                    let response = await verifyUser(
-                        email.trim(),
-                        password.trim(),
-                        firstName.trim(),
-                        lastName.trim(),
-                        phoneNumber,
-                        pronouns
-                        );
-                    if(response == "good"){
-                        router.push("/onboarding/basicInfo")
-                    }else{
-                        alert(response)
-                    }
+                  let response = await verifyUser(
+                    email.trim(),
+                    password.trim(),
+                    firstName.trim(),
+                    lastName.trim(),
+                    phoneNumber,
+                    pronouns
+                  );
+                  if (response == "good") {
+                    router.push("/onboarding/basicInfo");
+                  } else {
+                    alert(response);
+                  }
                 }}
               >
                 Create Account
@@ -207,22 +208,21 @@ const styles = StyleSheet.create({
   },
   backButtonContainer: {
     backgroundColor: "transparent",
-    justifyContent: "center", 
-    paddingLeft: horizontalScale(20), 
+    justifyContent: "center",
+    paddingLeft: horizontalScale(20),
   },
   topContainer: {
     flexDirection: "row",
     alignItems: "center",
     marginBottom: verticalScale(30),
-    marginTop: verticalScale(15),
+    marginTop: verticalScale(30),
     backgroundColor: "transparent",
-
   },
   welcomeTextContainer: {
     flex: 1,
     alignItems: "center",
-    backgroundColor:"transparent",
-    marginRight:verticalScale(50)
+    backgroundColor: "transparent",
+    marginRight: verticalScale(50),
   },
   welcomeText: {
     fontFamily: "karlaM",
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "transparent",
     zIndex: -1,
-    marginHorizontal:horizontalScale(25),
+    marginHorizontal: horizontalScale(25),
   },
   termsText: {
     fontFamily: "karlaL",
