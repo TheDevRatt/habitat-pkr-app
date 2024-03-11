@@ -139,12 +139,12 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 
 ## Roadmap
 
-- [ ] Your Profile
-- [ ] Reservations
+- [x] Your Profile
+- [x] Reservations
 - [ ] Terms of Service
   - [ ] Terms of Use
 - [ ] Payment Service
-- [ ] Database Functionality
+- [x] Database Functionality
 - [ ] Pickup and Drop-off
 - [ ] Admin Panel
 
