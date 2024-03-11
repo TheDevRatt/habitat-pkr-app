@@ -42,6 +42,13 @@ const SignUp = () => {
     router.push("/onboarding/logIn");
   };
 
+  const formatPhoneNumber = (value) => {
+    // Remove non-numeric characters
+    const numericValue = value.replace(/\D/g, "");
+    // Add a space after every 4 characters
+    const formattedValue = numericValue.replace(/(\d{3})/g, "$1 ").trim();
+    return formattedValue;
+  };
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -113,8 +120,10 @@ const SignUp = () => {
                 value={phoneNumber}
                 keyboardType="numeric"
                 placeholder={"Phone Number"}
-                onChangeText={newPhoneNumber => setPhoneNumber(newPhoneNumber)}
-                placeholderTextColor="#000"
+                onChangeText={(newPhoneNumber) => {
+                  const formattedPhoneNumber = formatPhoneNumber(newPhoneNumber);
+                  setPhoneNumber(formattedPhoneNumber);}}
+                  placeholderTextColor="#000"
                 style={styles.inputField}
               />
 
