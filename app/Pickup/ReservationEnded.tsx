@@ -1,70 +1,66 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  StyleSheet,
-  ActivityIndicator,
-} from "react-native";
-import * as ImagePicker from "expo-image-picker";
-import AppButton from "../../components/AppButton";
-import cameraImg from "../../assets/images/camera.png";
+import React, { useState } from 'react';
+import { View, Text, Image, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import AppButton from '../../components/AppButton';
+import { useRouter } from "expo-router";
 
 const ReservationEnded = () => {
   const [frontImage, setFrontImage] = useState(null);
   const [backImage, setBackImage] = useState(null);
   const [rightImage, setRightImage] = useState(null);
   const [leftImage, setLeftImage] = useState(null);
+  const router = useRouter();
 
   const handleSubmission = () => {
-    console.log("Photos submitted!");
-    console.log("Front Image:", frontImage);
-    console.log("Back Image:", backImage);
-    console.log("Right Image:", rightImage);
-    console.log("Left Image:", leftImage);
+    console.log('Photos submitted!');
+    console.log('Front Image:', frontImage);
+    console.log('Back Image:', backImage);
+    console.log('Right Image:', rightImage);
+    console.log('Left Image:', leftImage);
+    router.push('Pickup/ReservationEnding');
   };
 
   const openCamera = async (setImage) => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-
+  
     if (permissionResult.granted === false) {
-      alert("Permission to access camera is required!");
+      alert('Permission to access camera is required!');
       return;
     }
-
+  
     const pickerResult = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       aspect: [4, 3],
     });
-
-    if (!pickerResult.canceled) {
-      const imageResult = pickerResult.assets[0]; // Extract the first item from the assets array
-      const newUri = imageResult.uri + "?" + new Date().getTime(); // Add timestamp to URI
-      console.log("New photo URI:", newUri); // Log the new URI for debugging
+  
+    if (!pickerResult.cancelled) {
+      const imageResult = pickerResult.assets[0]; 
+      const newUri = imageResult.uri + '?' + new Date().getTime(); 
+      console.log('New photo URI:', newUri); 
       setImage(newUri);
     }
   };
+  
 
   const renderImage = (imageUri) => {
     return imageUri ? (
       <Image source={{ uri: imageUri }} style={styles.photo} key={imageUri} />
     ) : (
-      <Image source={cameraImg} style={styles.cameraIcon} />
+      <Image source={require('../../components/CameraIcon.tsx')} style={styles.cameraIcon} />
     );
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Reservation Ended</Text>
+      <Text style={styles.title}>
+        Reservation Ended
+      </Text>
 
       {/* Front Photo */}
       <TouchableOpacity onPress={() => openCamera(setFrontImage)}>
         <View style={styles.photoContainer}>
           {renderImage(frontImage)}
-          <Text style={styles.photoText}>
-            Please take a photo of the front of the car
-          </Text>
+          <Text style={styles.photoText}>Please take a photo of the front of the car</Text>
         </View>
       </TouchableOpacity>
 
@@ -72,9 +68,7 @@ const ReservationEnded = () => {
       <TouchableOpacity onPress={() => openCamera(setBackImage)}>
         <View style={styles.photoContainer}>
           {renderImage(backImage)}
-          <Text style={styles.photoText}>
-            Please take a photo of the back of the car
-          </Text>
+          <Text style={styles.photoText}>Please take a photo of the back of the car</Text>
         </View>
       </TouchableOpacity>
 
@@ -82,9 +76,7 @@ const ReservationEnded = () => {
       <TouchableOpacity onPress={() => openCamera(setRightImage)}>
         <View style={styles.photoContainer}>
           {renderImage(rightImage)}
-          <Text style={styles.photoText}>
-            Please take a photo of the right side of the car
-          </Text>
+          <Text style={styles.photoText}>Please take a photo of the right side of the car</Text>
         </View>
       </TouchableOpacity>
 
@@ -92,18 +84,16 @@ const ReservationEnded = () => {
       <TouchableOpacity onPress={() => openCamera(setLeftImage)}>
         <View style={styles.photoContainer}>
           {renderImage(leftImage)}
-          <Text style={styles.photoText}>
-            Please take a photo of the left side of the car
-          </Text>
+          <Text style={styles.photoText}>Please take a photo of the left side of the car</Text>
         </View>
       </TouchableOpacity>
 
       {/* Submit Button */}
       <AppButton
-        // style={styles.submitButton}
+        style={styles.submitButton}
         onPress={handleSubmission}
       >
-        Submit
+        <Text style={styles.buttonText}>Submit</Text>
       </AppButton>
     </View>
   );
@@ -113,28 +103,29 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "white",
+    backgroundColor: 'white', 
   },
   title: {
     fontSize: 30,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 30,
     marginTop: 80,
-    textAlign: "center",
+    textAlign: 'center',
   },
   photoContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 40,
   },
   cameraIcon: {
-    width: 60,
-    height: 60,
+    width: 90,
+    height: 90,
+    marginRight:20
   },
   photoText: {
     flexShrink: 1,
     fontSize: 22,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   photo: {
     width: 60,
@@ -142,15 +133,18 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginRight: 10,
   },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
+  },
   submitButton: {
     height: 50,
-    width: "90%",
-    justifyContent: "center",
-    alignSelf: "center",
+    width: '90%',
+    justifyContent: 'center',
+    alignSelf: 'center',
     marginTop: 30,
-    backgroundColor: "orange",
-    borderRadius: 25,
-    color: "white",
+    backgroundColor: 'orange', 
+    borderRadius: 25, 
   },
 });
 
