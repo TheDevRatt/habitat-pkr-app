@@ -9,7 +9,6 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 
-
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
@@ -63,33 +62,72 @@ function RootLayoutNav() {
   // const colorScheme = useColorScheme();
 
   return (
-   <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="onboarding/signUp" options={{ headerShown: false }} />
-        <Stack.Screen name="onboarding/logIn" options={{ headerShown: false }} />
-        <Stack.Screen name="onboarding/basicInfo" options={{ headerShown: false }} />
-        <Stack.Screen name="onboarding/membership" options={{ headerShown: false }} />
-        <Stack.Screen name="onboarding/paymentInfo" options={{ headerShown: false }} />
-        <Stack.Screen name="onboarding/termsAndConditions" options={{ headerShown: false }} />
-        <Stack.Screen name="onboarding/forgotPassword" options={{ headerShown: false }} />
-        <Stack.Screen name="Pickup/Pictures" options={{ headerShown: false }} />
-        <Stack.Screen name="Pickup/FinalPictures" options={{ headerShown: false }} />
-        <Stack.Screen name="Pickup/ActiveReservation" options={{ headerShown: false }} />
-        <Stack.Screen name="Pickup/ReportDamages" options={{ headerShown: false }} />
-        <Stack.Screen name="Pickup/DropOff" options={{ headerShown: false }} />
-        <Stack.Screen name="Pickup/ReservationEnding" options={{ headerShown: false }} />
-        <Stack.Screen name="Pickup/ReservationEnded" options={{ headerShown: false }} />
-        <Stack.Screen name="Pickup/UserReservation" options={{ headerShown: false }} />
-        <Stack.Screen name="Pickup/forfeited" options={{ headerShown: false }} />
-        <Stack.Screen name="Pickup/Reservation" options={{ headerShown: false }} />
-        <Stack.Screen name="Pickup/Overtime" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-        <Stack.Screen name="onboarding/restricted" options={{ headerShown: false }} />
-        <Stack.Screen name="bookings/[id]"  options={{ headerShown: false }} />
-        <Stack.Screen name="home/[id]"  options={{ headerShown: false }} />
-        <Stack.Screen name="home/Booking"  options={{ headerShown: false }} />
-        <Stack.Screen name="home/Payment"  options={{ headerShown: false }} />
-      </Stack>
+    <Stack>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="onboarding/signUp" options={{ headerShown: false }} />
+      <Stack.Screen name="onboarding/logIn" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="onboarding/basicInfo"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="onboarding/membership"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="onboarding/paymentInfo"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="onboarding/termsAndConditions"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="onboarding/ForgotPassword"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="Pickup/Pictures" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="Pickup/FinalPictures"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Pickup/ActiveReservation"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Pickup/ReportDamages"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="Pickup/DropOff" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="Pickup/ReservationEnding"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Pickup/ReservationEnded"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Pickup/UserReservation"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="Pickup/forfeited" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="Pickup/Reservation"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="Pickup/Overtime" options={{ headerShown: false }} />
+      <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+      <Stack.Screen
+        name="onboarding/restricted"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="bookings/[id]" options={{ headerShown: false }} />
+      <Stack.Screen name="home/[id]" options={{ headerShown: false }} />
+      <Stack.Screen name="home/Booking" options={{ headerShown: false }} />
+      <Stack.Screen name="home/Payment" options={{ headerShown: false }} />
+    </Stack>
   );
 }
