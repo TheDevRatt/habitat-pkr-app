@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet, Button } from 'react-native';
 import AppButton from '../../components/AppButton';
 import * as ImagePicker from 'expo-image-picker';
-import cameraImg from "../../assets/images/camera.png";
+import DateTimePicker from '@react-native-community/datetimepicker'; // Import DateTimePicker
 
 const ReportDamages = () => {
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
-  const [time, setTime] = useState('');
+  const [time, setTime] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [photos, setPhotos] = useState([]);
 
   const openCamera = async () => {
@@ -23,7 +24,7 @@ const ReportDamages = () => {
       aspect: [4, 3],
     });
 
-    if (!pickerResult.canceled) {
+    if (!pickerResult.cancelled) {
       const imageResult = pickerResult.assets[0]; 
       const newUri = imageResult.uri + '?' + new Date().getTime(); 
       console.log('New photo URI:', newUri); 
@@ -55,24 +56,33 @@ const ReportDamages = () => {
         value={description}
         onChangeText={text => setDescription(text)}
       />
-
-      <Text style={styles.label}>Location of damage/accident:</Text>
+       <Text style={styles.label}>Location of damage/accident:</Text>
       <TextInput
-        style={styles.input}
+        style={styles.inlineInput}
         value={location}
         onChangeText={text => setLocation(text)}
       />
+     
 
       <Text style={styles.label}>Time of damage/accident occurring:</Text>
-      <TextInput
-        style={styles.input}
-        value={time}
-        onChangeText={text => setTime(text)}
-      />
+      <Button title="Show Date and Time Picker" onPress={() => setShowDatePicker(true)} />
+      {showDatePicker && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={time}
+          mode={'datetime'} // Change this to 'datetime'
+          display="default"
+          onChange={(event, selectedDate) => {
+            const currentDate = selectedDate || time;
+            setTime(currentDate);
+            setShowDatePicker(false);
+          }}
+        />
+      )}
 
       <View style={styles.cameraRow}>
         <TouchableOpacity onPress={openCamera}>
-          <Image source={cameraImg} style={styles.cameraIcon} />
+          <Image source={require('../../components/CameraIcon.tsx')} style={styles.cameraIcon} />
         </TouchableOpacity>
         <Text style={styles.cameraLabel}>
           Attach photos of the accident/damages
@@ -90,7 +100,7 @@ const ReportDamages = () => {
         style={styles.submitButton}
         onPress={handleSubmit}
       >
-        Submit
+        <Text style={styles.submitButtonText}>Submit</Text>
       </AppButton>
     </View>
   );
@@ -105,24 +115,40 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: 'bold',
-    marginBottom: 10,
-    marginTop: 20,
+    marginBottom: 30,
+    marginTop: 50,
   },
   label: {
     fontSize: 24,
-    marginBottom: 10,
+    marginBottom: 20,
   },
   input: {
     borderWidth: 1,
     borderColor: 'black',
     padding: 10,
-    marginBottom: 20,
+    marginBottom: 40,
     height: '10%',
+  },
+  inlineInput: {
+    borderBottomWidth: 1,
+    borderColor: 'black',
+  },
+  lineContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  line: {
+    flex: 1,
+    height: 1,
+    backgroundColor: 'black',
+    marginTop:30,
+    marginBottom:60,
   },
   cameraRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    marginTop:10,
+    marginBottom: 10,
   },
   cameraIcon: {
     width: 60,
@@ -153,6 +179,10 @@ const styles = StyleSheet.create({
     borderRadius: 25, 
     color: 'white', 
     marginBottom: 20,
+  },
+  submitButtonText: {
+    color: 'white', // Change this to 'white'
+    textAlign: 'center',
   },
 });
 

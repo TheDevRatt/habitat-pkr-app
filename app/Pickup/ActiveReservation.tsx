@@ -2,20 +2,23 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import AppButton from '../../components/AppButton';
 import AnalogClock from '../../components/AnalogClock';
+import { useRouter } from "expo-router";
 
-const ActiveBooking = ({ navigation }) => {
-  const handleResetPassword = () => {
-    console.log("Password reset link sent");
+const ActiveBooking = () => {
+  const router = useRouter();
+
+  const reportAccident = () => {
+    router.push('Pickup/ReportDamages');
   };
 
-  const goToLogin = () => {
-    navigation.push('LogIn');
+  const endReservationEarly = () => {
+    router.push('Pickup/DropOff');
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>
-        Your reservation is active
+        Your Reservation is Active
       </Text>
 
       {/* Active Duration Box */}
@@ -31,7 +34,7 @@ const ActiveBooking = ({ navigation }) => {
       {/* Report Accident Button */}
       <AppButton
         style={styles.button}
-        onPress={handleResetPassword}
+        onPress={reportAccident}
       >
         <Text style={styles.buttonText}>Report an accident or damages</Text>
       </AppButton>
@@ -39,7 +42,7 @@ const ActiveBooking = ({ navigation }) => {
       {/* End Reservation Button */}
       <AppButton
         style={[styles.button, styles.endButton]}
-        onPress={goToLogin}
+        onPress={endReservationEarly}
       >
         <Text style={styles.buttonText}>End reservation early</Text>
       </AppButton>
@@ -71,6 +74,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     flexDirection: 'row',
     justifyContent: 'center',
+    shadowColor: "0000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   durationText: {},
   duration: {
@@ -86,12 +97,12 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginBottom: 20,
     borderRadius: 20,
-    backgroundColor: 'orange',
+    backgroundColor: 'white',
     borderWidth: 1,
     borderColor: 'black',
   },
   buttonText: {
-    color: 'white',
+    color: 'black',
     textAlign: 'center',
   },
   endButton: {
