@@ -44,8 +44,11 @@ const SignUp = () => {
   const formatPhoneNumber = (value: any) => {
     // Remove non-numeric characters
     const numericValue = value.replace(/\D/g, "");
-    // Add a space after every 4 characters
-    const formattedValue = numericValue.replace(/(\d{3})/g, "$1 ").trim();
+    // Format to US/Canadian phone number standard
+    const formattedValue = numericValue.replace(
+      /(\d{3})(\d{3})(\d{4})/,
+      "$1-$2-$3"
+    );
     return formattedValue;
   };
 
@@ -215,7 +218,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: verticalScale(30),
-    marginTop: verticalScale(30),
+    marginTop: verticalScale(15),
     backgroundColor: "transparent",
   },
   welcomeTextContainer: {

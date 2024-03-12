@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, Image } from "react-native";
 import {
   Text,
   View,
@@ -22,12 +22,37 @@ import InsuranceLogo from "@/components/InsuranceLogo";
 import { openCamera, openFilePicker } from "./../classes/CloudStorage";
 import BackButton from "@/components/BackButton";
 import { auth } from "@/firebase";
+import { getUserData } from "../classes/User";
+import { getFirestore } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 
 const BasicInfo = () => {
   const user = auth.currentUser;
   let userID = user?.uid;
+  console.log("userId in basicinfo:", userID);
 
   const router = useRouter();
+
+  const [licenseUrl, setLicenseUrl] = useState(null);
+  const [insuranceUrl, setInsuranceUrl] = useState(null);
+
+  const [refreshKey, setRefreshKey] = useState(0); // Add a state to trigger refresh
+
+  useEffect(() => {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    const userDocRef = doc(getFirestore(), "users", user.uid);
+    const unsubscribe = onSnapshot(userDocRef, (doc) => {
+      if (doc.exists()) {
+        const userData = doc.data();
+        setLicenseUrl(userData.licenseUrl);
+        setInsuranceUrl(userData.insuranceUrl);
+      }
+    });
+
+    return () => unsubscribe(); // Clean up subscription
+  }, []);
 
   return (
     <LinearGradient colors={["#FFFFFF", "#0099CC"]} style={styles.gradient}>
@@ -44,7 +69,19 @@ const BasicInfo = () => {
           <View style={styles.subTitleContainer}>
             <Text style={styles.label}>Driver's License</Text>
           </View>
-          <DriversLicenseLogo />
+          {licenseUrl ? (
+            <Image
+              source={{ uri: licenseUrl }}
+              style={{
+                width: 200,
+                height: 200,
+                borderRadius: 5,
+                marginBottom: verticalScale(30),
+              }}
+            />
+          ) : (
+            <DriversLicenseLogo />
+          )}
           <View style={styles.buttonGroup}>
             <View style={styles.camera}>
               <AppButton
@@ -82,7 +119,14 @@ const BasicInfo = () => {
           <View style={styles.subTitleContainer}>
             <Text style={styles.label}>Insurance</Text>
           </View>
-          <InsuranceLogo style={styles.insuranceLogo} />
+          {insuranceUrl ? (
+            <Image
+              source={{ uri: insuranceUrl }}
+              style={{ width: 100, height: 100 }}
+            />
+          ) : (
+            <InsuranceLogo style={styles.insuranceLogo} />
+          )}
           <View style={styles.buttonGroup}>
             <AppButton
               onPress={() => {
