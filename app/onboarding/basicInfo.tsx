@@ -73,10 +73,11 @@ const BasicInfo = () => {
             <Image
               source={{ uri: licenseUrl }}
               style={{
-                width: 200,
-                height: 200,
+                width: 150,
+                height: 150,
+                marginTop: verticalScale(10),
                 borderRadius: 5,
-                marginBottom: verticalScale(30),
+                marginBottom: verticalScale(10),
               }}
             />
           ) : (
@@ -122,12 +123,34 @@ const BasicInfo = () => {
           {insuranceUrl ? (
             <Image
               source={{ uri: insuranceUrl }}
-              style={{ width: 100, height: 100 }}
+              style={{
+                width: 150,
+                height: 150,
+                marginTop: verticalScale(10),
+                borderRadius: 5,
+                marginBottom: verticalScale(10),
+              }}
             />
           ) : (
             <InsuranceLogo style={styles.insuranceLogo} />
           )}
           <View style={styles.buttonGroup}>
+            <View style={styles.camera}>
+              <AppButton
+                onPress={() => {
+                  openCamera(userID, "Insurance");
+                }}
+                backgroundColor="transparent"
+                widthPercentage={45}
+                borderStyle="dashed"
+                borderRadius={5}
+                borderColor="black"
+                borderWidth={1}
+              >
+                <FontAwesome name={"camera"} size={15} />
+                <Text style={styles.buttonText}>&nbsp;Open Camera</Text>
+              </AppButton>
+            </View>
             <AppButton
               onPress={() => {
                 openFilePicker(userID, "Insurance");
@@ -190,7 +213,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: moderateScale(22),
     fontFamily: "karlaM",
-    marginTop: verticalScale(30),
+    marginTop: verticalScale(10),
     alignItems: "center",
     backgroundColor: "transparent",
   },
