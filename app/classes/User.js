@@ -121,7 +121,8 @@ async function addUser(
   firstName,
   lastName,
   phoneNumber,
-  pronouns
+  pronouns,
+  age
 ) {
   let user;
   await createUserWithEmailAndPassword(auth, email, password)
@@ -145,6 +146,7 @@ async function addUser(
       Email: email,
       Phone: phoneNumber,
       Pronouns: pronouns,
+      Age: age,
       Approved: false,
     });
   } catch (e) {}

@@ -66,7 +66,7 @@ const SignUp = () => {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={styles.container}
+            style={styles.keyboardAvoidContainer}
           >
             <View style={styles.topContainer}>
               <View style={styles.backButtonContainer}>
@@ -208,17 +208,41 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "transparent",
+    ...Platform.select({
+      ios: {
+        paddingTop: verticalScale(10),
+      },
+      android: {
+        paddingTop: verticalScale(10),
+      },
+    }),
+  },
+  keyboardAvoidContainer: {
+    justifyContent: "center",
+    ...Platform.select({
+      ios: {
+        paddingTop: verticalScale(20),
+      },
+      android: {
+        paddingTop: verticalScale(10),
+      },
+    }),
   },
   backButtonContainer: {
     backgroundColor: "transparent",
     justifyContent: "center",
     paddingLeft: horizontalScale(20),
+    ...Platform.select({
+      ios: {},
+      android: {
+        paddingBottom: verticalScale(40),
+      },
+    }),
   },
   topContainer: {
     flexDirection: "row",
     alignItems: "center",
     marginBottom: verticalScale(30),
-    marginTop: verticalScale(15),
     backgroundColor: "transparent",
   },
   welcomeTextContainer: {
@@ -226,6 +250,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "transparent",
     marginRight: verticalScale(50),
+    ...Platform.select({
+      ios: {},
+      android: {
+        marginBottom: verticalScale(40),
+      },
+    }),
   },
   welcomeText: {
     fontFamily: "karlaM",
@@ -279,7 +309,6 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   buttonContainer: {
-    marginTop: verticalScale(20),
     marginBottom: verticalScale(15),
     alignItems: "center",
     backgroundColor: "transparent",
