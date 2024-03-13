@@ -1,10 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, Dispatch, SetStateAction } from "react";
 import { View } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 
-const PronounSelector = () => {
+interface PronounSelectorProps {
+  value: string;
+  setValue: Dispatch<SetStateAction<string>>;
+}
+
+const PronounSelector: React.FC<PronounSelectorProps> = ({
+  value,
+  setValue,
+}) => {
+  const handleValueChange = (selectedValue: any) => {
+    setValue(selectedValue);
+  };
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
   const [items, setItems] = useState([
     { label: "She/Her/Hers", value: "she/her/hers" },
     { label: "He/Him/His", value: "he/him/his" },
@@ -17,6 +27,7 @@ const PronounSelector = () => {
       <DropDownPicker
         open={open}
         value={value}
+        onChangeValue={handleValueChange}
         items={items}
         setOpen={setOpen}
         setValue={setValue}
@@ -29,7 +40,7 @@ const PronounSelector = () => {
           borderTopColor: "transparent",
           borderLeftColor: "transparent",
           borderRightColor: "transparent",
-          borderRadius:0,
+          borderRadius: 0,
         }}
         dropDownContainerStyle={{
           borderWidth: 1,

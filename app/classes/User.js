@@ -33,7 +33,8 @@ async function verifyUser(
   firstName,
   lastName,
   phoneNumber,
-  pronouns
+  pronouns,
+  age
 ) {
   // Check first name input
 
@@ -106,11 +107,29 @@ async function verifyUser(
   }
 
   // Check that pronouns is not empty
-  if ((pronouns = "")) {
+  console.log(pronouns);
+  if (pronouns == "") {
     return "Please select your pronouns";
   }
 
-  await addUser(email, password, firstName, lastName, phoneNumber, pronouns);
+  // Check that age is not empty
+  if (age == "") {
+    return "Please enter your age";
+  }
+  // Check that age is a valid number
+  if (isNaN(age)) {
+    return "Please enter a valid age";
+  }
+
+  await addUser(
+    email,
+    password,
+    firstName,
+    lastName,
+    phoneNumber,
+    pronouns,
+    age
+  );
   return "good";
 }
 

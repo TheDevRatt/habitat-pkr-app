@@ -10,7 +10,7 @@ import {
   moderateScale,
   verticalScale,
 } from "@/constants/Metrics";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   KeyboardAvoidingView,
@@ -59,6 +59,10 @@ const SignUp = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [age, setAge] = useState("");
   const [pronouns, setPronouns] = useState("");
+
+  useEffect(() => {
+    console.log(pronouns); // Log the current value of pronouns
+  }, [pronouns]);
 
   return (
     <LinearGradient colors={["#FFFFFF", "#0099CC"]} style={styles.gradient}>
@@ -144,7 +148,7 @@ const SignUp = () => {
                   ]}
                 />
                 <View style={styles.dropDownPicker}>
-                  <PronounSelector />
+                  <PronounSelector value={pronouns} setValue={setPronouns} />
                 </View>
               </View>
             </View>
@@ -161,7 +165,8 @@ const SignUp = () => {
                     firstName.trim(),
                     lastName.trim(),
                     phoneNumber,
-                    pronouns
+                    pronouns,
+                    age
                   );
                   if (response == "good") {
                     router.push("/onboarding/basicInfo");
