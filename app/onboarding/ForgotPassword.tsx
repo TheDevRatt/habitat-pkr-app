@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   Keyboard,
   Platform,
   StyleSheet,
+  Alert,
 } from "react-native";
 import {
   horizontalScale,
@@ -21,10 +22,23 @@ import PKRLogo from "../../components/PKRLogo";
 import AppButton from "@/components/AppButton";
 import BackButton from "@/components/BackButton";
 import { router } from "expo-router";
+import { passwordReset } from "../classes/User";
 
 const ForgotPassword = () => {
-  const handleResetPassword = () => {
-    console.log("Password reset link sent");
+  const [email, setEmail] = useState("");
+
+  const handleResetPassword = async () => {
+    if (email.trim() === "") {
+      Alert.alert("Error", "Please enter an email address.");
+      return;
+    }
+
+    try {
+      const response = await passwordReset(email);
+      Alert.alert("Success", response); // Show success message
+    } catch (error: any) {
+      Alert.alert("Error", error.message); // Show error message
+    }
   };
 
   const goToLogin = () => {
@@ -49,7 +63,9 @@ const ForgotPassword = () => {
 
             <View style={styles.inputContainer}>
               <TextInput
-                placeholder={"Email"}
+                placeholder={"Enter your email"}
+                value={email}
+                onChangeText={setEmail}
                 placeholderTextColor="#000"
                 style={styles.inputField}
               />

@@ -6,6 +6,7 @@ import {
   initializeAuth,
   sendEmailVerification,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail as firebaseSendPasswordResetEmail,
   updateProfile,
   onAuthStateChanged,
 } from "firebase/auth";
@@ -205,9 +206,10 @@ async function signinUser(email, password) {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(error);
+        throw new Error("Incorrect email or password");
       });
   } catch (e) {
-    return "An error has occurred";
+    return e.message;
   }
 
   // Check that the email for the user has been verified
@@ -297,6 +299,16 @@ async function getUserData() {
   }
 }
 
+// Send password reset email
+async function passwordReset(email) {
+  try {
+    await firebaseSendPasswordResetEmail(getAuth(), email);
+    return "Password reset email sent successfully.";
+  } catch (error) {
+    throw error; // You might want to handle this more gracefully in a real app
+  }
+}
+
 export {
   verifyUser,
   addUser,
@@ -306,4 +318,5 @@ export {
   getUserExists,
   readUserName,
   getUserData,
+  passwordReset,
 };
