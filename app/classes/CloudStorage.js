@@ -6,7 +6,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
-import { getUserID } from "./User.js";
+import { getUserID } from "./UserUtils";
 import * as ImagePicker from "expo-image-picker";
 import { Camera, CameraType } from "expo-camera";
 
