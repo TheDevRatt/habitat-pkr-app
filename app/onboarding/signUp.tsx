@@ -10,7 +10,7 @@ import {
   moderateScale,
   verticalScale,
 } from "@/constants/Metrics";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   KeyboardAvoidingView,
@@ -44,8 +44,11 @@ const SignUp = () => {
   const formatPhoneNumber = (value: any) => {
     // Remove non-numeric characters
     const numericValue = value.replace(/\D/g, "");
-    // Add a space after every 4 characters
-    const formattedValue = numericValue.replace(/(\d{3})/g, "$1 ").trim();
+    // Format to US/Canadian phone number standard
+    const formattedValue = numericValue.replace(
+      /(\d{3})(\d{3})(\d{4})/,
+      "$1-$2-$3"
+    );
     return formattedValue;
   };
 
@@ -57,13 +60,17 @@ const SignUp = () => {
   const [age, setAge] = useState("");
   const [pronouns, setPronouns] = useState("");
 
+  useEffect(() => {
+    console.log(pronouns); // Log the current value of pronouns
+  }, [pronouns]);
+
   return (
     <LinearGradient colors={["#FFFFFF", "#0099CC"]} style={styles.gradient}>
       <SafeAreaView style={styles.container}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={styles.container}
+            style={styles.keyboardAvoidContainer}
           >
             <View style={styles.topContainer}>
               <View style={styles.backButtonContainer}>
@@ -141,7 +148,7 @@ const SignUp = () => {
                   ]}
                 />
                 <View style={styles.dropDownPicker}>
-                  <PronounSelector />
+                  <PronounSelector value={pronouns} setValue={setPronouns} />
                 </View>
               </View>
             </View>
@@ -158,7 +165,8 @@ const SignUp = () => {
                     firstName.trim(),
                     lastName.trim(),
                     phoneNumber,
-                    pronouns
+                    pronouns,
+                    age
                   );
                   if (response == "good") {
                     router.push("/onboarding/basicInfo");
@@ -205,17 +213,41 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "transparent",
+    ...Platform.select({
+      ios: {
+        paddingTop: verticalScale(10),
+      },
+      android: {
+        paddingTop: verticalScale(10),
+      },
+    }),
+  },
+  keyboardAvoidContainer: {
+    justifyContent: "center",
+    ...Platform.select({
+      ios: {
+        paddingTop: verticalScale(20),
+      },
+      android: {
+        paddingTop: verticalScale(10),
+      },
+    }),
   },
   backButtonContainer: {
     backgroundColor: "transparent",
     justifyContent: "center",
     paddingLeft: horizontalScale(20),
+    ...Platform.select({
+      ios: {},
+      android: {
+        paddingBottom: verticalScale(40),
+      },
+    }),
   },
   topContainer: {
     flexDirection: "row",
     alignItems: "center",
     marginBottom: verticalScale(30),
-    marginTop: verticalScale(30),
     backgroundColor: "transparent",
   },
   welcomeTextContainer: {
@@ -223,6 +255,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "transparent",
     marginRight: verticalScale(50),
+    ...Platform.select({
+      ios: {},
+      android: {
+        marginBottom: verticalScale(40),
+      },
+    }),
   },
   welcomeText: {
     fontFamily: "karlaM",
@@ -276,7 +314,6 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   buttonContainer: {
-    marginTop: verticalScale(20),
     marginBottom: verticalScale(15),
     alignItems: "center",
     backgroundColor: "transparent",

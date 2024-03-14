@@ -29,7 +29,6 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 import ProfileContainer from "@/components/ProfileContainer";
 
-
 if (
   Platform.OS === "android" &&
   UIManager.setLayoutAnimationEnabledExperimental
@@ -40,11 +39,10 @@ if (
 const Home = () => {
   const router = useRouter();
 
-
   const user = auth.currentUser;
   let userName = " ";
 
-  if (user !== null) {
+  if (user !== null && user.displayName !== null) {
     userName = user.displayName;
   }
 
@@ -86,9 +84,9 @@ const Home = () => {
     setFilter(selectedFilter);
   };
 
-  const goToBooking = (carId : number) => {
-    router.push({ pathname: "/home/${carId}"});
-}
+  const goToBooking = (carId: number) => {
+    router.push({ pathname: "/home/${carId}" });
+  };
 
   const filterOptions = [
     { label: "All", value: "all" },
@@ -190,16 +188,19 @@ const Home = () => {
         <View style={styles.carList}>
           <ScrollView style={styles.carCardScroll}>
             {filteredCars.map((car, index) => (
-              <TouchableOpacity style={{backgroundColor:"transparent"}}  onPress={() => goToBooking(index)}>
-              <CarCard
+              <TouchableOpacity
                 key={index}
-                make={car.make}
-                model={car.model}
-                transmission={car.transmission}
-                dailyRate={car.dailyRate}
-                hourlyRate={car.hourlyRate}
-                imageUrl={car.imageUrl}
-              />
+                style={{ backgroundColor: "transparent" }}
+                onPress={() => goToBooking(index)}
+              >
+                <CarCard
+                  make={car.make}
+                  model={car.model}
+                  transmission={car.transmission}
+                  dailyRate={car.dailyRate}
+                  hourlyRate={car.hourlyRate}
+                  imageUrl={car.imageUrl}
+                />
               </TouchableOpacity>
             ))}
           </ScrollView>
