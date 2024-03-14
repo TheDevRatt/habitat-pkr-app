@@ -22,7 +22,7 @@ import {
 } from "firebase/firestore";
 import { AsyncStorage } from "@react-native-async-storage/async-storage";
 import { Link, useRouter } from "expo-router";
-import { fileExists } from "./../classes/CloudStorage";
+import { fileExists } from "./UserUtils";
 
 import { db, auth } from "@/firebase";
 
