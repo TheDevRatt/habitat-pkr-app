@@ -68,7 +68,7 @@ const Profile = () => {
     };
 
     fetchUserData();
-  }, []);
+  }, []); // Empty dependency array to run the effect only once
 
   // Dummy function to handle image press
   const handleImagePress = () => {
