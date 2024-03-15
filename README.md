@@ -114,32 +114,28 @@ No prerequisites required other than the above tools and a decent computer capab
    ```sh
    git clone https://github.com/TheDevRatt/habitat-pkr-app.git
    ```
-2. Install the required dependancies by running:
+2. Open a command prompt within the working folder by click on the address bar and typing `CMD` then `Enter` on windows.
+
+3. Install the required Node Modules by running the following command:
    ```sh
    npm ci
    ```
-3. Once dependancies have been successfully installed, run the project with
+4. Navigate to the functions folder after Step 3 finishes by typing:
    ```sh
-   npx expo start
+   cd functions
    ```
-
-#### Firebase-tools Installation
-
-Use these instructions in case you find it necessary to manually install firebase-tools.
-
-1. Install Firebase-tools
+5. Install the required firebase node-modules by running the following command:
    ```sh
-   npm install -g firebase-tools
+   npm ci
    ```
-2. Run firebase login and sign in with an authorized account
+6. Navigate back out to the working folder by typing in the command line:
    ```sh
-   firebase login
+   cd ..
    ```
-3. Run firebase init
+7. You should finally be able to start the project by running the following:
    ```sh
-   firebase init
+   npx expo start -c
    ```
-4. Go through the settings when installing firebase-tools. Ensure you install all the features for an existing project. Use the default files for security rules and ensure that cloud functions are written in javascript. Optionally, use ESLint to catch bugs and install all dependancies. After that, install all the emulators and use default ports.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
