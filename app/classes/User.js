@@ -168,6 +168,7 @@ async function addUser(
       Pronouns: pronouns,
       Age: age,
       Approved: false,
+      isAdmin: false,
     });
   } catch (e) {}
   updateProfile(auth.currentUser, {

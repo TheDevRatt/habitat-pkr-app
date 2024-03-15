@@ -123,6 +123,24 @@ No prerequisites required other than the above tools and a decent computer capab
    npx expo start
    ```
 
+#### Firebase-tools Installation
+
+Use these instructions in case you find it necessary to manually install firebase-tools.
+
+1. Install Firebase-tools
+   ```sh
+   npm install -g firebase-tools
+   ```
+2. Run firebase login and sign in with an authorized account
+   ```sh
+   firebase login
+   ```
+3. Run firebase init
+   ```sh
+   firebase init
+   ```
+4. Go through the settings when installing firebase-tools. Ensure you install all the features for an existing project. Use the default files for security rules and ensure that cloud functions are written in javascript. Optionally, use ESLint to catch bugs and install all dependancies. After that, install all the emulators and use default ports.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->

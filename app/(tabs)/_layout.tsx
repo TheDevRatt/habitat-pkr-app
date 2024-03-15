@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform, StyleSheet, SafeAreaView } from "react-native";
+import { Platform, StyleSheet, SafeAreaView, Alert } from "react-native";
 import { Tabs } from "expo-router";
 import { View } from "@/components/Themed";
 
@@ -11,12 +11,14 @@ import AccountIcon from "@/components/AccountIcon";
 import AccountIconActive from "@/components/AccountIconActive";
 import AdminIcon from "@/components/AdminIcon";
 import AdminIconActive from "@/components/AdminIconActive";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from "@expo/vector-icons";
 
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
 import { horizontalScale, verticalScale } from "@/constants/Metrics";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import { useAuth } from "@/components/AuthContext";
 
 function TabBarIcon({ name, isActive }: { name: string; isActive: boolean }) {
   return (
@@ -36,13 +38,25 @@ function TabBarIcon({ name, isActive }: { name: string; isActive: boolean }) {
           <AccountIcon />
         )
       ) : null}
-      {name === "admin" ? isActive ? <MaterialIcons name="admin-panel-settings" size={50} color="white" /> : <MaterialIcons name="admin-panel-settings" size={50} color="black" /> : null}
+      {name === "admin" ? (
+        isActive ? (
+          <MaterialIcons name="admin-panel-settings" size={50} color="white" />
+        ) : (
+          <MaterialIcons name="admin-panel-settings" size={50} color="black" />
+        )
+      ) : null}
     </View>
   );
 }
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const { isAdmin } = useAuth();
+
+  // Optionally, a function to handle non-admin users tapping on the Admin icon
+  const handleNonAdminTap = () => {
+    Alert.alert("Restricted", "You do not have access to admin features.");
+  };
 
   return (
     <Tabs
@@ -82,10 +96,10 @@ export default function TabLayout() {
       <Tabs.Screen
         name="Admin"
         options={{
-          tabBarIcon: ({ focused }) => (
-            <TabBarIcon name="admin" isActive={focused} />
-          ),
+          tabBarIcon: ({ focused }) =>
+            isAdmin ? <TabBarIcon name="admin" isActive={focused} /> : <View />, // Optionally hide the Admin tab for non-admin users
           tabBarLabel: "",
+          tabBarButton: isAdmin ? undefined : () => <View />, // Optionally hide the Admin tab for non-admin users
         }}
       />
     </Tabs>
