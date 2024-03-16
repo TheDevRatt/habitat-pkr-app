@@ -24,6 +24,7 @@ import { Link, useRouter } from "expo-router";
 
 import OrangeArrowIcon from "@/components/OrangeArrowIcon";
 import AppButton from "@/components/AppButton";
+import SignoutIcon from "@/components/SignoutIcon";
 
 const Admin = () => {
   const router = useRouter();
@@ -38,6 +39,9 @@ const Admin = () => {
     <View style={styles.container}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>Admin</Text>
+        <View style={styles.signoutContainer}>
+          <SignoutIcon />
+        </View>
       </View>
 
       <TouchableOpacity
@@ -119,7 +123,7 @@ const Admin = () => {
           onPress={() => router.push("/onboarding/paymentInfo")}
           backgroundColor="#E55D25"
         >
-          <Text textColor="white">Continue</Text>
+          <Text textColor="white">Add Cars</Text>
         </AppButton>
       </View>
 
@@ -144,7 +148,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   titleContainer: {
+    flexDirection: "row",
     paddingVertical: verticalScale(15),
+  },
+  signoutContainer: {
+    right: 0,
+    top: verticalScale(45),
+    left: horizontalScale(100),
+    alignItems: "flex-start",
   },
   title: {
     paddingTop: moderateScale(30),

@@ -1,6 +1,7 @@
 import { auth } from "@/firebase";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { signOut } from "firebase/auth";
 
 const storage = getStorage();
 
@@ -23,4 +24,17 @@ async function fileExists(fileName, location) {
   }
 }
 
-export { getUserID, fileExists };
+async function signOutUser() {
+  try {
+    await signOut(auth);
+    // Sign-out successful.
+    // Redirection or further actions should be handled in the component where this function is called
+  } catch (error) {
+    // An error happened during sign-out
+    console.error("Error signing out: ", error);
+    // You can return false here or throw an error depending on how you want to handle errors
+    throw error;
+  }
+}
+
+export { getUserID, fileExists, signOutUser };
