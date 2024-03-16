@@ -6,6 +6,7 @@ import {
   Platform,
   StyleSheet,
   ScrollView,
+  Alert,
 } from "react-native";
 import {
   Text,
@@ -22,16 +23,20 @@ import {
 
 import { Link, useRouter } from "expo-router";
 
-import OrangeArrowIcon from "@/components/OrangeArrowIcon";
-import AppButton from "@/components/AppButton";
 import SignoutIcon from "@/components/SignoutIcon";
 import { fetchUnapprovedUsers } from "../classes/UserUtils";
+import BackButton from "@/components/BackButton";
+
+import CheckmarkIcon from "@/components/CheckmarkIcon";
+import XIcon from "@/components/XIcon";
+
+import { approveUser } from "../classes/UserUtils";
 
 interface User {
   id: string;
   FirstName: string;
   LastName: string;
-  Email?: string; // Optional, in case you decide to use it later
+  Email?: string; // Optional, in case we decide to use it later
 }
 
 const SignupRequests = () => {
@@ -40,29 +45,77 @@ const SignupRequests = () => {
   useEffect(() => {
     const getUnapprovedUsers = async () => {
       const users = await fetchUnapprovedUsers();
-      console.log(users);
+      // console.log(users);
       setUnapprovedUsers(users);
     };
 
     getUnapprovedUsers();
   }, []);
 
+  const handleApproveUser = async (user: User) => {
+    // console.log("Approving user:", user.id);
+    Alert.alert(
+      "Approve User?",
+      `Would you like to approve ${user.FirstName} ${user.LastName}?`,
+      [
+        // The "No" button
+        // Does nothing but dismiss the dialog when pressed
+        {
+          text: "No",
+          style: "cancel",
+        },
+        // The "Yes" button
+        {
+          text: "Yes",
+          onPress: async () => {
+            try {
+              await approveUser(user.id);
+              setUnapprovedUsers((currentUsers) =>
+                currentUsers.filter((currentUser) => currentUser.id !== user.id)
+              );
+              // You might want to include some feedback here, like another alert
+            } catch (error) {
+              console.error("Error approving user:", error);
+              // Include error handling here, such as displaying an error message
+            }
+          },
+        },
+      ]
+    );
+  };
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>Signed Up Users</Text>
+        <View style={styles.backButtonContainer}>
+          <BackButton />
+        </View>
+        <Text style={styles.title}>Signed Up{"\n"}Users</Text>
         <View style={styles.signoutContainer}>
           <SignoutIcon />
         </View>
       </View>
-      {unapprovedUsers.map((user) => (
-        <View key={user.id} style={styles.userContainer}>
-          <Text style={styles.userText}>
-            {`${user.FirstName} ${user.LastName}`} - Pending Approval
-          </Text>
+
+      <ScrollView style={styles.scrollViewContainer}>
+        <View style={styles.innerScrollViewContent}>
+          {unapprovedUsers.map((user) => (
+            <View key={user.id} style={styles.userContainer}>
+              <Text style={styles.userText}>
+                {`${user.FirstName} ${user.LastName}`}
+              </Text>
+              <View style={styles.iconsContainer}>
+                <View style={styles.iconContent}>
+                  <CheckmarkIcon onPress={() => handleApproveUser(user)} />
+                </View>
+                <View style={styles.iconContent}>
+                  <XIcon />
+                </View>
+              </View>
+            </View>
+          ))}
         </View>
-      ))}
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -78,22 +131,50 @@ const styles = StyleSheet.create({
   },
   signoutContainer: {
     top: verticalScale(45),
-    left: horizontalScale(20),
+    left: horizontalScale(60),
+    alignItems: "flex-start",
+  },
+  backButtonContainer: {
+    top: verticalScale(45),
+    right: horizontalScale(60),
     alignItems: "flex-start",
   },
   title: {
     paddingTop: moderateScale(30),
     fontSize: moderateScale(40),
+    textAlign: "center",
+  },
+  scrollViewContainer: {
+    height: verticalScale(20),
+    marginBottom: verticalScale(20),
+    width: "100%",
+  },
+  innerScrollViewContent: {
+    alignItems: "center",
   },
   userContainer: {
-    backgroundColor: "#f0f0f0", // A light grey background for each user
-    padding: 10, // Padding inside each user container
-    marginVertical: 5, // Margin between user containers
-    width: "90%", // Width of the user container
-    borderRadius: 5, // Rounded corners for the container
+    flexDirection: "row",
+    justifyContent: "space-between", // Align items on opposite ends
+    alignItems: "center", // Center items vertically within the container
+    padding: 10,
+    marginVertical: 5,
+    width: "90%",
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
   },
   userText: {
-    fontSize: moderateScale(16), // Text size for user information
+    fontSize: moderateScale(16),
+    flex: 1, // Allow it to take up available space but respect the icons' space
+    marginRight: 10, // Add some space between the text and the icons
+  },
+  iconsContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center", // Ensure vertical alignment
+    width: "20%", // Limit width to the end part of the user container
+  },
+  iconContent: {
+    marginHorizontal: horizontalScale(5), // Add some space between the icons
   },
 });
 

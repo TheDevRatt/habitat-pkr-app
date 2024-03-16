@@ -5,6 +5,8 @@ import {
   query,
   where,
   getDocs,
+  doc,
+  updateDoc,
 } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { signOut } from "firebase/auth";
@@ -57,4 +59,17 @@ async function fetchUnapprovedUsers() {
   return users;
 }
 
-export { getUserID, fileExists, signOutUser, fetchUnapprovedUsers };
+const approveUser = async (userId) => {
+  const userRef = doc(db, "users", userId);
+  await updateDoc(userRef, {
+    Approved: true,
+  });
+};
+
+export {
+  getUserID,
+  fileExists,
+  signOutUser,
+  fetchUnapprovedUsers,
+  approveUser,
+};

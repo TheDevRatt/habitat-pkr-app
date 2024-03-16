@@ -12,7 +12,38 @@ const logger = require("firebase-functions/logger");
 
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
+const sgMail = require("@sendgrid/mail");
+const sendGridAPIKey = functions.config().sendgrid.key;
 admin.initializeApp();
+
+sgMail.setApiKey(sendGridAPIKey);
+
+exports.sendApprovalEmail = functions.firestore
+  .document("users/{userId}")
+  .onUpdate(async (change, context) => {
+    // Get the before and after snapshot
+    const before = change.before.data();
+    const after = change.after.data();
+
+    // Check if Approved changed from false to true
+    if (!before.Approved && after.Approved) {
+      const msg = {
+        to: after.Email, // Assuming the user document has an Email field
+        from: "your-email@example.com", // Replace with your SendGrid verified sender
+        subject: "Your account has been approved! 🎉",
+        text: `Hello ${after.FirstName}, your account has now been approved. You can now login to the PKRides app and begin renting!`,
+        html: `<strong>Hello ${after.FirstName}, your account has now been approved. You can now login to the PKRides app and begin renting!.</strong>`,
+      };
+
+      // Send the email
+      try {
+        await sgMail.send(msg);
+        console.log("Approval email sent to", after.Email);
+      } catch (error) {
+        console.error("Error sending approval email:", error);
+      }
+    }
+  });
 
 exports.addAdminRole = functions.https.onCall((data, context) => {
   // Check if request is made by an authenticated admin
