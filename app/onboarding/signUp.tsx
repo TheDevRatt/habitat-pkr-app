@@ -10,7 +10,7 @@ import {
   moderateScale,
   verticalScale,
 } from "@/constants/Metrics";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   KeyboardAvoidingView,
@@ -25,8 +25,7 @@ import AppButton from "../../components/AppButton";
 import PronounSelector from "@/components/PronounSelector";
 import BackButton from "@/components/BackButton";
 import { Link, useRouter } from "expo-router";
-import {verifyUser} from './../classes/User.js';
-
+import { verifyUser } from "./../classes/User.js";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -42,6 +41,16 @@ const SignUp = () => {
     router.push("/onboarding/logIn");
   };
 
+  const formatPhoneNumber = (value: any) => {
+    // Remove non-numeric characters
+    const numericValue = value.replace(/\D/g, "");
+    // Format to US/Canadian phone number standard
+    const formattedValue = numericValue.replace(
+      /(\d{3})(\d{3})(\d{4})/,
+      "$1-$2-$3"
+    );
+    return formattedValue;
+  };
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -51,42 +60,46 @@ const SignUp = () => {
   const [age, setAge] = useState("");
   const [pronouns, setPronouns] = useState("");
 
+  useEffect(() => {
+    console.log(pronouns); // Log the current value of pronouns
+  }, [pronouns]);
+
   return (
     <LinearGradient colors={["#FFFFFF", "#0099CC"]} style={styles.gradient}>
       <SafeAreaView style={styles.container}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={styles.container}
+            style={styles.keyboardAvoidContainer}
           >
-           <View style={styles.topContainer}>
+            <View style={styles.topContainer}>
               <View style={styles.backButtonContainer}>
                 <BackButton />
               </View>
-            <View style={styles.welcomeTextContainer}>
-              <Text style={styles.welcomeText}>Welcome</Text>
-            </View>
+              <View style={styles.welcomeTextContainer}>
+                <Text style={styles.welcomeText}>Welcome</Text>
+              </View>
             </View>
 
             <View style={styles.inputGroup}>
               <TextInput
                 value={firstName}
                 placeholder={"First Name"}
-                onChangeText={newFirstName => setFirstName(newFirstName)}
+                onChangeText={(newFirstName) => setFirstName(newFirstName)}
                 placeholderTextColor="#000"
                 style={styles.inputField}
               />
               <TextInput
                 value={lastName}
                 placeholder={"Last Name"}
-                onChangeText={newLastName => setLastName(newLastName)}
+                onChangeText={(newLastName) => setLastName(newLastName)}
                 placeholderTextColor="#000"
                 style={styles.inputField}
               />
               <TextInput
                 value={email}
                 placeholder={"Email"}
-                onChangeText={newEmail => setEmail(newEmail)}
+                onChangeText={(newEmail) => setEmail(newEmail)}
                 placeholderTextColor="#000"
                 style={styles.inputField}
               />
@@ -95,7 +108,7 @@ const SignUp = () => {
                   value={password}
                   secureTextEntry={!showPassword}
                   placeholder={"Password"}
-                  onChangeText={newPassword => setPassword(newPassword)}
+                  onChangeText={(newPassword) => setPassword(newPassword)}
                   placeholderTextColor="#000"
                   style={[styles.inputField, { flex: 1 }]}
                 />
@@ -113,7 +126,11 @@ const SignUp = () => {
                 value={phoneNumber}
                 keyboardType="numeric"
                 placeholder={"Phone Number"}
-                onChangeText={newPhoneNumber => setPhoneNumber(newPhoneNumber)}
+                onChangeText={(newPhoneNumber) => {
+                  const formattedPhoneNumber =
+                    formatPhoneNumber(newPhoneNumber);
+                  setPhoneNumber(formattedPhoneNumber);
+                }}
                 placeholderTextColor="#000"
                 style={styles.inputField}
               />
@@ -123,7 +140,7 @@ const SignUp = () => {
                   value={age}
                   keyboardType="numeric"
                   placeholder={"Age"}
-                  onChangeText={newAge => setAge(newAge)}
+                  onChangeText={(newAge) => setAge(newAge)}
                   placeholderTextColor="#000"
                   style={[
                     styles.inputField,
@@ -131,7 +148,7 @@ const SignUp = () => {
                   ]}
                 />
                 <View style={styles.dropDownPicker}>
-                  <PronounSelector />
+                  <PronounSelector value={pronouns} setValue={setPronouns} />
                 </View>
               </View>
             </View>
@@ -140,21 +157,22 @@ const SignUp = () => {
                 widthPercentage={85}
                 paddingVertical={11}
                 borderRadius={25}
-                textStyle={{ fontSize: 25}}
+                textStyle={{ fontSize: 25 }}
                 onPress={async () => {
-                    let response = await verifyUser(
-                        email.trim(),
-                        password.trim(),
-                        firstName.trim(),
-                        lastName.trim(),
-                        phoneNumber,
-                        pronouns
-                        );
-                    if(response == "good"){
-                        router.push("/onboarding/basicInfo")
-                    }else{
-                        alert(response)
-                    }
+                  let response = await verifyUser(
+                    email.trim(),
+                    password.trim(),
+                    firstName.trim(),
+                    lastName.trim(),
+                    phoneNumber,
+                    pronouns,
+                    age
+                  );
+                  if (response == "good") {
+                    router.push("/onboarding/basicInfo");
+                  } else {
+                    alert(response);
+                  }
                 }}
               >
                 Create Account
@@ -195,25 +213,54 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "transparent",
+    ...Platform.select({
+      ios: {
+        paddingTop: verticalScale(10),
+      },
+      android: {
+        paddingTop: verticalScale(10),
+      },
+    }),
+  },
+  keyboardAvoidContainer: {
+    justifyContent: "center",
+    ...Platform.select({
+      ios: {
+        paddingTop: verticalScale(20),
+      },
+      android: {
+        paddingTop: verticalScale(10),
+      },
+    }),
   },
   backButtonContainer: {
     backgroundColor: "transparent",
-    justifyContent: "center", 
-    paddingLeft: horizontalScale(20), 
+    justifyContent: "center",
+    paddingLeft: horizontalScale(20),
+    ...Platform.select({
+      ios: {},
+      android: {
+        paddingBottom: verticalScale(40),
+      },
+    }),
   },
   topContainer: {
     flexDirection: "row",
     alignItems: "center",
     marginBottom: verticalScale(30),
-    marginTop: verticalScale(15),
     backgroundColor: "transparent",
-
   },
   welcomeTextContainer: {
     flex: 1,
     alignItems: "center",
-    backgroundColor:"transparent",
-    marginRight:verticalScale(50)
+    backgroundColor: "transparent",
+    marginRight: verticalScale(50),
+    ...Platform.select({
+      ios: {},
+      android: {
+        marginBottom: verticalScale(40),
+      },
+    }),
   },
   welcomeText: {
     fontFamily: "karlaM",
@@ -267,7 +314,6 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   buttonContainer: {
-    marginTop: verticalScale(20),
     marginBottom: verticalScale(15),
     alignItems: "center",
     backgroundColor: "transparent",
@@ -277,7 +323,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "transparent",
     zIndex: -1,
-    marginHorizontal:horizontalScale(25),
+    marginHorizontal: horizontalScale(25),
   },
   termsText: {
     fontFamily: "karlaL",

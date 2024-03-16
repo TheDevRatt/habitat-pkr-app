@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import AppButton from '../../components/AppButton';
-import cameraImg from "../../assets/images/camera.png";
+import { useRouter } from "expo-router"; // import useRouter
 
 const FinalPictures = () => {
   const [gasLevelImage, setGasLevelImage] = useState(null);
+  const router = useRouter(); // initialize router
 
   const handleSubmission = () => {
     if (!gasLevelImage) {
@@ -15,6 +16,7 @@ const FinalPictures = () => {
 
     console.log('Final photos submitted!');
     console.log('Gas Level Image:', gasLevelImage);
+    router.push('Pickup/ActiveReservation'); // navigate to Pickup/ActiveReservation
   };
 
   const openCamera = async () => {
@@ -30,7 +32,7 @@ const FinalPictures = () => {
       aspect: [4, 3],
     });
 
-    if (!pickerResult.canceled) {
+    if (!pickerResult.cancelled) {
       const imageResult = pickerResult.assets[0]; // Extract the first item from the assets array
       const newUri = imageResult.uri + '?' + new Date().getTime(); // Add timestamp to URI
       console.log('New photo URI:', newUri); // Log the new URI for debugging
@@ -50,7 +52,7 @@ const FinalPictures = () => {
           {gasLevelImage ? (
             <Image source={{ uri: gasLevelImage }} style={styles.photo} />
           ) : (
-            <Image source={cameraImg} style={styles.cameraIcon} />
+            <Image source={require('../../components/CameraIcon.tsx')} style={styles.cameraIcon} />
           )}
           <Text style={styles.photoText}>Please take a photo of the gas level on the dashboard</Text>
         </View>
@@ -101,7 +103,7 @@ const styles = StyleSheet.create({
   cameraIcon: {
     width: 60,
     height: 60,
-    marginRight: 10,
+    marginRight: 30,
   },
   photoText: {
     flexShrink: 1,

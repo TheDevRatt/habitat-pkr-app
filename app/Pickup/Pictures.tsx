@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import AppButton from '../../components/AppButton';
-import cameraImg from "../../assets/images/camera.png";
+import { useRouter } from "expo-router";
 
-const PicturesPage = () => {
+const Pictures = () => {
   const [frontImage, setFrontImage] = useState(null);
   const [backImage, setBackImage] = useState(null);
   const [rightImage, setRightImage] = useState(null);
   const [leftImage, setLeftImage] = useState(null);
+  const router = useRouter();
 
   const handleSubmission = () => {
     console.log('Photos submitted!');
@@ -16,6 +17,7 @@ const PicturesPage = () => {
     console.log('Back Image:', backImage);
     console.log('Right Image:', rightImage);
     console.log('Left Image:', leftImage);
+    router.push('Pickup/FinalPictures');
   };
 
   const openCamera = async (setImage) => {
@@ -51,7 +53,7 @@ const PicturesPage = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
-        Photo time!
+        Photo Time!
       </Text>
 
       {/* Front Photo */}
@@ -91,7 +93,7 @@ const PicturesPage = () => {
         style={styles.submitButton}
         onPress={handleSubmission}
       >
-        Submit
+        <Text style={styles.buttonText}>Submit</Text>
       </AppButton>
     </View>
   );
@@ -116,8 +118,9 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   cameraIcon: {
-    width: 60,
-    height: 60,
+    width: 90,
+    height: 90,
+    marginRight:20
   },
   photoText: {
     flexShrink: 1,
@@ -130,6 +133,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginRight: 10,
   },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
+  },
   submitButton: {
     height: 50,
     width: '90%',
@@ -138,8 +145,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     backgroundColor: 'orange', 
     borderRadius: 25, 
-    color: 'white', 
   },
 });
 
-export default PicturesPage;
+export default Pictures;

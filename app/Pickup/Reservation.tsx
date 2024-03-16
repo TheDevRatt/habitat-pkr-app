@@ -4,7 +4,7 @@ import AppButton from '../../components/AppButton';
 import AnalogClock from '../../components/AnalogClock';
 import { useRouter } from "expo-router";
 
-const DropOff = () => {
+const Reservation = () => {
   const router = useRouter();
 
   const handleDropOff = () => {
@@ -14,7 +14,7 @@ const DropOff = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>
-        Your reservation is Ending soon
+        Your Reservation is Active
       </Text>
 
       {/* Active Duration Box */}
@@ -23,22 +23,16 @@ const DropOff = () => {
           <AnalogClock />
         </View>
         <View>
-          <Text style={styles.durationText}>4:00Min</Text>
+          <Text style={styles.durationText}>12:02PM</Text>
         </View>
       </View>
 
       <Text style={styles.infoText}>
-        Please return to drop off location and press drop off before the timer ends
+      Please meet the key-holder at location within the 15 minute time slot to pick up the keys.
       </Text>
 
-      {/* Drop Off */}
-      <AppButton
-        style={styles.button}
-        onPress={handleDropOff}
-      >
-        <Text style={styles.buttonText}>Drop Off</Text>
-      </AppButton>
     </View>
+      
   );
 };
 const styles = StyleSheet.create({
@@ -50,9 +44,9 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 40,
     fontWeight: 'bold',
-    marginBottom: 5,
+    marginBottom: 1,
     marginTop: 80,
-    textAlign: 'center',
+    
   },
   durationBox: {
     flexDirection: 'row', 
@@ -88,22 +82,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     textAlign: 'center',
   },
-  button: {
-    height: 50,
-    width: '90%',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    marginTop: 20,
-    borderRadius: 25,
-    backgroundColor: 'orange',
-    borderWidth: 1,
-    borderColor: 'black',
-  },
-  buttonText: {
-    color: 'white',
-    textAlign: 'center',
-  },
+  
 });
 
-export default DropOff;
-
+export default Reservation;

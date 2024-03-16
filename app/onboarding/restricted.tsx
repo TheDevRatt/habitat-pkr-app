@@ -3,8 +3,17 @@ import { Platform, StyleSheet } from "react-native";
 import { Text, View, SafeAreaView } from "@/components/Themed";
 import { LinearGradient } from "expo-linear-gradient";
 import { moderateScale, verticalScale } from "@/constants/Metrics";
+import AppButton from "@/components/AppButton";
+import { Link, useRouter } from "expo-router";
 
 export default function ModalScreen() {
+  const router = useRouter();
+
+  const handleHomePress = () => {
+    console.log("Navigating to Create Account Page");
+    router.push("/(tabs)/Home");
+  };
+
   return (
     <LinearGradient
       colors={["#FFFFFF", "#0099CC"]}
@@ -13,8 +22,6 @@ export default function ModalScreen() {
     >
       <SafeAreaView style={styles.container}>
         <View style={styles.container}>
-          <View
-          />
           <View style={styles.box}>
             <View style={styles.boxStyles}>
               <Text style={styles.title}>Thank you for signing up!</Text>
@@ -24,7 +31,17 @@ export default function ModalScreen() {
               </Text>
             </View>
           </View>
-         </View>
+
+          <View style={styles.developerButton}>
+            <AppButton
+              widthPercentage={85}
+              paddingVertical={10}
+              onPress={handleHomePress}
+            >
+              (DEV) Home Page Button
+            </AppButton>
+          </View>
+        </View>
       </SafeAreaView>
     </LinearGradient>
   );
@@ -44,21 +61,26 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(30),
     textAlign: "center",
     fontWeight: "bold",
-    marginBottom:verticalScale(50)
+    marginBottom: verticalScale(50),
   },
- 
+
   box: {
     paddingVertical: "25%",
-    width:"80%",
+    width: "80%",
     borderRadius: 20,
-    borderColor:"#000",
+    borderColor: "#000",
     borderWidth: 1,
-    borderStyle:"solid"
+    borderStyle: "solid",
   },
   boxStyles: {
     alignItems: "center",
     textAlign: "center",
-    margin:10,
-    fontSize:moderateScale(18)
+    margin: 10,
+    fontSize: moderateScale(18),
+  },
+  developerButton: {
+    alignItems: "center",
+    backgroundColor: "transparent",
+    marginTop: verticalScale(35),
   },
 });

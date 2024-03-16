@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -6,14 +6,26 @@ import {
   SafeAreaView,
   StyleSheet,
 } from "react-native";
+
 import { LinearGradient } from "expo-linear-gradient";
 import AppButton from "../../components/AppButton";
 import { Link, useRouter } from "expo-router";
 import Card from "../../components/card";
-import { verticalScale, moderateScale } from "@/constants/Metrics";
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from "@/constants/Metrics";
+import BackButton from "@/components/BackButton";
 
 const Membership = () => {
   const router = useRouter();
+
+  const [selectedMembership, setSelectedMembership] = useState(null);
+
+  const handleSelectMembership = (membership: any) => {
+    setSelectedMembership(membership);
+  };
 
   return (
     <LinearGradient
@@ -22,32 +34,53 @@ const Membership = () => {
       style={styles.gradient}
     >
       <SafeAreaView style={styles.container}>
-        <View>
+        <View style={styles.backButtonContainer}>
+          <BackButton />
+        </View>
+
+        <View style={styles.titleContainer}>
           <Text style={styles.title}>Membership</Text>
+        </View>
+
+        <View style={styles.subtitleContainer}>
           <Text style={styles.subtitle}>Select a membership plan</Text>
         </View>
-        <View style={styles.cardContainer}>
-          <Card>
-            <Text style={styles.cardTitle}>Monthly Plan</Text>
-            <Text style={styles.cardPrice}>$12.99</Text>
-            <Text style={styles.cardDescription}>per Month</Text>
-          </Card>
-        </View>
-        <View style={styles.cardContainer}>
-          <Card>
-            <Text style={styles.cardTitle}>Yearly Plan</Text>
-            <Text style={styles.cardPrice}>$120.99</Text>
-            <Text style={styles.cardDescription}>per Year</Text>
-          </Card>
-        </View>
+
+        <TouchableOpacity
+          onPress={() => handleSelectMembership("Monthly Plan")}
+        >
+          <View style={styles.cardContainer}>
+            <Card
+              isSelected={selectedMembership === "Monthly Plan"}
+              onPress={() => handleSelectMembership("Monthly Plan")}
+            >
+              <Text style={styles.cardTitle}>Monthly Plan</Text>
+              <Text style={styles.cardPrice}>$12.99</Text>
+              <Text style={styles.cardDescription}>per Month</Text>
+            </Card>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => handleSelectMembership("Yearly Plan")}>
+          <View style={styles.cardContainer}>
+            <Card
+              isSelected={selectedMembership === "Yearly Plan"}
+              onPress={() => handleSelectMembership("Yearly Plan")}
+            >
+              <Text style={styles.cardTitle}>Yearly Plan</Text>
+              <Text style={styles.cardPrice}>$120.99</Text>
+              <Text style={styles.cardDescription}>per Year</Text>
+            </Card>
+          </View>
+        </TouchableOpacity>
+
         <View style={styles.buttonContainer}>
           <AppButton
-           borderRadius={20}
-           widthPercentage={85}
-           paddingVertical={11}
-           onPress={() => router.push("/onboarding/paymentInfo")}
+            widthPercentage={85}
+            paddingVertical={10}
+            onPress={() => router.push("/onboarding/paymentInfo")}
           >
-            <Text style={styles.buttonText}>Continue</Text>
+            <Text>Continue</Text>
           </AppButton>
         </View>
       </SafeAreaView>
@@ -61,50 +94,61 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   container: {
-    alignItems: 'center',
+    flex: 1,
     backgroundColor: "transparent",
+    justifyContent: "center",
+    paddingHorizontal: horizontalScale(10),
+  },
+  backButtonContainer: {
+    flexDirection: "row",
+    backgroundColor: "transparent",
+    marginLeft: horizontalScale(20),
+  },
+  titleContainer: {
+    alignItems: "center",
+    backgroundColor: "transparent",
+    marginTop: verticalScale(10),
   },
   title: {
-    fontFamily: 'karlaM',
-    marginTop: verticalScale(20),
+    fontFamily: "karlaM",
     fontSize: moderateScale(44),
+  },
+  subtitleContainer: {
+    alignItems: "center",
     backgroundColor: "transparent",
   },
   subtitle: {
-    fontFamily: 'karlaM',
-    marginVertical: verticalScale(30),
+    fontFamily: "karlaM",
+    marginVertical: verticalScale(40),
     fontSize: moderateScale(26),
   },
   cardContainer: {
-    width: '100%',
-    alignItems: 'center',
+    width: "100%",
+    alignItems: "center",
     marginVertical: verticalScale(25),
   },
   cardTitle: {
-    fontFamily: 'karlaR',
-    textAlign:'center',
+    fontFamily: "karlaR",
+    textAlign: "center",
     fontSize: moderateScale(28),
     backgroundColor: "transparent",
-    marginTop:verticalScale(10),
+    marginTop: verticalScale(10),
   },
   cardPrice: {
-    fontFamily: 'karlaM',
-    textAlign:'center',
+    fontFamily: "karlaM",
+    textAlign: "center",
     fontSize: moderateScale(40),
-    marginVertical:verticalScale(15),
+    marginVertical: verticalScale(15),
   },
   cardDescription: {
-    fontFamily: 'karlaR',
-    textAlign:'center',
+    fontFamily: "karlaR",
+    textAlign: "center",
     fontSize: moderateScale(20),
   },
   buttonContainer: {
-    marginTop: verticalScale(55),
+    alignItems: "center",
     backgroundColor: "transparent",
-  },
-  buttonText: {
-    fontFamily: 'karlaR',
-    fontSize: 24,
+    marginTop: verticalScale(35),
   },
 });
 

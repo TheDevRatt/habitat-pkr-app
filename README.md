@@ -139,14 +139,47 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 
 ## Roadmap
 
-- [ ] Your Profile
-- [ ] Reservations
-- [ ] Terms of Service
-  - [ ] Terms of Use
+- [x] Home page
+  - [x] Apple/Google sign up functionality
+  - [x] Create Account Page
+  - [x] Login Page
+  - [x] Add information Page
+  - [x] Select Membership Page
+  - [x] Add payment information page
+  - [x] Notifiaction of Signup page
+  - [x] Forgot Password page
+- [x] Database Functionality
+- [x] Profile Page
+  - [ ] Ride History Page
+  - [ ] License and Insurance Page
+  - [ ] Terms and Conditions Page
+  - [ ] Payment History Page
+  - [ ] FAQ Page
+  - [ ] Sub Account Page
+  - [ ] Add Sub Account Page
+- [x] Reservation Page
+  - [x] Detailed car view page
+  - [x] Select booking date page
+  - [x] My Reservations page
+  - [x] Booking Details Page
+  - [x] Choose Payment Page
+- [ ] Pick up and Drop off Page
+  - [ ] Active Reservation pages
+  - [ ] Accident Report Pages
+  - [ ] Reservation Warning page
+- [ ] Key Holder Page
+  - [ ] Reservations History page
+  - [ ] Active reservations page
+  - [ ] Damage report page
+- [ ] Admin Page
+  - [ ] Signed up users page
+  - [ ] Blocked users page
+  - [ ] Keyholders page
+  - [ ] Add user page
+  - [ ] Manage user page
+  - [ ] Add car page
+  - [ ] Manage car page
 - [ ] Payment Service
-- [ ] Database Functionality
-- [ ] Pickup and Drop-off
-- [ ] Admin Panel
 
 See the [open issues](https://github.com/TheDevRatt/habitat-pkr-app/issues) for a full list of proposed features (and known issues).
 

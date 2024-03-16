@@ -14,6 +14,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from "@/components/Themed";
+import { Link, useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import {
   horizontalScale,
@@ -28,7 +29,6 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 import ProfileContainer from "@/components/ProfileContainer";
 
-
 if (
   Platform.OS === "android" &&
   UIManager.setLayoutAnimationEnabledExperimental
@@ -37,10 +37,12 @@ if (
 }
 
 const Home = () => {
-  const user = auth.currentUser;
-  let userName = "placeholder";
+  const router = useRouter();
 
-  if (user !== null) {
+  const user = auth.currentUser;
+  let userName = " ";
+
+  if (user !== null && user.displayName !== null) {
     userName = user.displayName;
   }
 
@@ -71,7 +73,6 @@ const Home = () => {
       hourlyRate: 25,
       imageUrl: require("@/assets/images/carImagesTEMP/image 10.png"),
     },
-    // Add more car data as needed
   ];
 
   const [filter, setFilter] = useState("all");
@@ -81,6 +82,10 @@ const Home = () => {
 
   const handleFilterPress = (selectedFilter: any) => {
     setFilter(selectedFilter);
+  };
+
+  const goToBooking = (carId: number) => {
+    router.push({ pathname: "/home/${carId}" });
   };
 
   const filterOptions = [
@@ -151,10 +156,6 @@ const Home = () => {
             </View>
           )}
         </View>
-        {/* <View style={styles.searchContainer}>
-          <Text style={styles.instructions}>Select a car to rent</Text>
-          <EvilIcons name="search" size={45} color="black" />
-        </View> */}
 
         <View style={styles.filterLogos}>
           <ScrollView horizontal showsHorizontalScrollIndicator={true}>
@@ -187,15 +188,20 @@ const Home = () => {
         <View style={styles.carList}>
           <ScrollView style={styles.carCardScroll}>
             {filteredCars.map((car, index) => (
-              <CarCard
+              <TouchableOpacity
                 key={index}
-                make={car.make}
-                model={car.model}
-                transmission={car.transmission}
-                dailyRate={car.dailyRate}
-                hourlyRate={car.hourlyRate}
-                imageUrl={car.imageUrl}
-              />
+                style={{ backgroundColor: "transparent" }}
+                onPress={() => goToBooking(index)}
+              >
+                <CarCard
+                  make={car.make}
+                  model={car.model}
+                  transmission={car.transmission}
+                  dailyRate={car.dailyRate}
+                  hourlyRate={car.hourlyRate}
+                  imageUrl={car.imageUrl}
+                />
+              </TouchableOpacity>
             ))}
           </ScrollView>
         </View>
