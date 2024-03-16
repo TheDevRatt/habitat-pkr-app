@@ -185,7 +185,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
   - [ ] Reservations History page
   - [ ] Active reservations page
   - [ ] Damage report page
-- [ ] Admin Page
+- [x] Admin Page
   - [ ] Signed up users page
   - [ ] Blocked users page
   - [ ] Keyholders page

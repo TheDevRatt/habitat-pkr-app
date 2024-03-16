@@ -32,6 +32,26 @@ const Admin = () => {
   // Dummy function to navigate to different screens
   const handleSignUpRequests = () => {
     console.log("Navigating to sign up requests");
+    router.push("../admin/SignUpRequests");
+  };
+  const handleBlockedUsers = () => {
+    console.log("Navigating to sign up requests");
+    //router.push("/tabs/Account/RideHistory");
+  };
+  const handleKeyholders = () => {
+    console.log("Navigating to sign up requests");
+    //router.push("/tabs/Account/RideHistory");
+  };
+  const handleUsers = () => {
+    console.log("Navigating to sign up requests");
+    //router.push("/tabs/Account/RideHistory");
+  };
+  const handleAddingNewUser = () => {
+    console.log("Navigating to sign up requests");
+    //router.push("/tabs/Account/RideHistory");
+  };
+  const handleAddingNewAdmin = () => {
+    console.log("Navigating to sign up requests");
     //router.push("/tabs/Account/RideHistory");
   };
 
@@ -44,98 +64,103 @@ const Admin = () => {
         </View>
       </View>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => handleSignUpRequests()}
+      <ScrollView
+        style={styles.scrollViewContainer}
+        showsVerticalScrollIndicator={true}
       >
-        <View style={styles.buttonContainer}>
-          <View style={styles.iconContainer}>
-            <Text style={styles.text}>Sign Up Requests</Text>
-          </View>
-          <OrangeArrowIcon />
-        </View>
-      </TouchableOpacity>
+        <View style={styles.innerScrollViewContent}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => handleSignUpRequests()}
+          >
+            <View style={styles.buttonContainer}>
+              <View style={styles.iconContainer}>
+                <Text style={styles.text}>Sign Up Requests</Text>
+              </View>
+              <OrangeArrowIcon />
+            </View>
+          </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => handleSignUpRequests()}
-      >
-        <View style={styles.buttonContainer}>
-          <View style={styles.iconContainer}>
-            <Text style={styles.text}>Blocked Users</Text>
-          </View>
-          <OrangeArrowIcon />
-        </View>
-      </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => handleBlockedUsers()}
+          >
+            <View style={styles.buttonContainer}>
+              <View style={styles.iconContainer}>
+                <Text style={styles.text}>Blocked Users</Text>
+              </View>
+              <OrangeArrowIcon />
+            </View>
+          </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => handleSignUpRequests()}
-      >
-        <View style={styles.buttonContainer}>
-          <View style={styles.iconContainer}>
-            <Text style={styles.text}>Keyholders</Text>
-          </View>
-          <OrangeArrowIcon />
-        </View>
-      </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => handleKeyholders()}
+          >
+            <View style={styles.buttonContainer}>
+              <View style={styles.iconContainer}>
+                <Text style={styles.text}>Keyholders</Text>
+              </View>
+              <OrangeArrowIcon />
+            </View>
+          </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => handleSignUpRequests()}
-      >
-        <View style={styles.buttonContainer}>
-          <View style={styles.iconContainer}>
-            <Text style={styles.text}>Users</Text>
-          </View>
-          <OrangeArrowIcon />
-        </View>
-      </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => handleUsers()}>
+            <View style={styles.buttonContainer}>
+              <View style={styles.iconContainer}>
+                <Text style={styles.text}>Users</Text>
+              </View>
+              <OrangeArrowIcon />
+            </View>
+          </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => handleSignUpRequests()}
-      >
-        <View style={styles.buttonContainer}>
-          <View style={styles.iconContainer}>
-            <Text style={styles.text}>Add a new user</Text>
-          </View>
-          <OrangeArrowIcon />
-        </View>
-      </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => handleAddingNewUser()}
+          >
+            <View style={styles.buttonContainer}>
+              <View style={styles.iconContainer}>
+                <Text style={styles.text}>Add a new user</Text>
+              </View>
+              <OrangeArrowIcon />
+            </View>
+          </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => handleSignUpRequests()}
-      >
-        <View style={styles.buttonContainer}>
-          <View style={styles.iconContainer}>
-            <Text style={styles.text}>Add a new admin</Text>
-          </View>
-          <OrangeArrowIcon />
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => handleAddingNewAdmin()}
+          >
+            <View style={styles.buttonContainer}>
+              <View style={styles.iconContainer}>
+                <Text style={styles.text}>Add a new admin</Text>
+              </View>
+              <OrangeArrowIcon />
+            </View>
+          </TouchableOpacity>
         </View>
-      </TouchableOpacity>
+      </ScrollView>
 
       <View style={styles.appButtonContainer}>
-        <AppButton
-          widthPercentage={85}
-          paddingVertical={10}
-          onPress={() => router.push("/onboarding/paymentInfo")}
-          backgroundColor="#E55D25"
-        >
-          <Text textColor="white">Add Cars</Text>
-        </AppButton>
-      </View>
-
-      <View style={styles.appButtonContainer}>
-        <AppButton
-          widthPercentage={85}
-          paddingVertical={10}
-          onPress={() => router.push("/onboarding/paymentInfo")}
-          backgroundColor="#E55D25"
-        >
-          <Text textColor="white">Manage Cars</Text>
-        </AppButton>
+        <View style={styles.appButton}>
+          <AppButton
+            widthPercentage={85}
+            paddingVertical={10}
+            onPress={() => router.push("/onboarding/paymentInfo")}
+            backgroundColor="#E55D25"
+          >
+            <Text textColor="white">Add Cars</Text>
+          </AppButton>
+        </View>
+        <View style={styles.appButton}>
+          <AppButton
+            widthPercentage={85}
+            paddingVertical={10}
+            onPress={() => router.push("/onboarding/paymentInfo")}
+            backgroundColor="#E55D25"
+          >
+            <Text textColor="white">Manage Cars</Text>
+          </AppButton>
+        </View>
       </View>
     </View>
   );
@@ -152,7 +177,6 @@ const styles = StyleSheet.create({
     paddingVertical: verticalScale(15),
   },
   signoutContainer: {
-    right: 0,
     top: verticalScale(45),
     left: horizontalScale(100),
     alignItems: "flex-start",
@@ -160,6 +184,13 @@ const styles = StyleSheet.create({
   title: {
     paddingTop: moderateScale(30),
     fontSize: moderateScale(40),
+  },
+  scrollViewContainer: {
+    height: verticalScale(20),
+    marginBottom: verticalScale(20),
+  },
+  innerScrollViewContent: {
+    alignItems: "center",
   },
   buttonContainer: {
     flexDirection: "row",
@@ -186,7 +217,26 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
   },
   appButtonContainer: {
-    marginTop: verticalScale(30),
+    paddingBottom: verticalScale(60),
+    ...Platform.select({
+      ios: {
+        paddingBottom: verticalScale(75),
+      },
+      android: {
+        paddingBottom: verticalScale(60),
+      },
+    }),
+  },
+  appButton: {
+    paddingBottom: verticalScale(20),
+    ...Platform.select({
+      ios: {
+        paddingBottom: verticalScale(20),
+      },
+      android: {
+        paddingBottom: verticalScale(20),
+      },
+    }),
   },
 });
 
