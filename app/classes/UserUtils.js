@@ -1,9 +1,16 @@
 import { auth } from "@/firebase";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { signOut } from "firebase/auth";
 
 const storage = getStorage();
+const db = getFirestore();
 
 // Moved getUserID here from User.js
 async function getUserID() {
@@ -37,4 +44,17 @@ async function signOutUser() {
   }
 }
 
-export { getUserID, fileExists, signOutUser };
+// Function to fetch unapproved users
+async function fetchUnapprovedUsers() {
+  const q = query(collection(db, "users"), where("Approved", "==", false));
+  const querySnapshot = await getDocs(q);
+  const users = querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    FirstName: doc.data().FirstName,
+    LastName: doc.data().LastName,
+    //Email: doc.data().Email,
+  }));
+  return users;
+}
+
+export { getUserID, fileExists, signOutUser, fetchUnapprovedUsers };

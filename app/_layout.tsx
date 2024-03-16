@@ -133,6 +133,11 @@ function RootLayoutNav() {
       <Stack.Screen name="home/[id]" options={{ headerShown: false }} />
       <Stack.Screen name="home/Booking" options={{ headerShown: false }} />
       <Stack.Screen name="home/Payment" options={{ headerShown: false }} />
+
+      <Stack.Screen
+        name="admin/signuprequests"
+        options={{ headerShown: false }}
+      />
     </Stack>
   );
 }

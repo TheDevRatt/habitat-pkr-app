@@ -32,7 +32,7 @@ const Admin = () => {
   // Dummy function to navigate to different screens
   const handleSignUpRequests = () => {
     console.log("Navigating to sign up requests");
-    router.push("../admin/SignUpRequests");
+    router.push("/admin/signuprequests");
   };
   const handleBlockedUsers = () => {
     console.log("Navigating to sign up requests");
