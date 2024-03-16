@@ -25,9 +25,6 @@ const uploadToFirebase = async (uri, name, location) => {
     uploadTask.on(
       "state_changed",
       (snapshot) => {
-        //const progress =
-        //(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        //onProgress && onProgress(progress);
       },
       (error) => {
         // Handle unsuccessful uploads
@@ -106,7 +103,6 @@ async function openFilePicker(fileName, location, userID) {
 // Check if a file exists
 async function fileExists(fileName, location) {
   const filepath = location + "/" + fileName;
-  //console.log(filepath);
   const docRef = ref(storage, filepath);
   try {
     await getDownloadURL(docRef);

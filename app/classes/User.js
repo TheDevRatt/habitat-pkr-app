@@ -248,20 +248,6 @@ async function getUserVerified(email) {
   return doc.data().Approved;
 }
 
-//const router = useRouter();
-//async function userState(){
-//onAuthStateChanged(auth, (user) => {
-//if (user) {
-//const uid = user.uid;
-//} else {
-//router.push("/onboarding/logIn");
-//}
-//});
-//}
-
-//TODO updateUser function
-//async function updateUser(){
-//}
 
 // Function to check if a user exists by searching
 // for their email

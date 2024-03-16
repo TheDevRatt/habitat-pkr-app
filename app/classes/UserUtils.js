@@ -1,5 +1,12 @@
-import { auth } from "@/firebase";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { db, auth } from "@/firebase";
+import {  collection,
+          addDoc,
+          getDocs,
+          getDoc,
+          doc,
+          setDoc,
+          query,
+          where, } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 const storage = getStorage();
@@ -23,4 +30,33 @@ async function fileExists(fileName, location) {
   }
 }
 
-export { getUserID, fileExists };
+async function fetchReservations(){
+    let reservations;
+    await getDocs(collection(db, "reservations"))
+        .then((querySnapshot)=>{
+            reservations = querySnapshot.docs
+                .map((doc) => ({
+                CarID: doc.data().CarID,
+                UserID: doc.data().UserID,
+                StartTime: doc.data().StartTime,
+                EndTime: doc.data().EndTime,
+                }));
+    console.log(reservations);
+    })
+    return reservations;
+
+
+
+    }
+
+async function test(){
+    console.log("test");
+    let testR = await fetchReservations();
+    console.log(testR);
+
+}
+
+//test();
+
+
+export { getUserID, fileExists, fetchReservations };
