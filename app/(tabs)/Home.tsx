@@ -28,6 +28,7 @@ import CarCard from "@/components/CarCard";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 import ProfileContainer from "@/components/ProfileContainer";
+import { fetchVehicles } from "../classes/UserUtils";
 
 if (
   Platform.OS === "android" &&
@@ -36,7 +37,41 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
+let vehicleList = [];
+const loadData = () =>{
+let [vehicleList, setVehicleList] = useState(null);
+let [loading, setLoading] = useState(true);
+let [error, setError] = useState(null);
+    useEffect(() => {
+        async function fetchVehicleList() {
+            try {
+                vehicleList = await fetchVehicles();
+                setVehicleList(vehicleList);
+                setLoading(false);
+            } catch (error) {
+                setError(error);
+                setLoading(false);
+            }
+        }
+        fetchVehicleList();
+
+        }, []);
+    console.log(vehicleList);
+    if (loading) {
+        return <Text style={styles.greeting}>Loading</Text>;
+        }
+    if (error) {
+        return <Text style={styles.greeting}>Error: {error.message}</Text>;
+        }
+}
+
+
 const Home = () => {
+  loadData();
+  console.log("test1");
+
+  const carData = vehicleList;
+  console.log(carData);
   const router = useRouter();
 
   const user = auth.currentUser;
@@ -48,32 +83,6 @@ const Home = () => {
 
   const location = "Ptbo region";
 
-  const carData = [
-    {
-      make: "Honda",
-      model: "Civic",
-      transmission: "Automatic",
-      dailyRate: 150,
-      hourlyRate: 22,
-      imageUrl: require("@/assets/images/carImagesTEMP/image 8.png"),
-    },
-    {
-      make: "Toyota",
-      model: "Yaris",
-      transmission: "Automatic",
-      dailyRate: 130,
-      hourlyRate: 20,
-      imageUrl: require("@/assets/images/carImagesTEMP/image 9.png"),
-    },
-    {
-      make: "Nissan",
-      model: "Juke",
-      transmission: "Automatic",
-      dailyRate: 165,
-      hourlyRate: 25,
-      imageUrl: require("@/assets/images/carImagesTEMP/image 10.png"),
-    },
-  ];
 
   const [filter, setFilter] = useState("all");
 
@@ -194,12 +203,12 @@ const Home = () => {
                 onPress={() => goToBooking(index)}
               >
                 <CarCard
-                  make={car.make}
-                  model={car.model}
-                  transmission={car.transmission}
-                  dailyRate={car.dailyRate}
-                  hourlyRate={car.hourlyRate}
-                  imageUrl={car.imageUrl}
+                  make={car.Make}
+                  model={car.Model}
+                  transmission={car.Transmission}
+                  dailyRate={car.DailyRate}
+                  hourlyRate={car.HourlyRate}
+                  imageUrl={car.ImageUrl}
                 />
               </TouchableOpacity>
             ))}

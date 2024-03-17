@@ -121,4 +121,14 @@ async function updateUserDocumentWithFileUrl(userID, fileUrl, fileType) {
   await setDoc(userDocRef, updateData, { merge: true });
 }
 
-export { uploadToFirebase, openCamera, openFilePicker, fileExists };
+async function returnImage(filePath){
+
+    const storageRef = ref(storage, filePath);
+    const url = await getDownloadURL(storageRef);
+    console.log(url);
+    return url;
+
+}
+
+
+export { uploadToFirebase, openCamera, openFilePicker, fileExists, returnImage };

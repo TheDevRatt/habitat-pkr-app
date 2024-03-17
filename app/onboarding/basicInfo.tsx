@@ -18,7 +18,6 @@ import AppButton from "../../components/AppButton";
 import { Link, useRouter } from "expo-router";
 import DriversLicenseLogo from "@/components/DriversLicenseLogo";
 import InsuranceLogo from "@/components/InsuranceLogo";
-// import * as Progress from 'react-native-progress';
 import { openCamera, openFilePicker } from "./../classes/CloudStorage";
 import BackButton from "@/components/BackButton";
 import { auth } from "@/firebase";

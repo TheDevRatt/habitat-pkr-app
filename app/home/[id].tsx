@@ -89,8 +89,8 @@ const Details = () => {
                 backgroundColor="#E55D25"
                 widthPercentage={50}
                 textStyle={{ color: "white" }}
-                // onPress={() => console.log("Rent Now")}
-                onPress={() => router.push("/home/Payment")}
+                onPress={() => console.log("Rent Now")}
+                //onPress={() => router.push("/home/Payment")}
               >
                 Rent Now
               </AppButton>

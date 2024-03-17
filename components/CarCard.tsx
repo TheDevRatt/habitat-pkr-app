@@ -30,7 +30,7 @@ const CarCard: React.FC<CarCardProps> = ({
         <Text style={styles.rate}>${hourlyRate}/hour</Text>
       </View>
       <View>
-        <Image source={imageUrl} style={styles.image} />
+        <Image source={imageUrl}style={styles.image} />
       </View>
     </View>
   );

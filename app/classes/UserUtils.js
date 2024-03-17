@@ -44,14 +44,32 @@ async function fetchReservations(){
     console.log(reservations);
     })
     return reservations;
-
-
-
     }
+
+async function fetchVehicles(){
+
+    const q = query(collection(db, "vehicles"), where("Status", "==", true));
+    const querySnapshot = await getDocs(q);
+    const vehicles = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        DayRate: doc.data().DayRate,
+        Capacity: doc.data().Capacity,
+        GasMileage: doc.data().GasMileage,
+        HourlyRate: doc.data().HourlyRate,
+        Make: doc.data().Make,
+        Model: doc.data().Model,
+        Status: doc.data().Status,
+        Transmission: doc.data().Transmission,
+        Year: doc.data().Year,
+        imageURL: doc.data().imageURL,
+    }));
+    return vehicles
+}
+
 
 async function test(){
     console.log("test");
-    let testR = await fetchReservations();
+    let testR = await fetchVehicles();
     console.log(testR);
 
 }
@@ -59,4 +77,4 @@ async function test(){
 //test();
 
 
-export { getUserID, fileExists, fetchReservations };
+export { getUserID, fileExists, fetchReservations, fetchVehicles };
