@@ -37,7 +37,7 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-let vehicleList = [];
+let vehicles = [];
 const loadData = () =>{
 let [vehicleList, setVehicleList] = useState(null);
 let [loading, setLoading] = useState(true);
@@ -54,24 +54,21 @@ let [error, setError] = useState(null);
             }
         }
         fetchVehicleList();
-
         }, []);
-    console.log(vehicleList);
     if (loading) {
         return <Text style={styles.greeting}>Loading</Text>;
         }
     if (error) {
         return <Text style={styles.greeting}>Error: {error.message}</Text>;
         }
+    vehicles = vehicleList;
+    return;
 }
 
 
 const Home = () => {
   loadData();
-  console.log("test1");
-
-  const carData = vehicleList;
-  console.log(carData);
+  const carData = vehicles;
   const router = useRouter();
 
   const user = auth.currentUser;
@@ -206,9 +203,9 @@ const Home = () => {
                   make={car.Make}
                   model={car.Model}
                   transmission={car.Transmission}
-                  dailyRate={car.DailyRate}
+                  dailyRate={car.DayRate}
                   hourlyRate={car.HourlyRate}
-                  imageUrl={car.ImageUrl}
+                  imageUrl={car.imageURL}
                 />
               </TouchableOpacity>
             ))}

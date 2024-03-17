@@ -20,7 +20,7 @@ async function getUserID() {
 // Check if a file exists
 async function fileExists(fileName, location) {
   const filepath = location + "/" + fileName;
-  //console.log(filepath);
+  //const filepath = "gs://pkrides-d3c59.appspot.com/ + location + "/" + fileName;
   const docRef = ref(storage, filepath);
   try {
     await getDownloadURL(docRef);
