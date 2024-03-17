@@ -91,7 +91,7 @@ const Details = () => {
                 widthPercentage={50}
                 textStyle={{ color: "white" }}
                 //onPress={() => console.log("Rent Now")}
-                onPress={() => router.push("/home/Payment")}
+                onPress={() => router.push("/home/Bookings")}
               >
                 Rent Now
               </AppButton>

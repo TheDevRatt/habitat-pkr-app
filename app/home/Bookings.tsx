@@ -15,11 +15,7 @@ import AppButton from "@/components/AppButton";
 import { selectedVehicle } from "../(tabs)/Home";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DateTimePicker from '@react-native-community/datetimepicker';
-
-
-
-let selectedPickUpDate = " ",
-    selectedDropOffDate = " ";
+import { reserve } from "../classes/Rental";
 
 const Payment = () => {
   const navigation = useNavigation();
@@ -28,10 +24,17 @@ const Payment = () => {
     navigation.goBack(); // Navigate to the previous screen
   };
 
-  const Init = [
-  { id: 1, value: '', visible: false, },
-  { id: 2, value: '', visible: false, },
-];
+  const options= {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }
+
+
+  let t = new Date();
+  t.setHours(t.getHours() + 1);
+  const Init = [{ id: 1, value: new Date(), visible: false, },
+                { id: 2, value: t, visible: false, },];
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [Data, SetData] = useState(Init);
@@ -55,19 +58,15 @@ const Payment = () => {
       let temp = [...Data];
       temp[index].visible = true;
       SetData(temp);
-      console.log(temp);
     } catch (error) {
       console.log(error);
     }
   };
 
-
-
-
   const router = useRouter();
   let bookingDetails = {
-    make: "Honda",
-    model: "Civic",
+    make: selectedVehicle.Make,
+    model: selectedVehicle.Model,
     bookingId: "743774432",
     mileage: "Unlimited",
     insurance: "Included",
@@ -97,12 +96,10 @@ const Payment = () => {
             <Text style={styles.detailLabel}>Pick Up:</Text>
             <View style={styles.buttonContainer}>
                 <AppButton
-
                     onPress={() => onOpen(0)}
                     backgroundColor="#E55D25"
                     widthPercentage={45}
                     textStyle={{ color: "white" }}
-
                     >
                     Pickup Time
                 </AppButton>
@@ -110,6 +107,7 @@ const Payment = () => {
                         isVisible={Data[0].visible}
                         minimumDate={new Date()}
                         maximumDate={new Date(new Date().setFullYear(new Date().getFullYear() + 1))}
+                        minuteInterval={30}
                         mode="datetime"
                         onConfirm={(data) => handleDateConfirm(data, 0)}
                         onCancel={() => onCancel(0)}
@@ -118,22 +116,20 @@ const Payment = () => {
 
             <Text style={styles.detailValue}>
               <EvilIcons name="calendar" size={24} color="#0099cc" />{" "}
-              {Data[0].value.toString()}
+              {Data[0].value.toLocaleDateString("en-US", options)}
               {"     "}
               <EvilIcons name="clock" size={24} color="#0099cc" />
-              {''}
+              {Data[0].value.toLocaleTimeString()}
             </Text>
           </View>
           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>Drop Off:</Text>
             <View style={styles.buttonContainer}>
                 <AppButton
-
                     onPress={() => onOpen(1)}
                     backgroundColor="#E55D25"
                     widthPercentage={45}
                     textStyle={{ color: "white" }}
-
                     >
                     Drop Off Time
                 </AppButton>
@@ -141,6 +137,7 @@ const Payment = () => {
                         isVisible={Data[1].visible}
                         minimumDate={new Date()}
                         maximumDate={new Date(new Date().setFullYear(new Date().getFullYear() + 1))}
+                        minuteInterval={30}
                         mode="datetime"
                         onConfirm={(data) => handleDateConfirm(data, 1)}
                         onCancel={() => onCancel(1)}
@@ -148,10 +145,10 @@ const Payment = () => {
             </View>
             <Text style={styles.detailValue}>
               <EvilIcons name="calendar" size={24} color="#0099cc" />{" "}
-              {Data[1].value.toString()}
+              {Data[1].value.toLocaleDateString("en-US", options)}
               {"    "}
               <EvilIcons name="clock" size={24} color="#0099cc" />
-              {""}
+              {Data[1].value.toLocaleTimeString()}
             </Text>
           </View>
         <View style={styles.detailsContainer}>
@@ -186,19 +183,14 @@ const Payment = () => {
           <View style={styles.buttonContainer}>
             <AppButton
               onPress={async () => {
-
-
-
-
-
-
-              router.push({ pathname: "/home/${carId}" })}
+              let reservation = await reserve(selectedVehicle.id, Data[0].value, Data[1].value);
+              if (reservation == "Booked"){
+                alert("Reservation complete");
+                //router.push({ pathname: "/home/${carId}" })}
+              }else{
+                alert(reservation);
               }
-
-
-
-
-
+              }}
 
               backgroundColor="#E55D25"
               widthPercentage={45}

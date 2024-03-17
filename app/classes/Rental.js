@@ -14,56 +14,28 @@ import { db, auth } from "@/firebase";
 const ONE_HOUR = 3600000;
 
 
-
-//////// TESTING //////////////
-
-// Date( year, month, day, hour, minute)
-const start = new Date(2024, 2, 9, 6, 0);
-const end = new Date(2024, 2, 9, 20, 0);
-
-const TcarID = 'toyotacorolla2018';
-const TstartTime = start;
-const TendTime = end;
-
-//////////////////////////////
-
-
-async function bookingVerification(startTime, endTime){
+function bookingVerification(startTime, endTime){
 
     let start = startTime.getTime();
     let end = endTime.getTime();
 
-
-    if (start < end){
+    // Check that the pickup time is not set after the drop off time
+    if (start > end){
         return "Drop off cannot occur before pickup";
     }
 
-
+    // Check that the pickup time is not set before the current time
     const currentDate = new Date().getTime();
     if ( start < currentDate ){
         return "Pickup cannot occur before the current time";
     }
 
-
-    if ( (end - start) < ONE_HOUR){
+    // Make sure the booking is for an hour or more
+    if ( (end - start) <= ONE_HOUR){
         return "You cannot reserve the vehicle for less than 1 hour";
     }
-
-
-
-
-
-
-
+    return "pass";
 }
-
-
-
-
-
-
-
-
 
 
 // Check if a reservation starts or ends in the attempted booking
@@ -106,9 +78,13 @@ async function availability(carID, startTime, endTime){
 // Function to upload reservation to database
 async function reserve(carID, startTime, endTime){
 
+    let verifyTimes = bookingVerification(startTime, endTime);
+    console.log(verifyTimes);
+    if (verifyTimes != "pass"){ return verifyTimes; }
+
     let checkAvailability = await availability(carID, startTime, endTime);
-    if (checkAvailability == false){
-        return "A reservation exists in that time";}
+    if (checkAvailability == false){ return "A reservation exists in that time"; }
+
 
     let startName = (startTime.getFullYear() + "-" +
                     (startTime.getMonth() + 1) + "-" +
@@ -118,7 +94,7 @@ async function reserve(carID, startTime, endTime){
 
     let tripName = carID + "_" + startName;
 
-    let userID = "placeholder";
+    let userID = "";
     let user = auth.currentUser;
     if(user !== null){
         userID = user.uid;
@@ -139,32 +115,10 @@ async function reserve(carID, startTime, endTime){
         alert(e);
     }
 
-    return "Booked!";
+    return "Booked";
 
 }
 
 
-async function test(){
-    let book = await reserve(TcarID, TstartTime, TendTime);
-    console.log(book);
-}
 
-//test();
-
-async function pickup(reservation){
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
+export { reserve };
