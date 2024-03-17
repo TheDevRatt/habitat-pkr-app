@@ -38,37 +38,14 @@ if (
 }
 
 let vehicles = [];
-const loadData = () =>{
-let [vehicleList, setVehicleList] = useState(null);
-let [loading, setLoading] = useState(true);
-let [error, setError] = useState(null);
-    useEffect(() => {
-        async function fetchVehicleList() {
-            try {
-                vehicleList = await fetchVehicles();
-                setVehicleList(vehicleList);
-                setLoading(false);
-            } catch (error) {
-                setError(error);
-                setLoading(false);
-            }
-        }
-        fetchVehicleList();
-        }, []);
-    if (loading) {
-        return <Text style={styles.greeting}>Loading</Text>;
-        }
-    if (error) {
-        return <Text style={styles.greeting}>Error: {error.message}</Text>;
-        }
-    vehicles = vehicleList;
-    return;
-}
-
+export let selectedVehicle = [];
 
 const Home = () => {
+
   loadData();
+
   const carData = vehicles;
+
   const router = useRouter();
 
   const user = auth.currentUser;
@@ -80,7 +57,6 @@ const Home = () => {
 
   const location = "Ptbo region";
 
-
   const [filter, setFilter] = useState("all");
 
   const filteredCars =
@@ -91,7 +67,8 @@ const Home = () => {
   };
 
   const goToBooking = (carId: number) => {
-    router.push({ pathname: "/home/${carId}" });
+    selectedVehicle = vehicles[carId];
+    router.push({ pathname: "/home/CarInfo" });
   };
 
   const filterOptions = [
@@ -215,6 +192,33 @@ const Home = () => {
     </LinearGradient>
   );
 };
+
+const loadData = () =>{
+let [vehicleList, setVehicleList] = useState(null);
+let [loading, setLoading] = useState(true);
+let [error, setError] = useState(null);
+    useEffect(() => {
+        async function fetchVehicleList() {
+            try {
+                vehicleList = await fetchVehicles();
+                setVehicleList(vehicleList);
+                setLoading(false);
+            } catch (error) {
+                setError(error);
+                setLoading(false);
+            }
+        }
+        fetchVehicleList();
+        }, []);
+    if (loading) {
+        return <Text style={styles.greeting}>Loading</Text>;
+        }
+    if (error) {
+        return <Text style={styles.greeting}>Error: {error.message}</Text>;
+        }
+    vehicles = vehicleList;
+    return;
+}
 
 const styles = StyleSheet.create({
   gradient: {

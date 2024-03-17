@@ -11,7 +11,7 @@ import {
 import { Link, useRouter } from "expo-router";
 import { db, auth } from "@/firebase";
 
-
+const ONE_HOUR = 3600000;
 
 
 
@@ -26,6 +26,43 @@ const TstartTime = start;
 const TendTime = end;
 
 //////////////////////////////
+
+
+async function bookingVerification(startTime, endTime){
+
+    let start = startTime.getTime();
+    let end = endTime.getTime();
+
+
+    if (start < end){
+        return "Drop off cannot occur before pickup";
+    }
+
+
+    const currentDate = new Date().getTime();
+    if ( start < currentDate ){
+        return "Pickup cannot occur before the current time";
+    }
+
+
+    if ( (end - start) < ONE_HOUR){
+        return "You cannot reserve the vehicle for less than 1 hour";
+    }
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
 
 
 

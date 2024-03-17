@@ -1,5 +1,5 @@
-import React from "react";
-import { StyleSheet, View, Image } from "react-native";
+import React, { useState } from 'react'
+import { StyleSheet, View, Image, ScrollView } from "react-native";
 import { SafeAreaView, Text, TouchableOpacity } from "@/components/Themed";
 import { LinearGradient } from "expo-linear-gradient";
 import { EvilIcons } from "@expo/vector-icons";
@@ -12,6 +12,14 @@ import {
 } from "@/constants/Metrics";
 import { Link, useRouter } from "expo-router";
 import AppButton from "@/components/AppButton";
+import { selectedVehicle } from "../(tabs)/Home";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DateTimePicker from '@react-native-community/datetimepicker';
+
+
+
+let selectedPickUpDate = " ",
+    selectedDropOffDate = " ";
 
 const Payment = () => {
   const navigation = useNavigation();
@@ -19,15 +27,48 @@ const Payment = () => {
   const goBack = () => {
     navigation.goBack(); // Navigate to the previous screen
   };
+
+  const Init = [
+  { id: 1, value: '', visible: false, },
+  { id: 2, value: '', visible: false, },
+];
+
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [Data, SetData] = useState(Init);
+
+
+  const handleDateConfirm = (data, index) => {
+    let temp = [...Data];
+    temp[index].value = data;
+    temp[index].visible = false;
+    SetData(temp);
+  };
+
+  const onCancel = (index) => {
+    let temp = [...Data];
+    temp[index].visible = false;
+    SetData(temp);
+    };
+
+  const onOpen = (index) => {
+    try {
+      let temp = [...Data];
+      temp[index].visible = true;
+      SetData(temp);
+      console.log(temp);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+
+
   const router = useRouter();
-  const bookingDetails = {
+  let bookingDetails = {
     make: "Honda",
     model: "Civic",
     bookingId: "743774432",
-    pickUpDate: "08/11/2023",
-    pickUpTime: "9:30 AM",
-    dropOffDate: "08/15/2023",
-    dropOffTime: "11:30 AM",
     mileage: "Unlimited",
     insurance: "Included",
     rentalPrice: "$600",
@@ -39,6 +80,7 @@ const Payment = () => {
   return (
     <LinearGradient colors={["#FFFFFF", "#59C9F0"]} style={styles.gradient}>
       <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.scrollView}>
         <View style={styles.back}>
           <AntDesign
             name="arrowleft"
@@ -53,23 +95,63 @@ const Payment = () => {
 
         <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>Pick Up:</Text>
+            <View style={styles.buttonContainer}>
+                <AppButton
+
+                    onPress={() => onOpen(0)}
+                    backgroundColor="#E55D25"
+                    widthPercentage={45}
+                    textStyle={{ color: "white" }}
+
+                    >
+                    Pickup Time
+                </AppButton>
+                    <DateTimePickerModal
+                        isVisible={Data[0].visible}
+                        minimumDate={new Date()}
+                        maximumDate={new Date(new Date().setFullYear(new Date().getFullYear() + 1))}
+                        mode="datetime"
+                        onConfirm={(data) => handleDateConfirm(data, 0)}
+                        onCancel={() => onCancel(0)}
+                    />
+            </View>
 
             <Text style={styles.detailValue}>
               <EvilIcons name="calendar" size={24} color="#0099cc" />{" "}
-              {bookingDetails.pickUpDate}
+              {Data[0].value.toString()}
               {"     "}
               <EvilIcons name="clock" size={24} color="#0099cc" />
-              {bookingDetails.pickUpTime}
+              {''}
             </Text>
           </View>
           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>Drop Off:</Text>
+            <View style={styles.buttonContainer}>
+                <AppButton
+
+                    onPress={() => onOpen(1)}
+                    backgroundColor="#E55D25"
+                    widthPercentage={45}
+                    textStyle={{ color: "white" }}
+
+                    >
+                    Drop Off Time
+                </AppButton>
+                    <DateTimePickerModal
+                        isVisible={Data[1].visible}
+                        minimumDate={new Date()}
+                        maximumDate={new Date(new Date().setFullYear(new Date().getFullYear() + 1))}
+                        mode="datetime"
+                        onConfirm={(data) => handleDateConfirm(data, 1)}
+                        onCancel={() => onCancel(1)}
+                    />
+            </View>
             <Text style={styles.detailValue}>
               <EvilIcons name="calendar" size={24} color="#0099cc" />{" "}
-              {bookingDetails.dropOffDate}
+              {Data[1].value.toString()}
               {"    "}
               <EvilIcons name="clock" size={24} color="#0099cc" />
-              {bookingDetails.dropOffTime}
+              {""}
             </Text>
           </View>
         <View style={styles.detailsContainer}>
@@ -103,7 +185,21 @@ const Payment = () => {
           </View>
           <View style={styles.buttonContainer}>
             <AppButton
-              onPress={() => router.push({ pathname: "/home/${carId}" })}
+              onPress={async () => {
+
+
+
+
+
+
+              router.push({ pathname: "/home/${carId}" })}
+              }
+
+
+
+
+
+
               backgroundColor="#E55D25"
               widthPercentage={45}
                 textStyle={{color:"#fff"}}
@@ -111,6 +207,7 @@ const Payment = () => {
               Pay
             </AppButton>
         </View>
+      </ScrollView>
       </SafeAreaView>
     </LinearGradient>
   );

@@ -12,6 +12,7 @@ import {
   verticalScale,
 } from "@/constants/Metrics";
 import { LinearGradient } from "expo-linear-gradient";
+import { selectedVehicle } from "../(tabs)/Home";
 
 const Details = () => {
   const navigation = useNavigation();
@@ -23,16 +24,16 @@ const Details = () => {
 
 
   const Details = {
-    make: "Honda",
-    model: "Civic",
+    make: selectedVehicle.Make,
+    model: selectedVehicle.Model,
     specifications: [
-      { label: "Capability", value: "5 seats", icon: "car-seat" },
+      { label: "Capability", value: selectedVehicle.Capacity, icon: "car-seat" },
       { label: "Fuel Tank", value: "41 Litres", icon: "gas-station" },
-      { label: "Engine Type", value: " Automatic", icon: "engine" },
+      { label: "Engine Type", value: selectedVehicle.Transmission, icon: "engine" },
       { label: "Capacity", value: "5 bags", icon: "bag-suitcase" },
     ],
-    dailyRate: "$150 per day",
-    hourlyRate: "$22/hour",
+    dailyRate: selectedVehicle.DayRate,
+    hourlyRate: selectedVehicle.HourlyRate,
     description:
       "This compact car is well-suited for both city and highway driving, making it an excellent option.",
   };
@@ -51,7 +52,7 @@ const Details = () => {
         <ScrollView>
           <Text style={styles.title}>{Details.make}</Text>
           <Image
-            source={require("@/assets/images/carImagesTEMP/image 13.png")}
+            source={{uri: selectedVehicle.imageURL}}
             style={styles.image}
           />
           <ScrollView
@@ -89,8 +90,8 @@ const Details = () => {
                 backgroundColor="#E55D25"
                 widthPercentage={50}
                 textStyle={{ color: "white" }}
-                onPress={() => console.log("Rent Now")}
-                //onPress={() => router.push("/home/Payment")}
+                //onPress={() => console.log("Rent Now")}
+                onPress={() => router.push("/home/Payment")}
               >
                 Rent Now
               </AppButton>

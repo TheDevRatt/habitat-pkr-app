@@ -11,6 +11,7 @@ import {
   moderateScale,
   verticalScale,
 } from "@/constants/Metrics";
+import { vehicles } from "../(tabs)/Home";
 
 const BookingDetails = () => {
   const ident = useLocalSearchParams();
@@ -21,8 +22,8 @@ const BookingDetails = () => {
   };
 
   const bookingDetails = {
-    make: "Honda",
-    model: "Civic",
+    make: vehicles.Make,
+    model: vehicles.Model,
     bookingId: ident.toString(),
     pickUpDate: "08/11/2023",
     pickUpTime: "9:30 AM",
@@ -51,7 +52,7 @@ const BookingDetails = () => {
           </Text>
         </View>
         <Image
-          source={require("@/assets/images/carImagesTEMP/image 13.png")}
+          source={{uri: vehicles.imageURL}}
           style={styles.image}
         />
         <View style={styles.detailsContainer}>
