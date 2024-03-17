@@ -138,6 +138,7 @@ function RootLayoutNav() {
         name="admin/signuprequests"
         options={{ headerShown: false }}
       />
+      <Stack.Screen name="admin/adduser" options={{ headerShown: false }} />
     </Stack>
   );
 }
