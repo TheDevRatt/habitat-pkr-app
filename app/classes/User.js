@@ -168,6 +168,7 @@ async function addUser(
       Pronouns: pronouns,
       Age: age,
       Approved: false,
+      isAdmin: false,
     });
   } catch (e) {}
   updateProfile(auth.currentUser, {
@@ -183,57 +184,47 @@ async function addUser(
 
 // User sign in
 async function signinUser(email, password) {
-  // Check that a user account exists with the entered email
-  // if not, return error
-  let v;
   try {
-    v = await getUserExists(email);
-  } catch (e) {
-    return "An error has occurred";
-  }
-  if (v == false) {
-    return "Incorrect email or password";
-  }
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const user = userCredential.user;
 
-  // Sign in the user
-  try {
-    await signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(error);
-        throw new Error("Incorrect email or password");
-      });
-  } catch (e) {
-    return e.message;
-  }
+    // Ensure the email has been verified
+    if (!user.emailVerified) {
+      return { status: "emailNotVerified" };
+    }
 
-  // Check that the email for the user has been verified
-  const user = auth.currentUser;
-  if (user.emailVerified == false) {
-    return "email";
-  }
+    // Fetch the user document from Firestore to check if approved
+    const userDocRef = doc(db, "users", user.uid);
+    const userDoc = await getDoc(userDocRef);
+    if (!userDoc.exists()) {
+      throw new Error("User document does not exist");
+    }
+    const userData = userDoc.data();
 
-  // Check if user has submitted both their license and insurance,
-  // if not they will be redirected to basic info to submit it
-  let lic = await fileExists(
-    user.uid,
-    "gs://pkrides-d3c59.appspot.com/License"
-  );
-  let ins = await fileExists(
-    user.uid,
-    "gs://pkrides-d3c59.appspot.com/Insurance"
-  );
-  if (lic == false || ins == false) {
-    return "basicinfo";
-  }
+    // Check if the user is approved
+    if (!userData.Approved) {
+      // User exists but is not approved
+      return { status: "notApproved" };
+    }
 
-  // User signed in and verified
-  return "good";
+    // User is signed in, email verified, and approved
+    return { status: "success" };
+  } catch (error) {
+    console.error("Sign-in error:", error);
+    // Determine specific error handling based on the error type
+    if (
+      error.code === "auth/user-not-found" ||
+      error.code === "auth/wrong-password"
+    ) {
+      return { status: "signInFailed" };
+    }
+    // For other errors, return a generic error status
+    return { status: "error", message: error.message };
+  }
 }
 
 // Return user ID

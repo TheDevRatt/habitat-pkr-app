@@ -1,15 +1,18 @@
 import { db, auth } from "@/firebase";
-import {  collection,
-          addDoc,
-          getDocs,
-          getDoc,
-          doc,
-          setDoc,
-          query,
-          where, } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { signOut } from "firebase/auth";
 
 const storage = getStorage();
+const db = getFirestore();
 
 // Moved getUserID here from User.js
 async function getUserID() {
@@ -30,51 +33,43 @@ async function fileExists(fileName, location) {
   }
 }
 
-async function fetchReservations(){
-    let reservations;
-    await getDocs(collection(db, "reservations"))
-        .then((querySnapshot)=>{
-            reservations = querySnapshot.docs
-                .map((doc) => ({
-                CarID: doc.data().CarID,
-                UserID: doc.data().UserID,
-                StartTime: doc.data().StartTime,
-                EndTime: doc.data().EndTime,
-                }));
-    console.log(reservations);
-    })
-    return reservations;
-    }
-
-async function fetchVehicles(){
-
-    const q = query(collection(db, "vehicles"), where("Status", "==", true));
-    const querySnapshot = await getDocs(q);
-    const vehicles = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        DayRate: doc.data().DayRate,
-        Capacity: doc.data().Capacity,
-        GasMileage: doc.data().GasMileage,
-        HourlyRate: doc.data().HourlyRate,
-        Make: doc.data().Make,
-        Model: doc.data().Model,
-        Status: doc.data().Status,
-        Transmission: doc.data().Transmission,
-        Year: doc.data().Year,
-        imageURL: doc.data().imageURL,
-    }));
-    return vehicles
+async function signOutUser() {
+  try {
+    await signOut(auth);
+    // Sign-out successful.
+    // Redirection or further actions should be handled in the component where this function is called
+  } catch (error) {
+    // An error happened during sign-out
+    console.error("Error signing out: ", error);
+    // You can return false here or throw an error depending on how you want to handle errors
+    throw error;
+  }
 }
 
-
-async function test(){
-    console.log("test");
-    let testR = await fetchVehicles();
-    console.log(testR);
-
+// Function to fetch unapproved users
+async function fetchUnapprovedUsers() {
+  const q = query(collection(db, "users"), where("Approved", "==", false));
+  const querySnapshot = await getDocs(q);
+  const users = querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    FirstName: doc.data().FirstName,
+    LastName: doc.data().LastName,
+    //Email: doc.data().Email,
+  }));
+  return users;
 }
 
-//test();
+const approveUser = async (userId) => {
+  const userRef = doc(db, "users", userId);
+  await updateDoc(userRef, {
+    Approved: true,
+  });
+};
 
-
-export { getUserID, fileExists, fetchReservations, fetchVehicles };
+export {
+  getUserID,
+  fileExists,
+  signOutUser,
+  fetchUnapprovedUsers,
+  approveUser,
+};

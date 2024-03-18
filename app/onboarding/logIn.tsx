@@ -43,6 +43,26 @@ const LogIn = () => {
     router.push("/onboarding/signUp");
   };
 
+  const handleLoginPress = async () => {
+    const response = await signinUser(email.trim(), password.trim());
+
+    switch (response.status) {
+      case "success":
+        router.push("/(tabs)/Home");
+        break;
+      case "emailNotVerified":
+        alert("Please verify your email before logging in.");
+        break;
+      case "notApproved":
+        router.push("/onboarding/restricted");
+        break;
+      case "signInFailed":
+        alert("Incorrect email or password.");
+        break;
+      default:
+        alert("An unexpected error occurred. Please try again.");
+    }
+  };
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
