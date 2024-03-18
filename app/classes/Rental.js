@@ -31,7 +31,7 @@ function bookingVerification(startTime, endTime){
     }
 
     // Make sure the booking is for an hour or more
-    if ( (end - start) <= ONE_HOUR){
+    if ( (end - start) < ONE_HOUR){
         return "You cannot reserve the vehicle for less than 1 hour";
     }
     return "pass";
@@ -79,7 +79,6 @@ async function availability(carID, startTime, endTime){
 async function reserve(carID, startTime, endTime){
 
     let verifyTimes = bookingVerification(startTime, endTime);
-    console.log(verifyTimes);
     if (verifyTimes != "pass"){ return verifyTimes; }
 
     let checkAvailability = await availability(carID, startTime, endTime);
