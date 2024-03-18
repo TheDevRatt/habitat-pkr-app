@@ -18,6 +18,7 @@ import {
   Keyboard,
   Platform,
   Image,
+  LogBox,
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { LinearGradient } from "expo-linear-gradient";
@@ -33,22 +34,20 @@ import InsuranceLogo from "@/components/InsuranceLogo";
 import { openCamera, openFilePicker } from "./../classes/CloudStorage";
 import { auth } from "@/firebase";
 import { getUserData } from "../classes/User";
-import { getFirestore } from "firebase/firestore";
-import { doc, onSnapshot } from "firebase/firestore";
+import { getFirestore, setDoc, doc, onSnapshot } from "firebase/firestore";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { createNewUser } from "../classes/Admin";
 
-const SignUp = () => {
+LogBox.ignoreLogs([
+  "VirtualizedLists should never be nested inside plain ScrollViews with the same orientation because it can break windowing and other functionality - use another VirtualizedList-backed container instead.",
+]);
+
+const addUser = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isPronounSelectorFocused, setIsPronounSelectorFocused] =
+    useState(false);
 
   const router = useRouter();
-  const handleTermsPress = () => {
-    console.log("Navigating to TermsAndConditions");
-    router.push("/onboarding/termsAndConditions");
-  };
-
-  const handleLoginPress = () => {
-    console.log("Navigating to LogIn");
-    router.push("/onboarding/logIn");
-  };
 
   const formatPhoneNumber = (value: any) => {
     // Remove non-numeric characters
@@ -70,12 +69,12 @@ const SignUp = () => {
   const [pronouns, setPronouns] = useState("");
 
   useEffect(() => {
-    console.log(pronouns); // Log the current value of pronouns
+    //console.log(pronouns); // Log the current value of pronouns
   }, [pronouns]);
 
   const user = auth.currentUser;
   let userID = user?.uid;
-  console.log("userId in basicinfo:", userID);
+  //console.log("userId in basicinfo:", userID);
 
   const [licenseUrl, setLicenseUrl] = useState(null);
   const [insuranceUrl, setInsuranceUrl] = useState(null);
@@ -106,165 +105,160 @@ const SignUp = () => {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={styles.keyboardAvoidContainer}
           >
-            <View style={styles.topContainer}>
-              <View style={styles.backButtonContainer}>
-                <BackButton />
+            <KeyboardAwareScrollView
+              contentContainerStyle={{ flexGrow: 1 }}
+              resetScrollToCoords={{ x: 0, y: 0 }}
+              scrollEnabled={true}
+              extraScrollHeight={verticalScale(-250)}
+              enableOnAndroid={true}
+            >
+              <View style={styles.topContainer}>
+                <View style={styles.backButtonContainer}>
+                  <BackButton />
+                </View>
+                <View style={styles.welcomeTextContainer}>
+                  <Text style={styles.welcomeText}>Add User</Text>
+                </View>
               </View>
-              <View style={styles.welcomeTextContainer}>
-                <Text style={styles.welcomeText}>Add User</Text>
-              </View>
-            </View>
 
-            <View style={styles.inputGroup}>
-              <TextInput
-                value={firstName}
-                placeholder={"First Name"}
-                onChangeText={(newFirstName) => setFirstName(newFirstName)}
-                placeholderTextColor="#000"
-                style={styles.inputField}
-              />
-              <TextInput
-                value={lastName}
-                placeholder={"Last Name"}
-                onChangeText={(newLastName) => setLastName(newLastName)}
-                placeholderTextColor="#000"
-                style={styles.inputField}
-              />
-              <TextInput
-                value={email}
-                placeholder={"Email"}
-                onChangeText={(newEmail) => setEmail(newEmail)}
-                placeholderTextColor="#000"
-                style={styles.inputField}
-              />
-              <View style={styles.passwordField}>
+              <View style={styles.inputGroup}>
                 <TextInput
-                  value={password}
-                  secureTextEntry={!showPassword}
-                  placeholder={"Password"}
-                  onChangeText={(newPassword) => setPassword(newPassword)}
+                  value={firstName}
+                  placeholder={"First Name"}
+                  onChangeText={(newFirstName) => setFirstName(newFirstName)}
                   placeholderTextColor="#000"
-                  style={[styles.inputField, { flex: 1 }]}
+                  style={styles.inputField}
                 />
-                <TouchableOpacity
-                  onPress={() => setShowPassword(!showPassword)}
-                  style={styles.passwordIcon}
-                >
-                  <FontAwesome
-                    name={showPassword ? "eye" : "eye-slash"}
-                    size={28}
+                <TextInput
+                  value={lastName}
+                  placeholder={"Last Name"}
+                  onChangeText={(newLastName) => setLastName(newLastName)}
+                  placeholderTextColor="#000"
+                  style={styles.inputField}
+                />
+                <TextInput
+                  value={email}
+                  placeholder={"Email"}
+                  onChangeText={(newEmail) => setEmail(newEmail)}
+                  placeholderTextColor="#000"
+                  style={styles.inputField}
+                />
+                <View style={styles.passwordField}>
+                  <TextInput
+                    value={password}
+                    secureTextEntry={!showPassword}
+                    placeholder={"Password"}
+                    onChangeText={(newPassword) => setPassword(newPassword)}
+                    placeholderTextColor="#000"
+                    style={[styles.inputField, { flex: 1 }]}
                   />
-                </TouchableOpacity>
-              </View>
-              <TextInput
-                value={phoneNumber}
-                keyboardType="numeric"
-                placeholder={"Phone Number"}
-                onChangeText={(newPhoneNumber) => {
-                  const formattedPhoneNumber =
-                    formatPhoneNumber(newPhoneNumber);
-                  setPhoneNumber(formattedPhoneNumber);
-                }}
-                placeholderTextColor="#000"
-                style={styles.inputField}
-              />
-
-              <View style={styles.dropdownContainer}>
-                <TextInput
-                  value={age}
-                  keyboardType="numeric"
-                  placeholder={"Age"}
-                  onChangeText={(newAge) => setAge(newAge)}
-                  placeholderTextColor="#000"
-                  style={[
-                    styles.inputField,
-                    { width: "25%", marginRight: "27%" },
-                  ]}
-                />
-                <View style={styles.dropDownPicker}>
-                  <PronounSelector value={pronouns} setValue={setPronouns} />
-                </View>
-              </View>
-            </View>
-
-            <View style={styles.itemContainer}>
-              <View style={styles.subTitleContainer}>
-                <Text style={styles.label}>Driver's License</Text>
-              </View>
-              {licenseUrl ? (
-                <Image
-                  source={{ uri: licenseUrl }}
-                  style={{
-                    width: 150,
-                    height: 150,
-                    marginTop: verticalScale(10),
-                    borderRadius: 5,
-                    marginBottom: verticalScale(10),
-                  }}
-                />
-              ) : (
-                <DriversLicenseLogo />
-              )}
-              <View style={styles.buttonGroup}>
-                <View style={styles.camera}>
-                  <AppButton
-                    onPress={() => {
-                      openCamera(userID, "License");
-                    }}
-                    backgroundColor="transparent"
-                    widthPercentage={45}
-                    borderStyle="dashed"
-                    borderRadius={5}
-                    borderColor="black"
-                    borderWidth={1}
+                  <TouchableOpacity
+                    onPress={() => setShowPassword(!showPassword)}
+                    style={styles.passwordIcon}
                   >
-                    <FontAwesome name={"camera"} size={15} />
-                    <Text style={styles.buttonText}>&nbsp;Open Camera</Text>
-                  </AppButton>
+                    <FontAwesome
+                      name={showPassword ? "eye" : "eye-slash"}
+                      size={28}
+                    />
+                  </TouchableOpacity>
                 </View>
-                <AppButton
-                  onPress={() => {
-                    openFilePicker(userID, "License");
+                <TextInput
+                  value={phoneNumber}
+                  keyboardType="numeric"
+                  placeholder={"Phone Number"}
+                  onChangeText={(newPhoneNumber) => {
+                    const formattedPhoneNumber =
+                      formatPhoneNumber(newPhoneNumber);
+                    setPhoneNumber(formattedPhoneNumber);
                   }}
-                  backgroundColor="transparent"
-                  widthPercentage={45}
-                  borderStyle="dashed"
-                  borderRadius={5}
-                  borderColor="black"
-                  borderWidth={1}
+                  placeholderTextColor="#000"
+                  style={styles.inputField}
+                />
+
+                <View style={styles.dropdownContainer}>
+                  <TextInput
+                    value={age}
+                    keyboardType="numeric"
+                    placeholder={"Age"}
+                    onChangeText={(newAge) => setAge(newAge)}
+                    placeholderTextColor="#000"
+                    style={[
+                      styles.inputField,
+                      { width: "25%", marginRight: "27%" },
+                    ]}
+                  />
+                  <View style={styles.dropDownPicker}>
+                    <PronounSelector value={pronouns} setValue={setPronouns} />
+                  </View>
+                </View>
+              </View>
+
+              <View style={styles.itemContainer}>
+                <View style={styles.subTitleContainer}>
+                  <Text style={styles.label}>Driver's License</Text>
+                </View>
+                <View style={styles.imageButtonContainer}>
+                  {licenseUrl ? (
+                    <Image
+                      source={{ uri: licenseUrl }}
+                      style={{
+                        width: 150,
+                        height: 150,
+                        marginTop: verticalScale(10),
+                        borderRadius: 5,
+                        marginBottom: verticalScale(10),
+                      }}
+                    />
+                  ) : (
+                    <DriversLicenseLogo />
+                  )}
+                  <View style={styles.buttonGroup}>
+                    <View style={styles.camera}>
+                      <AppButton
+                        onPress={() => {
+                          openCamera(userID, "License");
+                        }}
+                        backgroundColor="transparent"
+                        widthPercentage={45}
+                        borderStyle="dashed"
+                        borderRadius={5}
+                        borderColor="black"
+                        borderWidth={1}
+                      >
+                        <FontAwesome name={"camera"} size={15} />
+                        <Text style={styles.buttonText}>&nbsp;Open Camera</Text>
+                      </AppButton>
+                    </View>
+                    <AppButton
+                      onPress={() => {
+                        openFilePicker(userID, "License");
+                      }}
+                      backgroundColor="transparent"
+                      widthPercentage={45}
+                      borderStyle="dashed"
+                      borderRadius={5}
+                      borderColor="black"
+                      borderWidth={1}
+                    >
+                      <FontAwesome name={"upload"} size={15} />
+                      <Text style={styles.buttonText}>&nbsp;Upload File</Text>
+                    </AppButton>
+                  </View>
+                </View>
+              </View>
+
+              <View style={styles.buttonContainer}>
+                <AppButton
+                  widthPercentage={85}
+                  paddingVertical={11}
+                  borderRadius={25}
+                  textStyle={{ fontSize: 25 }}
+                  onPress={createNewUser}
                 >
-                  <FontAwesome name={"upload"} size={15} />
-                  <Text style={styles.buttonText}>&nbsp;Upload File</Text>
+                  Create Account
                 </AppButton>
               </View>
-            </View>
-
-            <View style={styles.buttonContainer}>
-              <AppButton
-                widthPercentage={85}
-                paddingVertical={11}
-                borderRadius={25}
-                textStyle={{ fontSize: 25 }}
-                onPress={async () => {
-                  let response = await verifyUser(
-                    email.trim(),
-                    password.trim(),
-                    firstName.trim(),
-                    lastName.trim(),
-                    phoneNumber,
-                    pronouns,
-                    age
-                  );
-                  if (response == "good") {
-                    router.push("/onboarding/basicInfo");
-                  } else {
-                    alert(response);
-                  }
-                }}
-              >
-                Create Account
-              </AppButton>
-            </View>
+            </KeyboardAwareScrollView>
           </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
       </SafeAreaView>
@@ -272,7 +266,7 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default addUser;
 
 const styles = StyleSheet.create({
   gradient: {
@@ -286,7 +280,7 @@ const styles = StyleSheet.create({
         paddingTop: verticalScale(10),
       },
       android: {
-        paddingTop: verticalScale(10),
+        paddingTop: verticalScale(30),
       },
     }),
   },
@@ -296,9 +290,7 @@ const styles = StyleSheet.create({
       ios: {
         paddingTop: verticalScale(20),
       },
-      android: {
-        paddingTop: verticalScale(10),
-      },
+      android: {},
     }),
   },
   backButtonContainer: {
@@ -307,16 +299,14 @@ const styles = StyleSheet.create({
     paddingLeft: horizontalScale(20),
     ...Platform.select({
       ios: {},
-      android: {
-        paddingBottom: verticalScale(40),
-      },
+      android: {},
     }),
   },
   topContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: verticalScale(30),
     backgroundColor: "transparent",
+    marginBottom: verticalScale(30),
   },
   welcomeTextContainer: {
     flex: 1,
@@ -325,9 +315,7 @@ const styles = StyleSheet.create({
     marginRight: verticalScale(50),
     ...Platform.select({
       ios: {},
-      android: {
-        marginBottom: verticalScale(40),
-      },
+      android: {},
     }),
   },
   welcomeText: {
@@ -371,7 +359,6 @@ const styles = StyleSheet.create({
   },
   dropDownPicker: {
     backgroundColor: "transparent",
-    borderWidth: 0,
     width: "60%",
     right: horizontalScale(35),
   },
@@ -387,6 +374,17 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     zIndex: -1,
   },
+  itemContainer: {
+    alignItems: "flex-start",
+    marginHorizontal: horizontalScale(20),
+    backgroundColor: "transparent",
+    marginTop: verticalScale(-20),
+    zIndex: -1,
+  },
+  subTitleContainer: {
+    alignItems: "center",
+    backgroundColor: "transparent",
+  },
   label: {
     fontSize: moderateScale(22),
     fontFamily: "karlaM",
@@ -394,25 +392,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "transparent",
   },
-  itemContainer: {
-    alignItems: "center",
-    marginHorizontal: horizontalScale(20),
-    backgroundColor: "transparent",
-  },
-  subTitleContainer: {
+  imageButtonContainer: {
+    flexDirection: "row",
     alignItems: "center",
     backgroundColor: "transparent",
-    borderBottomColor: "black",
-    borderBottomWidth: 1,
   },
   buttonGroup: {
     backgroundColor: "transparent",
     alignItems: "center",
+    paddingLeft: horizontalScale(20),
   },
   buttonText: {
     fontSize: moderateScale(18),
     fontFamily: "karlaR",
-    borderBottomWidth: 1,
     textAlign: "center",
   },
   camera: {
