@@ -43,6 +43,26 @@ const LogIn = () => {
     router.push("/onboarding/signUp");
   };
 
+  const handleLoginPress = async () => {
+    const response = await signinUser(email.trim(), password.trim());
+
+    switch (response.status) {
+      case "success":
+        router.push("/(tabs)/Home");
+        break;
+      case "emailNotVerified":
+        alert("Please verify your email before logging in.");
+        break;
+      case "notApproved":
+        router.push("/onboarding/restricted");
+        break;
+      case "signInFailed":
+        alert("Incorrect email or password.");
+        break;
+      default:
+        alert("An unexpected error occurred. Please try again.");
+    }
+  };
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -105,26 +125,7 @@ const LogIn = () => {
               <AppButton
                 widthPercentage={85}
                 paddingVertical={10}
-                onPress={async () => {
-                  let response = await signinUser(
-                    email.trim(),
-                    password.trim()
-                  );
-
-                  if (response == "good") {
-                    router.push("/(tabs)/Home");
-                  } else if (response == "email") {
-                    alert(
-                      "Please close the app and verify your email then try again."
-                    );
-                  } else if (response == "basicinfo") {
-                    router.push("/onboarding/basicInfo");
-                  } else if (response == "An error has occurred") {
-                    alert("An error has occurred, please try again");
-                  } else {
-                    alert(response);
-                  }
-                }}
+                onPress={handleLoginPress}
               >
                 Log In
               </AppButton>

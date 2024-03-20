@@ -8,6 +8,7 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import { AuthProvider } from "@/components/AuthContext";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -55,7 +56,11 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return (
+    <AuthProvider>
+      <RootLayoutNav />
+    </AuthProvider>
+  );
 }
 
 function RootLayoutNav() {
@@ -128,6 +133,12 @@ function RootLayoutNav() {
       <Stack.Screen name="home/[id]" options={{ headerShown: false }} />
       <Stack.Screen name="home/Booking" options={{ headerShown: false }} />
       <Stack.Screen name="home/Payment" options={{ headerShown: false }} />
+
+      <Stack.Screen
+        name="admin/signuprequests"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="admin/adduser" options={{ headerShown: false }} />
       <Stack.Screen name="KeyHolder/AllReservations" options={{ headerShown: false }} />
       <Stack.Screen name="KeyHolder/ActiveReservations" options={{ headerShown: false }} />
       <Stack.Screen name="KeyHolder/DamageReport" options={{ headerShown: false }} />
