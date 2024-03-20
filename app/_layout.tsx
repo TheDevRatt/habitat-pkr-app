@@ -128,6 +128,9 @@ function RootLayoutNav() {
       <Stack.Screen name="home/[id]" options={{ headerShown: false }} />
       <Stack.Screen name="home/Booking" options={{ headerShown: false }} />
       <Stack.Screen name="home/Payment" options={{ headerShown: false }} />
+      <Stack.Screen name="KeyHolder/AllReservations" options={{ headerShown: false }} />
+      <Stack.Screen name="KeyHolder/ActiveReservations" options={{ headerShown: false }} />
+      <Stack.Screen name="KeyHolder/DamageReport" options={{ headerShown: false }} />
     </Stack>
   );
 }
