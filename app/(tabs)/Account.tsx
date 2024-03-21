@@ -100,7 +100,7 @@ const Profile = () => {
   };
   const handleTermsPress = () => {
     console.log("Navigating to Terms & Conditions");
-    router.push("/onboarding/termsAndConditions");
+    router.push("../onboarding/termsAndConditions");
   };
   const handleSettingsPress = () => {
     console.log("Navigating to Settings");
