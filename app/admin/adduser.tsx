@@ -35,17 +35,30 @@ import { openCamera, openFilePicker } from "./../classes/CloudStorage";
 import { auth } from "@/firebase";
 import { getUserData } from "../classes/User";
 import { getFirestore, setDoc, doc, onSnapshot } from "firebase/firestore";
-
-import { createNewUser } from "../classes/Admin";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { getFunctions, httpsCallable } from "firebase/functions";
 
 LogBox.ignoreLogs([
   "VirtualizedLists should never be nested inside plain ScrollViews with the same orientation because it can break windowing and other functionality - use another VirtualizedList-backed container instead.",
 ]);
 
 const addUser = () => {
+  interface CreateUserResponse {
+    uid: string; // Assuming the cloud function returns an object with a uid property
+  }
+
+  // State management
   const [showPassword, setShowPassword] = useState(false);
-  const [isPronounSelectorFocused, setIsPronounSelectorFocused] =
-    useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [age, setAge] = useState("");
+  const [pronouns, setPronouns] = useState("");
+  const [userCreated, setUserCreated] = useState(false); // Track if the user has been created
+  const [newUserId, setNewUserId] = useState(""); // Store the new user's ID
+  const [licenseUrl, setLicenseUrl] = useState(null);
 
   const router = useRouter();
 
@@ -59,43 +72,41 @@ const addUser = () => {
     );
     return formattedValue;
   };
+  // Function to create a user or upload driver's license
+  const handleSubmit = async () => {
+    if (!userCreated) {
+      // Assuming you have a Firebase Cloud Function named 'createUserByAdmin'
+      const functions = getFunctions();
+      const createUserByAdmin = httpsCallable(functions, "createUserByAdmin");
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [age, setAge] = useState("");
-  const [pronouns, setPronouns] = useState("");
+      try {
+        const result = await createUserByAdmin({
+          firstName,
+          lastName,
+          email,
+          password,
+          phoneNumber,
+          age,
+          pronouns,
+        });
 
-  useEffect(() => {
-    //console.log(pronouns); // Log the current value of pronouns
-  }, [pronouns]);
+        // Using the interface to assert the type of result.data
+        const data = result.data as CreateUserResponse;
+        const createdUserId = data.uid;
+        setNewUserId(createdUserId);
+        setUserCreated(true);
+        alert("User created successfully!");
 
-  const user = auth.currentUser;
-  let userID = user?.uid;
-  //console.log("userId in basicinfo:", userID);
-
-  const [licenseUrl, setLicenseUrl] = useState(null);
-  const [insuranceUrl, setInsuranceUrl] = useState(null);
-
-  const [refreshKey, setRefreshKey] = useState(0); // Add a state to trigger refresh
-
-  useEffect(() => {
-    const user = auth.currentUser;
-    if (!user) return;
-
-    const userDocRef = doc(getFirestore(), "users", user.uid);
-    const unsubscribe = onSnapshot(userDocRef, (doc) => {
-      if (doc.exists()) {
-        const userData = doc.data();
-        setLicenseUrl(userData.licenseUrl);
-        setInsuranceUrl(userData.insuranceUrl);
+        // Optionally reset form here or redirect admin to another page
+      } catch (error) {
+        console.error("Error creating user:", error);
+        alert("Failed to create user. Please try again.");
       }
-    });
-
-    return () => unsubscribe(); // Clean up subscription
-  }, []);
+    } else {
+      // If the user has been created, you can now upload the driver's license
+      // This part is handled by the openCamera or openFilePicker functions when they are called
+    }
+  };
 
   return (
     <LinearGradient colors={["#FFFFFF", "#0099CC"]} style={styles.gradient}>
@@ -215,9 +226,9 @@ const addUser = () => {
                   <View style={styles.buttonGroup}>
                     <View style={styles.camera}>
                       <AppButton
-                        onPress={() => {
-                          openCamera(userID, "License");
-                        }}
+                        onPress={() =>
+                          openCamera(newUserId, "License", newUserId)
+                        }
                         backgroundColor="transparent"
                         widthPercentage={45}
                         borderStyle="dashed"
@@ -230,9 +241,9 @@ const addUser = () => {
                       </AppButton>
                     </View>
                     <AppButton
-                      onPress={() => {
-                        openFilePicker(userID, "License");
-                      }}
+                      onPress={() =>
+                        openFilePicker(newUserId, "License", newUserId)
+                      }
                       backgroundColor="transparent"
                       widthPercentage={45}
                       borderStyle="dashed"
@@ -253,9 +264,9 @@ const addUser = () => {
                   paddingVertical={11}
                   borderRadius={25}
                   textStyle={{ fontSize: 25 }}
-                  onPress={createNewUser}
+                  onPress={handleSubmit}
                 >
-                  Create Account
+                  {userCreated ? "Upload Driver's License" : "Create Account"}
                 </AppButton>
               </View>
             </KeyboardAwareScrollView>
