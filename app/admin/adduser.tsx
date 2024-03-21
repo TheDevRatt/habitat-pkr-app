@@ -35,7 +35,7 @@ import { openCamera, openFilePicker } from "./../classes/CloudStorage";
 import { auth } from "@/firebase";
 import { getUserData } from "../classes/User";
 import { getFirestore, setDoc, doc, onSnapshot } from "firebase/firestore";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+
 import { createNewUser } from "../classes/Admin";
 
 LogBox.ignoreLogs([

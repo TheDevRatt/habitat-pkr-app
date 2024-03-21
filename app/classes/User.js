@@ -169,6 +169,7 @@ async function addUser(
       Age: age,
       Approved: false,
       isAdmin: false,
+      iskeyholder: false,
     });
   } catch (e) {}
   updateProfile(auth.currentUser, {
