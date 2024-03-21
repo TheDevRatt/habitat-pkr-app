@@ -84,6 +84,33 @@ const SignupRequests = () => {
     );
   };
 
+  const handleRejectUser = (user: User) => {
+    Alert.alert(
+      "Reject User?",
+      `Are you sure you want to reject ${user.FirstName} ${user.LastName}?`,
+      [
+        {
+          text: "No",
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+          onPress: () => {
+            // Directly update the state to remove the user
+            setUnapprovedUsers((currentUsers) =>
+              currentUsers.filter((currentUser) => currentUser.id !== user.id)
+            );
+            // Optionally, provide feedback to the admin
+            Alert.alert(
+              "User Rejected",
+              `${user.FirstName} ${user.LastName} has been rejected.`
+            );
+          },
+        },
+      ]
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
@@ -108,7 +135,7 @@ const SignupRequests = () => {
                   <CheckmarkIcon onPress={() => handleApproveUser(user)} />
                 </View>
                 <View style={styles.iconContent}>
-                  <XIcon />
+                  <XIcon onPress={() => handleRejectUser(user)} />
                 </View>
               </View>
             </View>

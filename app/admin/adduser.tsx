@@ -75,7 +75,6 @@ const addUser = () => {
   // Function to create a user or upload driver's license
   const handleSubmit = async () => {
     if (!userCreated) {
-      // Assuming you have a Firebase Cloud Function named 'createUserByAdmin'
       const functions = getFunctions();
       const createUserByAdmin = httpsCallable(functions, "createUserByAdmin");
 
