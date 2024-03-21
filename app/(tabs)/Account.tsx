@@ -88,7 +88,7 @@ const Profile = () => {
   };
   const handleLicenseInsurancePress = () => {
     console.log("Navigating to License & Insurance");
-    //router.push("/tabs/Account/LicenseInsurance");
+    router.push("../profile/licenseAndInsurance");
   };
   const handlePaymentPress = () => {
     console.log("Navigating to Payment");
@@ -156,7 +156,7 @@ const Profile = () => {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => handleRideHistoryPress()}
+        onPress={() => handleLicenseInsurancePress()}
       >
         <View style={styles.iconContainer}>
           <AddressIcon />
