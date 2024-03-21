@@ -165,8 +165,8 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 - [x] Database Functionality
 - [x] Profile Page
   - [ ] Ride History Page
-  - [ ] License and Insurance Page
-  - [ ] Terms and Conditions Page
+  - [x] License and Insurance Page
+  - [x] Terms and Conditions Page
   - [ ] Payment History Page
   - [ ] FAQ Page
   - [ ] Sub Account Page
@@ -186,10 +186,10 @@ _For more examples, please refer to the [Documentation](https://example.com)_
   - [ ] Active reservations page
   - [ ] Damage report page
 - [x] Admin Page
-  - [ ] Signed up users page
+  - [x] Signed up users page
   - [ ] Blocked users page
   - [ ] Keyholders page
-  - [ ] Add user page
+  - [x] Add user page
   - [ ] Manage user page
   - [ ] Add car page
   - [ ] Manage car page
