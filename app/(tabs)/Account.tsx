@@ -36,6 +36,8 @@ import { Link, useRouter } from "expo-router";
 import { auth, db } from "@/firebase";
 import { getDoc, doc } from "firebase/firestore";
 
+import SignoutIcon from "@/components/SignoutIcon";
+
 const Profile = () => {
   const router = useRouter();
 
@@ -96,7 +98,7 @@ const Profile = () => {
   };
   const handleFAQPress = () => {
     console.log("Navigating to FAQ");
-    //router.push("/tabs/Account/Settings");
+    router.push("../profile/faq");
   };
   const handleTermsPress = () => {
     console.log("Navigating to Terms & Conditions");
@@ -111,7 +113,13 @@ const Profile = () => {
     <ScrollView style={styles.container}>
       <View style={styles.profileHeader}>
         <TouchableOpacity onPress={handleImagePress}></TouchableOpacity>
-        <Text style={styles.profileTitle}>Profile</Text>
+        <View style={styles.profileTitleContainer}>
+          <Text style={styles.profileTitle}>Profile</Text>
+
+          <View style={styles.signoutContainer}>
+            <SignoutIcon />
+          </View>
+        </View>
         <View style={styles.profileContainer}>
           <ProfileContainer
             width={99}
@@ -176,10 +184,7 @@ const Profile = () => {
         <ArrowIcon />
       </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => handleRideHistoryPress()}
-      >
+      <TouchableOpacity style={styles.button} onPress={() => handleFAQPress()}>
         <View style={styles.iconContainer}>
           <FAQIcon />
           <Text style={styles.text}> FAQ</Text>
@@ -216,6 +221,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
+  },
+  profileTitleContainer: {
+    flexDirection: "row",
+  },
+  signoutContainer: {
+    top: verticalScale(40),
+    left: horizontalScale(100),
+    alignItems: "flex-start",
   },
   profileHeader: {
     alignItems: "center",

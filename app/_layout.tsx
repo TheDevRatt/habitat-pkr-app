@@ -144,6 +144,7 @@ function RootLayoutNav() {
         name="profile/licenseAndInsurance"
         options={{ headerShown: false }}
       />
+      <Stack.Screen name="profile/faq" options={{ headerShown: false }} />
     </Stack>
   );
 }
