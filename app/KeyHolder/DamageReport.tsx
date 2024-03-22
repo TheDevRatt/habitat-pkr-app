@@ -1,21 +1,29 @@
+
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'; // Import ScrollView
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-
 const DamageReport = () => {
+
   const router = useRouter();
-  const [selectedId, setSelectedId] = useState(null); // Add this line
-  const [keysPickedUp, setKeysPickedUp] = useState(false);
-  const [keysDroppedOff, setKeysDroppedOff] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
 
   // Sample data
   const reservations = [
     { id: '223', dateTime: '11/09/2022 9:43am', fullName: 'John Smith' },
     { id: '443', dateTime: '11/09/2022 9:43am', fullName: 'John Smith' },
     { id: '343', dateTime: '11/09/2022 9:43am', fullName: 'John Smith' },
-    // Add more reservations as necessary
+    { id: '383', dateTime: '11/09/2022 9:43am', fullName: 'John Smith' },
+    { id: '393', dateTime: '11/09/2022 9:43am', fullName: 'John Smith' },
+    { id: '323', dateTime: '11/09/2022 9:43am', fullName: 'John Smith' },
+    { id: '363', dateTime: '11/09/2022 9:43am', fullName: 'John Smith' },
+    { id: '373', dateTime: '11/09/2022 9:43am', fullName: 'John Smith' },
+    { id: '347', dateTime: '11/09/2022 9:43am', fullName: 'John Smith' },
+
   ];
+
+  const [keysPickedUp, setKeysPickedUp] = useState(false);
+  const [keysDroppedOff, setKeysDroppedOff] = useState(false);
 
   const handleActionPress = (id) => {
     if (selectedId === id) {
@@ -28,7 +36,7 @@ const DamageReport = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}> 
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.push('/(tabs)/KeyHolder')}>
           <Ionicons name="arrow-back" size={24} color="black" />
@@ -63,9 +71,34 @@ const DamageReport = () => {
           {selectedId === reservation.id && (
             <View style={styles.optionsContainer}>
               <View style={styles.options}>
-                {/* Replace these Text components with your custom checkbox components */}
-                <Text style={keysPickedUp ? styles.checked : styles.unchecked} onPress={() => setKeysPickedUp(true)}>Keys Picked Up</Text>
-                <Text style={keysDroppedOff ? styles.checked : styles.unchecked} onPress={() => setKeysDroppedOff(true)}>Keys Dropped Off</Text>
+                <TouchableOpacity
+                  style={styles.checkboxContainer}
+                  onPress={() => {
+                    setKeysPickedUp(!keysPickedUp);
+                    setKeysDroppedOff(false);
+                  }}
+                >
+                  <Ionicons
+                    name={keysPickedUp ? "checkbox" : "checkbox-outline"}
+                    size={24}
+                    color="black"
+                  />
+                  <Text>Keys Picked Up</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.checkboxContainer}
+                  onPress={() => {
+                    setKeysDroppedOff(!keysDroppedOff);
+                    setKeysPickedUp(false);
+                  }}
+                >
+                  <Ionicons
+                    name={keysDroppedOff ? "checkbox" : "checkbox-outline"}
+                    size={24}
+                    color="black"
+                  />
+                  <Text>Keys Dropped Off</Text>
+                </TouchableOpacity>
               </View>
               {/* Add Save button here */}
               <TouchableOpacity style={styles.saveButton} onPress={() => console.log('Save')}>
@@ -75,7 +108,7 @@ const DamageReport = () => {
           )}
         </View>
       ))}
-    </View>
+    </ScrollView> 
   );
 };
 
@@ -117,7 +150,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   textCell: {
-    // textAlign: 'center', removed this line
+    
   },
   actionCell: {
     alignItems: 'center',
@@ -125,33 +158,31 @@ const styles = StyleSheet.create({
   optionsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'center', 
     paddingVertical: 10,
   },
   options: {
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    marginBottom: 10, 
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 10, 
   },
   saveButton: {
     backgroundColor: 'orange',
-    padding: 10,
-    borderRadius: 20, // Add this line
+    padding: 4, 
+    borderRadius: 20, 
+    alignSelf: 'flex-end',
+    flex: 0.5, 
   },
   saveButtonText: {
     color: 'white',
-  },
-  checked: {
-    borderColor: 'orange',
-    borderWidth: 1,
-    padding: 5,
-    marginBottom: 10,
-  },
-  unchecked: {
-    borderColor: 'grey',
-    borderWidth: 1,
-    padding: 5,
-    marginBottom: 10,
+    fontSize: 22, 
+    textAlign: 'center', 
   },
 });
-
 export default DamageReport;

@@ -149,39 +149,39 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   textCell: {
-    // textAlign: 'center', removed this line
+    
   },
   actionCell: {
     alignItems: 'center',
   },
   optionsContainer: {
-    flexDirection: 'row', // Change this back to 'row'
+    flexDirection: 'row', 
     justifyContent: 'space-between',
-    alignItems: 'center', // Change this back to 'center'
+    alignItems: 'center', 
     paddingVertical: 10,
   },
   options: {
-    flexDirection: 'column', // Change this from 'row' to 'column'
-    justifyContent: 'flex-start', // Change this from 'space-between' to 'flex-start'
-    alignItems: 'flex-start', // Change this from 'center' to 'flex-start'
-    marginBottom: 10, // Add this line
+    flexDirection: 'column', 
+    justifyContent: 'flex-start', 
+    alignItems: 'flex-start', 
+    marginBottom: 10, 
   },
   checkboxContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginRight: 10, // Add this line
+    marginRight: 10, 
   },
   saveButton: {
     backgroundColor: 'orange',
-    padding: 4, // Change this back to 10
-    borderRadius: 20, // Add this line
-    alignSelf: 'flex-end', // Change this from 'flex-start' to 'flex-end'
-    flex: 0.5, // Add this line
+    padding: 4, 
+    borderRadius: 20, 
+    alignSelf: 'flex-end', 
+    flex: 0.5, 
   },
   saveButtonText: {
     color: 'white',
-    fontSize: 22, // Increase this from default to 18
-    textAlign: 'center', // Add this line
+    fontSize: 22, 
+    textAlign: 'center', 
   },
 });
 

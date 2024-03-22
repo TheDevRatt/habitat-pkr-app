@@ -1,7 +1,6 @@
-<<<<<<< HEAD
-=======
-// const admin = require("firebase-admin");
 
+// const admin = require("firebase-admin");
+//
 // // Initialize the Firebase Admin SDK
 // admin.initializeApp();
 
@@ -52,5 +51,4 @@
 //     });
 // }
 
-// export { createNewUser };
->>>>>>> remotes/origin/matthewmakary/feature/admin-panel
+// export { createNewUser };a

@@ -11,8 +11,9 @@ import AccountIcon from "@/components/AccountIcon";
 import AccountIconActive from "@/components/AccountIconActive";
 import AdminIcon from "@/components/AdminIcon";
 import AdminIconActive from "@/components/AdminIconActive";
+import KeyIcon from "@/components/KeyIcon";
+import KeyIconActive from "@/components/KeyIconActive";
 import { MaterialIcons } from "@expo/vector-icons";
-
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
 import { horizontalScale, verticalScale } from "@/constants/Metrics";
@@ -45,13 +46,20 @@ function TabBarIcon({ name, isActive }: { name: string; isActive: boolean }) {
           <MaterialIcons name="admin-panel-settings" size={50} color="black" />
         )
       ) : null}
+      {name === "key" ? (
+        isActive ? (
+          <KeyIconActive />
+        ) : (
+          <KeyIcon />
+        )
+      ) : null}
     </View>
   );
 }
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  const { isAdmin } = useAuth();
+  const { isAdmin, iskeyholder } = useAuth();
 
   // Optionally, a function to handle non-admin users tapping on the Admin icon
   const handleNonAdminTap = () => {
@@ -102,9 +110,18 @@ export default function TabLayout() {
           tabBarButton: isAdmin ? undefined : () => <View />, // Optionally hide the Admin tab for non-admin users
         }}
       />
+      <Tabs.Screen
+        name="KeyHolder"
+        options={{
+          tabBarIcon: ({ focused }) => <TabBarIcon name="key" isActive={focused} />, // Show the Key tab for all users
+          tabBarLabel: "",
+        }}
+      />
     </Tabs>
   );
 }
+
+
 
 const styles = StyleSheet.create({
   safeArea: {
