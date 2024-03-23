@@ -83,7 +83,6 @@ Connectivity and Sustainability are the cornerstones of any successful initiativ
 - [![TypeScript][TypeScript.org]][TypeScript-url]
 - [![JavaScript][javascript.com]][JavaScript-url]
 - [![Firebase][firebase.com]][Firebase-url]
-- [![Square][squareup.com]][Square-url]
 - [![GitHub][github.com]][GitHub-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -101,7 +100,7 @@ Ensure you have the required tools installed:
 
 #### For IOS/Mac:
 
-- Built in IOS Simulator.
+- Built in iOS Simulator.
 - [Expo Go](https://expo.dev/client)
 
 ### Prerequisites
@@ -167,10 +166,13 @@ _For more examples, please refer to the [Documentation](https://example.com)_
   - [ ] Ride History Page
   - [x] License and Insurance Page
   - [x] Terms and Conditions Page
-  - [ ] Payment History Page
-  - [ ] FAQ Page
-  - [ ] Sub Account Page
-  - [ ] Add Sub Account Page
+  - [ ] Payment History Page (Dependant on Payment Service)
+  - [x] FAQ Page
+  - [x] Settings Page
+  - [ ] My Info Page
+  - [ ] Change Password Page
+  - [ ] Sub Account Page (Shelved Feature)
+  - [ ] Add Sub Account Page (Shelved Feature)
 - [x] Reservation Page
   - [x] Detailed car view page
   - [x] Select booking date page
@@ -193,7 +195,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
   - [ ] Manage user page
   - [ ] Add car page
   - [ ] Manage car page
-- [ ] Payment Service
+- [ ] Payment Service (Shelved Feature)
 
 See the [open issues](https://github.com/TheDevRatt/habitat-pkr-app/issues) for a full list of proposed features (and known issues).
 
@@ -203,16 +205,9 @@ See the [open issues](https://github.com/TheDevRatt/habitat-pkr-app/issues) for 
 
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions will be accepted till **March 25th, 2024**, after which this project will be abandoned.
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+If you or someone else wishes to take the concepts used in this project for your own future mobile ride-sharing app or simply want to use what was built here as a framework, feel free to fork this project!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -220,7 +215,7 @@ Don't forget to give the project a star! Thanks again!
 
 ## License
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+Please contact **Habitat for Humanity - Peterborough & Kawartha Region** for licensing.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

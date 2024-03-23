@@ -38,74 +38,16 @@ import BackButton from "@/components/BackButton";
 const Profile = () => {
   const router = useRouter();
 
-  const user = auth.currentUser;
-  let userName = "Unknown";
-
-  if (user !== null && user.displayName !== null) {
-    userName = user.displayName;
-  }
-
-  const [userInfo, setUserInfo] = useState({
-    name: userName,
-    totalRides: 14,
-    // You can also store other user details here we grab these from Firebase later.
-  });
-
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      if (user) {
-        const userDocRef = doc(db, "users", user.uid);
-        const userDoc = await getDoc(userDocRef);
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          setUserInfo({
-            ...userInfo,
-            name: `${userData.FirstName} ${userData.LastName}`,
-          });
-        }
-      }
-    };
-
-    fetchUserData();
-  }, []); // Empty dependency array to run the effect only once
-
-  // Dummy function to handle image press
-  const handleImagePress = () => {
-    // Here you would implement the logic to add a new image
-    // For example, open an image picker and then update the user's image state
-    console.log("Image pressed");
-  };
 
   // Dummy function to navigate to different screens
   const handleEditProfile = () => {
-    console.log("Navigating to Ride History");
-    //router.push("/tabs/Account/RideHistory");
+    console.log("Navigating to edit profile");
+    router.push("/profile/myInfo");
   };
   const handleChangePassword = () => {
     console.log("Navigating to Sub Accounts");
     //router.push("/tabs/Account/SubAccounts");
-  };
-  const handleLicenseInsurancePress = () => {
-    console.log("Navigating to License & Insurance");
-    router.push("../profile/licenseAndInsurance");
-  };
-  const handlePaymentPress = () => {
-    console.log("Navigating to Payment");
-    //router.push("/tabs/Account/Settings");
-  };
-  const handleFAQPress = () => {
-    console.log("Navigating to FAQ");
-    router.push("../profile/faq");
-  };
-  const handleTermsPress = () => {
-    console.log("Navigating to Terms & Conditions");
-    router.push("../onboarding/termsAndConditions");
-  };
-  const handleSettingsPress = () => {
-    console.log("Navigating to Settings");
-    //router.push("/tabs/Account/Settings");
   };
 
   return (

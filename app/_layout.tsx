@@ -146,6 +146,7 @@ function RootLayoutNav() {
       />
       <Stack.Screen name="profile/faq" options={{ headerShown: false }} />
       <Stack.Screen name="profile/settings" options={{ headerShown: false }} />
+      <Stack.Screen name="profile/myInfo" options={{ headerShown: false }} />
     </Stack>
   );
 }
