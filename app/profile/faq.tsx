@@ -15,8 +15,9 @@ import {
 } from "@/constants/Metrics";
 
 import BackButton from "@/components/BackButton";
-
 import SignoutIcon from "@/components/SignoutIcon";
+import FaqUpIcon from "@/components/faqUpIcon";
+import FaqDownIcon from "@/components/faqDownIcon";
 
 const Accordion = ({ title, content }: { title: string; content: string }) => {
   const [expanded, setExpanded] = useState(false);
@@ -34,17 +35,27 @@ const Accordion = ({ title, content }: { title: string; content: string }) => {
 
   const maxHeight = animationController.interpolate({
     inputRange: [0, 1],
-    outputRange: ["0%", "100%"], // Change '100%' to the maximum height you expect your content to have
+    outputRange: ["0%", "100%"], // Adjust '100%' as needed to accommodate your content
   });
 
   return (
-    <View>
-      <TouchableOpacity onPress={toggleAccordion}>
-        <View style={styles.questionContainer}>
-          <Text style={styles.questionText}>{title}</Text>
-        </View>
+    <View style={[styles.questionContainer, styles.border]}>
+      <TouchableOpacity
+        onPress={toggleAccordion}
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Text style={styles.questionText}>{title}</Text>
+        {/* {expanded ? (
+          <FaqUpIcon style={styles.iconStyle} />
+        ) : (
+          <FaqDownIcon style={styles.iconStyle} />
+        )} */}
       </TouchableOpacity>
-      <Animated.View style={{ maxHeight }}>
+      <Animated.View style={{ maxHeight, overflow: "hidden" }}>
         {expanded && <Text style={styles.answerText}>{content}</Text>}
       </Animated.View>
     </View>
@@ -140,16 +151,34 @@ const styles = StyleSheet.create({
     marginBottom: verticalScale(20),
     width: "100%",
   },
+  border: {
+    borderBottomWidth: 1,
+  },
   questionContainer: {
-    // Style for the question container
+    // Ensure this container takes the full width available
+    width: "100%",
+    paddingHorizontal: horizontalScale(20),
+    paddingVertical: verticalScale(10),
+    borderColor: "#6D6D6D",
+    borderBottomWidth: 1, // Keep the border here
   },
   questionText: {
-    // Style for the question text
+    fontSize: moderateScale(20),
+    textAlign: "left",
+    fontFamily: "karlaB",
+    color: "#6D6D6D",
+    paddingRight: horizontalScale(20),
   },
   answerText: {
-    // Style for the answer text
+    fontSize: moderateScale(16),
+    paddingRight: horizontalScale(20),
+    textAlign: "left",
+    fontFamily: "karlaB",
+    paddingTop: verticalScale(10),
   },
-  // ... other styles
+  iconStyle: {
+    paddingRight: horizontalScale(40),
+  },
 });
 
 export default Faq;
