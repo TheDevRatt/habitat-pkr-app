@@ -6,6 +6,7 @@ import {
   Platform,
   StyleSheet,
   ScrollView,
+  Image,
 } from "react-native";
 import {
   Text,
@@ -51,7 +52,7 @@ const Profile = () => {
   const [userInfo, setUserInfo] = useState({
     name: userName,
     totalRides: 14,
-    // You can also store other user details here we grab these from Firebase later.
+    profileUrl: "",
   });
 
   useEffect(() => {
@@ -64,13 +65,14 @@ const Profile = () => {
           setUserInfo({
             ...userInfo,
             name: `${userData.FirstName} ${userData.LastName}`,
+            profileUrl: userData.profileUrl,
           });
         }
       }
     };
 
     fetchUserData();
-  }, []); // Empty dependency array to run the effect only once
+  }, []);
 
   // Dummy function to handle image press
   const handleImagePress = () => {
@@ -120,11 +122,18 @@ const Profile = () => {
           </View>
         </View>
         <View style={styles.profileContainer}>
-          <ProfileContainer
-            width={99}
-            height={99}
-            style={styles.profileImage}
-          />
+          {userInfo.profileUrl ? (
+            <Image
+              source={{ uri: userInfo.profileUrl }}
+              style={styles.profileImage}
+            />
+          ) : (
+            <ProfileContainer
+              width={99}
+              height={99}
+              style={styles.profileImage}
+            />
+          )}
           <Text style={styles.profileName}>{userInfo.name}</Text>
         </View>
 
@@ -241,7 +250,7 @@ const styles = StyleSheet.create({
   profileImage: {
     width: 100,
     height: 100,
-    borderRadius: 50,
+    borderRadius: 10,
     backgroundColor: "#e1e4e8",
     marginRight: 20, // Adds space between the image and the name
   },

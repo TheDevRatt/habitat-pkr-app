@@ -28,6 +28,8 @@ import CarCard from "@/components/CarCard";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 import ProfileContainer from "@/components/ProfileContainer";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/firebase";
 
 if (
   Platform.OS === "android" &&
@@ -47,6 +49,12 @@ const Home = () => {
   }
 
   const location = "Ptbo region";
+
+  const [userInfo, setUserInfo] = useState({
+    name: userName,
+    totalRides: 14,
+    profileUrl: "",
+  });
 
   const carData = [
     {
@@ -74,6 +82,25 @@ const Home = () => {
       imageUrl: require("@/assets/images/carImagesTEMP/image 10.png"),
     },
   ];
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (user) {
+        const userDocRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          setUserInfo({
+            ...userInfo,
+            name: `${userData.FirstName}`,
+            profileUrl: userData.profileUrl,
+          });
+        }
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const [filter, setFilter] = useState("all");
 
@@ -124,8 +151,21 @@ const Home = () => {
     <LinearGradient colors={["#FFFFFF", "#59C9F0"]} style={styles.gradient}>
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-          <ProfileContainer width={50} height={50} style={styles.smallImage} />
-          <Text style={styles.greeting}>Hello, {userName}!</Text>
+          {userInfo.profileUrl ? (
+            <Image
+              source={{ uri: userInfo.profileUrl }}
+              width={50}
+              height={50}
+              style={styles.profileImage}
+            />
+          ) : (
+            <ProfileContainer
+              width={50}
+              height={50}
+              style={styles.smallImage}
+            />
+          )}
+          <Text style={styles.greeting}>Hello, {userInfo.name}!</Text>
           <EvilIcons name="bell" size={35} color="black" />
         </View>
         <View style={styles.searchContainer}>
@@ -242,6 +282,10 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(22),
     fontFamily: "karlaM",
     marginTop: verticalScale(6),
+  },
+  profileImage: {
+    padding: horizontalScale(5),
+    borderRadius: 10,
   },
   searchContainer: {
     flexDirection: "row",
