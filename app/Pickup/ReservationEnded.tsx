@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity, StyleSheet, ActivityIndicator } fr
 import * as ImagePicker from 'expo-image-picker';
 import AppButton from '../../components/AppButton';
 import { useRouter } from "expo-router";
+import CameraIcon from '@/components/CameraIcon'; // Import CameraIcon component
 
 const ReservationEnded = () => {
   const [frontImage, setFrontImage] = useState(null);
@@ -17,7 +18,7 @@ const ReservationEnded = () => {
     console.log('Back Image:', backImage);
     console.log('Right Image:', rightImage);
     console.log('Left Image:', leftImage);
-    router.push('Pickup/ReservationEnding');
+    router.push('/Pickup/ReservationEnding');
   };
 
   const openCamera = async (setImage) => {
@@ -46,8 +47,12 @@ const ReservationEnded = () => {
     return imageUri ? (
       <Image source={{ uri: imageUri }} style={styles.photo} key={imageUri} />
     ) : (
-      <Image source={require('../../components/CameraIcon.tsx')} style={styles.cameraIcon} />
+      <CameraIcon style={styles.cameraIcon} />
     );
+  };
+
+  const takePhoto = (setImage) => {
+    openCamera(setImage);
   };
 
   return (
@@ -57,7 +62,7 @@ const ReservationEnded = () => {
       </Text>
 
       {/* Front Photo */}
-      <TouchableOpacity onPress={() => openCamera(setFrontImage)}>
+      <TouchableOpacity onPress={() => takePhoto(setFrontImage)}>
         <View style={styles.photoContainer}>
           {renderImage(frontImage)}
           <Text style={styles.photoText}>Please take a photo of the front of the car</Text>
@@ -65,7 +70,7 @@ const ReservationEnded = () => {
       </TouchableOpacity>
 
       {/* Back Photo */}
-      <TouchableOpacity onPress={() => openCamera(setBackImage)}>
+      <TouchableOpacity onPress={() => takePhoto(setBackImage)}>
         <View style={styles.photoContainer}>
           {renderImage(backImage)}
           <Text style={styles.photoText}>Please take a photo of the back of the car</Text>
@@ -73,7 +78,7 @@ const ReservationEnded = () => {
       </TouchableOpacity>
 
       {/* Right Side Photo */}
-      <TouchableOpacity onPress={() => openCamera(setRightImage)}>
+      <TouchableOpacity onPress={() => takePhoto(setRightImage)}>
         <View style={styles.photoContainer}>
           {renderImage(rightImage)}
           <Text style={styles.photoText}>Please take a photo of the right side of the car</Text>
@@ -81,7 +86,7 @@ const ReservationEnded = () => {
       </TouchableOpacity>
 
       {/* Left Side Photo */}
-      <TouchableOpacity onPress={() => openCamera(setLeftImage)}>
+      <TouchableOpacity onPress={() => takePhoto(setLeftImage)}>
         <View style={styles.photoContainer}>
           {renderImage(leftImage)}
           <Text style={styles.photoText}>Please take a photo of the left side of the car</Text>
@@ -118,9 +123,9 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   cameraIcon: {
-    width: 90,
-    height: 90,
-    marginRight:20
+    width: 60,
+    height: 60,
+    marginRight: 20,
   },
   photoText: {
     flexShrink: 1,

@@ -4,7 +4,7 @@ import AppButton from '../../components/AppButton';
 import * as ImagePicker from 'expo-image-picker';
 import AnalogClock from '../../components/AnalogClock';
 import { useRouter } from 'expo-router'; // import useRouter
-import cameraImg from "../../assets/images/camera.png";
+import cameraIcon from "../../assets/images/camera.png";
 
 const ReservationEnding = () => {
   const [image, setImage] = useState(null);
@@ -39,7 +39,7 @@ const ReservationEnding = () => {
       {/* Gas Level Photo */}
       <View style={styles.photoContainer}>
         <TouchableOpacity onPress={openCamera}>
-          {image ? <Image source={{ uri: image }} style={styles.image} /> : <Image source={cameraImg} style={styles.image} />}
+          {image ? <Image source={{ uri: image }} style={styles.image} /> : <Image source={cameraIcon} style={styles.image} />}
         </TouchableOpacity>
         <Text style={styles.instructionText}>
           Please take a photo of the gas level on the dashboard
@@ -82,7 +82,7 @@ const ReservationEnding = () => {
               style={styles.modalButton}
               onPress={() => {
                 setModalVisible(false); // close the modal
-                router.push('/Pickup/UserReservation'); // navigate to Pickup/UserReservation
+                router.push('/(tabs)/Bookings'); // navigate to Pickup/UserReservation
               }}
             >
               <Text style={styles.modalButtonText}>Go to My Reservations</Text>
@@ -126,6 +126,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: 'orange',
     marginBottom: 20,
+    borderRadius: 30, // Rounded border
   },
   timeSlotBox: {
     borderWidth: 1,

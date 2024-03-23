@@ -104,7 +104,7 @@ const Profile = () => {
   };
   const handleSettingsPress = () => {
     console.log("Navigating to Settings");
-    //router.push("/tabs/Account/Settings");
+    router.push("/Settings/Setting");
   };
 
   return (
@@ -200,7 +200,7 @@ const Profile = () => {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => handleRideHistoryPress()}
+        onPress={() => handleSettingsPress()}
       >
         <View style={styles.iconContainer}>
           <SettingsIcon />

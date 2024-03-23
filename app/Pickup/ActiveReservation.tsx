@@ -8,11 +8,11 @@ const ActiveBooking = () => {
   const router = useRouter();
 
   const reportAccident = () => {
-    router.push('Pickup/ReportDamages');
+    router.push('/Pickup/ReportDamages');
   };
 
   const endReservationEarly = () => {
-    router.push('Pickup/DropOff');
+    router.push('/Pickup/DropOff');
   };
 
   return (

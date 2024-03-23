@@ -143,6 +143,9 @@ function RootLayoutNav() {
       <Stack.Screen name="KeyHolder/ActiveReservations" options={{ headerShown: false }} />
       <Stack.Screen name="KeyHolder/DamageReport" options={{ headerShown: false }} />
       <Stack.Screen name="Settings/ChangePassword" options={{ headerShown: false }} />
+      <Stack.Screen name="Settings/Info" options={{ headerShown: false }} />
+      <Stack.Screen name="Settings/Setting" options={{ headerShown: false }} />
+     
     </Stack>
   );
 }

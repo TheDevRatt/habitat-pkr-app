@@ -1,22 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons'; // Assuming you're using Ionicons
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Keyboard } from 'react-native'; 
+import Icon from 'react-native-vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
-import { auth, db } from "@/firebase"; // Import the auth and db objects
-import { getDoc, doc, updateDoc } from "firebase/firestore"; // Import Firestore functions
+import { auth, db } from "@/firebase";
+import { getDoc, doc, updateDoc } from "firebase/firestore";
+import SignoutIcon from '@/components/SignoutIcon'; 
 
 const Info = () => {
   const [userInfo, setUserInfo] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    pronouns: '',
-  });
-  const [editedUserInfo, setEditedUserInfo] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    pronouns: '',
+    FirstName: '',
+    LastName: '',
+    Email: '',
+    Phone: '',
+    Pronouns: '',
   });
   const router = useRouter();
 
@@ -28,18 +24,14 @@ const Info = () => {
         const userDoc = await getDoc(userDocRef);
         if (userDoc.exists()) {
           const userData = userDoc.data();
-          setUserInfo({
-            firstName: userData.FirstName || '',
-            lastName: userData.LastName || '',
-            email: userData.Email || '',
-            pronouns: userData.Pronouns || '',
-          });
-          setEditedUserInfo({
-            firstName: userData.FirstName || '',
-            lastName: userData.LastName || '',
-            email: userData.Email || '',
-            pronouns: userData.Pronouns || '',
-          });
+          const selectedData = {
+            FirstName: userData.FirstName,
+            LastName: userData.LastName,
+            Email: userData.Email,
+            Phone: userData.Phone,
+            Pronouns: userData.Pronouns,
+          };
+          setUserInfo(selectedData);
         }
       }
     };
@@ -47,17 +39,19 @@ const Info = () => {
     fetchUserData();
   }, []);
 
+  const handleInputChange = (field, value) => {
+    setUserInfo({ ...userInfo, [field]: value });
+  };
+
   const handleConfirmChanges = async () => {
-    console.log('Confirming changes');
     const user = auth.currentUser;
     if (user) {
       const userDocRef = doc(db, "users", user.uid);
       try {
-        await updateDoc(userDocRef, editedUserInfo);
-        console.log('User information updated successfully');
-        Alert.alert('Changes Saved', 'Your information has been updated successfully.');
+        await updateDoc(userDocRef, userInfo);
+        Alert.alert('Success', 'Your changes have been saved successfully');
       } catch (error) {
-        console.error('Error updating user information:', error);
+        Alert.alert('Error', 'An error occurred while saving your changes');
       }
     }
   };
@@ -65,53 +59,35 @@ const Info = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.push('/tabs/settings')} style={styles.backButton}>
+        <TouchableOpacity onPress={() => router.push('/(tabs)/Account')} style={styles.backButton}>
           <Icon name="arrow-back" size={30} /> 
         </TouchableOpacity>
         <Text style={styles.title}>My Info</Text>
-        <TouchableOpacity onPress={() => router.push('/tabs/home')} style={styles.homeButton}>
-          <Icon name="home" size={30} /> 
+        {/* Use SignoutIcon for the home button */}
+        <TouchableOpacity onPress={() => router.push('/(tabs)/Home')} style={styles.homeButton}>
+          <SignoutIcon />
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.infoContainer}>
-        <Text style={styles.infoKey}>First Name</Text>
-        <TextInput
-          style={styles.input}
-          value={editedUserInfo.firstName}
-          onChangeText={(value) => setEditedUserInfo({ ...editedUserInfo, firstName: value })}
-        />
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.infoContainer}>
-        <Text style={styles.infoKey}>Last Name</Text>
-        <TextInput
-          style={styles.input}
-          value={editedUserInfo.lastName}
-          onChangeText={(value) => setEditedUserInfo({ ...editedUserInfo, lastName: value })}
-        />
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.infoContainer}>
-        <Text style={styles.infoKey}>Pronouns</Text>
-        <TextInput
-          style={styles.input}
-          value={editedUserInfo.pronouns}
-          onChangeText={(value) => setEditedUserInfo({ ...editedUserInfo, pronouns: value })}
-        />
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.infoContainer}>
-        <Text style={styles.infoKey}>Email</Text>
-        <TextInput
-          style={styles.input}
-          value={editedUserInfo.email}
-          onChangeText={(value) => setEditedUserInfo({ ...editedUserInfo, email: value })}
-        />
-      </TouchableOpacity>
-
+      {Object.keys(userInfo).map((key) => (
+        <View key={key} style={styles.infoContainer}>
+          <Text style={styles.infoKey}>{key.toUpperCase()}</Text>
+          <TextInput
+            style={styles.input}
+            value={userInfo[key]}
+            onChangeText={(value) => handleInputChange(key, value)}
+            placeholder="Edit here..."
+            editable={true}
+            placeholderTextColor='gray'
+            selectionColor='black'
+            multiline={true}
+            blurOnSubmit={true} // Add this line
+            onSubmitEditing={Keyboard.dismiss}          
+          />
+        </View>
+      ))}
       <TouchableOpacity onPress={handleConfirmChanges} style={styles.confirmButton}>
-        <Text style={styles.confirmButtonText}>Save Changes</Text>
+        <Text style={styles.confirmButtonText}>Confirm Changes</Text>
       </TouchableOpacity>
     </View>
   );
@@ -126,44 +102,44 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between', 
     marginBottom: 50,
   },
-  backButton: {
-    position: 'absolute', 
-    left: 0,
-  },
-  homeButton: {
-    position: 'absolute', 
-    right: 0,
-  },
+
   title: {
+    marginTop:50,
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
     flex: 1,
   },
   infoContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 15,
+    alignItems: 'flex-start',
+    paddingVertical: 5,
     borderBottomWidth: 1,
     borderBottomColor: 'black',
+    marginBottom:40,
   },
   infoKey: {
     fontSize: 20,
     fontWeight: 'bold',
+    color: 'grey',
   },
   input: {
     fontSize: 20,
-    flex: 1,
+    color: 'black',
+    marginRight:60,
+    marginTop:20,
+    height:20,
   },
   confirmButton: {
     backgroundColor: 'orange',
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 40,
   },
   confirmButtonText: {
     color: 'white',
@@ -172,3 +148,4 @@ const styles = StyleSheet.create({
 });
 
 export default Info;
+

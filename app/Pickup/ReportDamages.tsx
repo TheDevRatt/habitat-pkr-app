@@ -3,6 +3,7 @@ import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet, Button } fr
 import AppButton from '../../components/AppButton';
 import * as ImagePicker from 'expo-image-picker';
 import DateTimePicker from '@react-native-community/datetimepicker'; // Import DateTimePicker
+import CameraIcon from '@/components/CameraIcon'; // Import CameraIcon component
 
 const ReportDamages = () => {
   const [description, setDescription] = useState('');
@@ -82,7 +83,7 @@ const ReportDamages = () => {
 
       <View style={styles.cameraRow}>
         <TouchableOpacity onPress={openCamera}>
-          <Image source={require('../../components/CameraIcon.tsx')} style={styles.cameraIcon} />
+          <CameraIcon style={styles.cameraIcon} />
         </TouchableOpacity>
         <Text style={styles.cameraLabel}>
           Attach photos of the accident/damages
@@ -181,7 +182,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   submitButtonText: {
-    color: 'white', // Change this to 'white'
+    color: 'white', 
     textAlign: 'center',
   },
 });

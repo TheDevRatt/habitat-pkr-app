@@ -1,10 +1,9 @@
-
-
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import { getAuth, EmailAuthProvider, reauthenticateWithCredential, updatePassword } from 'firebase/auth';
-import Icon from 'react-native-vector-icons/Ionicons'; // Assuming you're using Ionicons
+import Icon from 'react-native-vector-icons/Ionicons'; 
 import { useRouter } from 'expo-router';
+import SignoutIcon from '@/components/SignoutIcon'; 
 
 const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -48,8 +47,9 @@ const ChangePassword = () => {
           <Text style={styles.title}>Change</Text>
           <Text style={styles.title}>Password</Text>
         </View>
+        {/* Use SignoutIcon for the home button */}
         <TouchableOpacity onPress={() => router.push('/(tabs)/Home')} style={styles.homeButton}>
-          <Icon name="home" size={30} /> 
+          <SignoutIcon />
         </TouchableOpacity>
       </View>
       
@@ -59,10 +59,10 @@ const ChangePassword = () => {
           onChangeText={setCurrentPassword}
           placeholder="Current Password"
           secureTextEntry={!showCurrentPassword}
-          style={styles.inputField}
+          style={[styles.inputField, styles.passwordField]}
         />
         <TouchableOpacity onPress={() => setShowCurrentPassword(!showCurrentPassword)} style={styles.eyeIcon}>
-          <Icon name={showCurrentPassword ? "eye-off" : "eye"} size={20} /> 
+          <Icon name={showCurrentPassword ? "eye" : "eye-off"} size={20} /> 
         </TouchableOpacity>
       </View>
 
@@ -72,10 +72,10 @@ const ChangePassword = () => {
           onChangeText={setNewPassword}
           placeholder="New Password"
           secureTextEntry={!showNewPassword}
-          style={styles.inputField}
+          style={[styles.inputField, styles.passwordField]}
         />
         <TouchableOpacity onPress={() => setShowNewPassword(!showNewPassword)} style={styles.eyeIcon}>
-          <Icon name={showNewPassword ? "eye-off" : "eye"} size={20} /> 
+          <Icon name={showNewPassword ? "eye" : "eye-off"} size={20} /> 
         </TouchableOpacity>
       </View>
 
@@ -102,10 +102,6 @@ const styles = StyleSheet.create({
     position: 'absolute', 
     left: 0,
   },
-  homeButton: {
-    position: 'absolute', 
-    right: 0,
-  },
   titleContainer: {
     flex: 1,
     alignItems: 'center',
@@ -113,6 +109,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: 'bold',
+  },
+  homeButton: {
+    position: 'absolute', 
+    right: 0,
+    paddingRight: 10, 
   },
   inputContainer: {
     flexDirection: 'row',
@@ -127,22 +128,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginLeft: 10,
   },
+  passwordField: {
+    fontSize: 20, 
+  },
   changePasswordButton: {
-    backgroundColor: '#fff',
-    padding: 10,
+    backgroundColor: 'white', 
+    padding: 15,
+    borderRadius: 30, 
     alignItems: 'center',
-    borderRadius: 25,
-    width: '100%',
     marginTop: 20,
     borderWidth: 1,
-    borderColor: '#000',
+    borderColor: 'black', 
   },
   changePasswordButtonText: {
-    color: '#000',
-    fontSize: 18,
+    color: 'black', 
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });
 
 export default ChangePassword;
-
 
