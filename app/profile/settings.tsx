@@ -6,6 +6,7 @@ import {
   Platform,
   StyleSheet,
   ScrollView,
+  Switch,
 } from "react-native";
 import {
   Text,
@@ -22,21 +23,17 @@ import {
 
 import RoadIcon from "@/components/RoadIcon";
 import PeopleIcon from "@/components/PeopleIcon";
-import AddressIcon from "@/components/AddressIcon";
-import CreditIcon from "@/components/CreditIcon";
-import FAQIcon from "@/components/FAQIcon";
-import TermsIcon from "@/components/TermsIcons";
-import SettingsIcon from "@/components/SettingsIcon";
 import ArrowIcon from "@/components/ArrowIcon";
-import TotalRidesBorder from "@/components/TotalRidesBorder";
-import RoadIconO from "@/components/RoadIconO";
-import ProfileContainer from "@/components/ProfileContainer";
+import PencilIcon from "@/components/pencilIcon";
+import LockIcon from "@/components/lockIcon";
+import NotificationsIcon from "@/components/notificationIcon";
 
 import { Link, useRouter } from "expo-router";
 import { auth, db } from "@/firebase";
 import { getDoc, doc } from "firebase/firestore";
 
 import SignoutIcon from "@/components/SignoutIcon";
+import BackButton from "@/components/BackButton";
 
 const Profile = () => {
   const router = useRouter();
@@ -53,6 +50,8 @@ const Profile = () => {
     totalRides: 14,
     // You can also store other user details here we grab these from Firebase later.
   });
+
+  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -80,11 +79,11 @@ const Profile = () => {
   };
 
   // Dummy function to navigate to different screens
-  const handleRideHistoryPress = () => {
+  const handleEditProfile = () => {
     console.log("Navigating to Ride History");
     //router.push("/tabs/Account/RideHistory");
   };
-  const handleSubAccountsPress = () => {
+  const handleChangePassword = () => {
     console.log("Navigating to Sub Accounts");
     //router.push("/tabs/Account/SubAccounts");
   };
@@ -106,109 +105,59 @@ const Profile = () => {
   };
   const handleSettingsPress = () => {
     console.log("Navigating to Settings");
-    router.push("../profile/settings");
+    //router.push("/tabs/Account/Settings");
   };
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.profileHeader}>
         <View style={styles.profileTitleContainer}>
-          <Text style={styles.profileTitle}>Profile</Text>
+          <View style={styles.backButtonContainer}>
+            <BackButton />
+          </View>
+          <Text style={styles.profileTitle}>Settings</Text>
 
           <View style={styles.signoutContainer}>
             <SignoutIcon />
           </View>
         </View>
-        <View style={styles.profileContainer}>
-          <ProfileContainer
-            width={99}
-            height={99}
-            style={styles.profileImage}
-          />
-          <Text style={styles.profileName}>{userInfo.name}</Text>
-        </View>
+      </View>
 
-        <View style={styles.totalRidesContainer}>
-          <RoadIconO style={styles.iconStyle} />
-          <View style={{ alignItems: "center" }}>
-            <Text style={{ fontSize: 50, fontWeight: "bold" }}>
-              {userInfo.totalRides}
-            </Text>
-            <Text style={{ fontSize: 20, fontWeight: "300" }}>Total Rides</Text>
-          </View>
+      <View style={styles.button}>
+        <View style={styles.iconContainer}>
+          {/* Assuming you have or will create a notifications icon component */}
+          <NotificationsIcon />
+          <Text style={styles.text}> Notifications</Text>
         </View>
+        <Switch
+          trackColor={{ false: "#767577", true: "#81b0ff" }}
+          thumbColor={notificationsEnabled ? "#f5dd4b" : "#f4f3f4"}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={() =>
+            setNotificationsEnabled((previousState) => !previousState)
+          }
+          value={notificationsEnabled}
+        />
       </View>
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => handleRideHistoryPress()}
+        onPress={() => handleEditProfile()}
       >
         <View style={styles.iconContainer}>
-          <RoadIcon />
-          <Text style={styles.text}> Ride History</Text>
+          <PencilIcon />
+          <Text style={styles.text}> Edit Profile</Text>
         </View>
         <ArrowIcon />
       </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => handleRideHistoryPress()}
+        onPress={() => handleChangePassword()}
       >
         <View style={styles.iconContainer}>
-          <PeopleIcon />
-          <Text style={styles.text}> Sub Accounts</Text>
-        </View>
-        <ArrowIcon />
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => handleLicenseInsurancePress()}
-      >
-        <View style={styles.iconContainer}>
-          <AddressIcon />
-          <Text style={styles.text}> License & Insurance</Text>
-        </View>
-        <ArrowIcon />
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => handleRideHistoryPress()}
-      >
-        <View style={styles.iconContainer}>
-          <CreditIcon />
-          <Text style={styles.text}> Payment</Text>
-        </View>
-        <ArrowIcon />
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.button} onPress={() => handleFAQPress()}>
-        <View style={styles.iconContainer}>
-          <FAQIcon />
-          <Text style={styles.text}> FAQ</Text>
-        </View>
-        <ArrowIcon />
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => handleTermsPress()}
-      >
-        <View style={styles.iconContainer}>
-          <TermsIcon />
-          <Text style={styles.text}> Terms & Conditions</Text>
-        </View>
-        <ArrowIcon />
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => handleSettingsPress()}
-      >
-        <View style={styles.iconContainer}>
-          <SettingsIcon />
-          <Text style={styles.text}> Settings</Text>
+          <LockIcon />
+          <Text style={styles.text}> Change Password</Text>
         </View>
         <ArrowIcon />
       </TouchableOpacity>
@@ -224,9 +173,14 @@ const styles = StyleSheet.create({
   profileTitleContainer: {
     flexDirection: "row",
   },
+  backButtonContainer: {
+    top: verticalScale(45),
+    right: horizontalScale(60),
+    alignItems: "flex-start",
+  },
   signoutContainer: {
-    top: verticalScale(40),
-    left: horizontalScale(100),
+    top: verticalScale(45),
+    left: horizontalScale(60),
     alignItems: "flex-start",
   },
   profileHeader: {
