@@ -22,14 +22,21 @@ const Details = () => {
   };
   const router = useRouter();
 
-
   const Details = {
     make: selectedVehicle.Make,
     model: selectedVehicle.Model,
     specifications: [
-      { label: "Capability", value: selectedVehicle.Capacity, icon: "car-seat" },
+      {
+        label: "Capability",
+        value: selectedVehicle.Capacity,
+        icon: "car-seat",
+      },
       { label: "Fuel Tank", value: "41 Litres", icon: "gas-station" },
-      { label: "Engine Type", value: selectedVehicle.Transmission, icon: "engine" },
+      {
+        label: "Engine Type",
+        value: selectedVehicle.Transmission,
+        icon: "engine",
+      },
       { label: "Capacity", value: "5 bags", icon: "bag-suitcase" },
     ],
     dailyRate: selectedVehicle.DayRate,
@@ -49,10 +56,11 @@ const Details = () => {
             onPress={goBack}
           />
         </View>
+        </SafeAreaView>
         <ScrollView>
           <Text style={styles.title}>{Details.make}</Text>
           <Image
-            source={{uri: selectedVehicle.imageURL}}
+            source={{ uri: selectedVehicle.imageURL }}
             style={styles.image}
           />
           <ScrollView
@@ -74,15 +82,16 @@ const Details = () => {
               </View>
             ))}
           </ScrollView>
+     
           <View style={styles.card}>
             <View style={styles.cardHeader}>
-            <Text style={styles.cardTitle}>
-              {Details.make} {Details.model}
-            </Text>
-            <View style={styles.cardRate}>
-            <Text style={styles.cardRateText}>{Details.dailyRate}</Text>
-            <Text style={styles.cardRateText}>{Details.hourlyRate}</Text>
-            </View>
+              <Text style={styles.cardTitle}>
+                {Details.make} {Details.model}
+              </Text>
+              <View style={styles.cardRate}>
+                <Text style={styles.cardRateText}>${Details.dailyRate} per day</Text>
+                <Text style={styles.cardRateText}>${Details.hourlyRate}/hour</Text>
+              </View>
             </View>
             <Text style={styles.cardText}>{Details.description}</Text>
             <View style={styles.buttonContainer}>
@@ -98,7 +107,7 @@ const Details = () => {
             </View>
           </View>
         </ScrollView>
-      </SafeAreaView>
+
     </LinearGradient>
   );
 };
@@ -112,6 +121,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: horizontalScale(20),
     paddingTop: verticalScale(20),
     backgroundColor: "transparent",
+
   },
   title: {
     fontFamily: "karlaM",
@@ -143,7 +153,6 @@ const styles = StyleSheet.create({
     marginHorizontal: moderateScale(5),
     backgroundColor: "#fff",
     borderRadius: moderateScale(10),
-    // elevation: 3,
     height: verticalScale(60),
   },
   specificationText: {
@@ -164,23 +173,24 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "white",
     borderRadius: moderateScale(15),
-    padding: moderateScale(20),
+    paddingHorizontal: moderateScale(20),
+    paddingTop: verticalScale(20),
     marginTop: 50,
-    height:verticalScale(850)
+    height: verticalScale(330),
+    
   },
-  cardHeader:{
+  cardHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: verticalScale(20),
   },
-  cardRate:{
-
-  },
-  cardRateText:{
+  cardRate: {},
+  cardRateText: {
     fontSize: moderateScale(20),
     fontFamily: "karlaEB",
+    textAlign: "right",
   },
-  
+
   cardTitle: {
     fontFamily: "karlaB",
     fontSize: moderateScale(30),
@@ -196,7 +206,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     alignItems: "center",
     marginVertical: verticalScale(10),
-    marginTop:verticalScale(40),
+    marginTop: verticalScale(40),
   },
 });
 

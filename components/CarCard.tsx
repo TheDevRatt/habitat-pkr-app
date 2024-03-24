@@ -59,7 +59,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   rate: {
-    fontSize: 16,
+    fontSize: moderateScale(17),
+    fontFamily: "karlaM",
     color: "#E55D25",
     marginBottom: verticalScale(5),
     textAlign: "center",
