@@ -28,12 +28,8 @@ const Pictures = () => {
   function handleOpenCamera(imageSide){
     let filename = ("pickup" + imageSide) ;
     let location = ("Reservations/" + selectedReservation.id);
-    console.log(filename);
-    console.log(location);
-    console.log(userID);
-    openCamera(filename, location, userID);
+    openCamera(filename, location);
     imageURI = ("gs://pkrides-d3c59.appspot.com/" + location + "/" + filename);
-
   }
 
 
@@ -42,7 +38,6 @@ const Pictures = () => {
     return imageUri ? (
       <Image source={{ uri: imageUri }} style={styles.image} />
     ) : (
-      <Image source={{ uri: imageUri }} style={styles.cameraIcon} />
       <CameraIcon style={styles.cameraIcon} />
     );
   };

@@ -1,27 +1,19 @@
 import { db, auth } from "@/firebase";
-import {  collection,
+import {  getFirestore,
+          collection,
           addDoc,
           getDocs,
           getDoc,
           doc,
           setDoc,
           query,
-          where, } from "firebase/firestore";
-import { auth } from "@/firebase";
-import {
-  getFirestore,
-  collection,
-  query,
-  where,
-  getDocs,
-  doc,
-  updateDoc,
-} from "firebase/firestore";
+          where,
+          updateDoc,
+          } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { signOut } from "firebase/auth";
 
 const storage = getStorage();
-const db = getFirestore();
 
 // Moved getUserID here from User.js
 async function getUserID() {
@@ -100,20 +92,6 @@ async function fetchUserReservations(){
 }
 
 
-
-
-
-async function test(){
-    console.log("test");
-    let testR = await fetchVehicles();
-    console.log(testR);
-
-}
-
-//test();
-
-
-export { getUserID, fileExists, fetchReservations, fetchVehicles, fetchUserReservations };
 async function signOutUser() {
   try {
     await signOut(auth);

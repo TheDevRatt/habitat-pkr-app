@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TextInput, SafeAreaView } from 'react-native';
 import AnalogClock from '@/components/AnalogClock';
 import AppButton from '@/components/AppButton';
 import { useRouter } from 'expo-router';
 import { verticalScale, moderateScale, horizontalScale } from '@/constants/Metrics';
+import { selectedVehicle, selectedReservation } from "../(tabs)/Bookings";
 
 const ActiveBooking = () => {
   const router = useRouter();
@@ -15,6 +16,21 @@ const ActiveBooking = () => {
   const endReservationEarly = () => {
     router.push('/Pickup/DropOff');
   };
+  const [timer, setTimer] = useState("timer");
+  const [time, setTime] = useState(new Date());
+  function isActive(){
+    let currentTime = new Date();
+    let timeDifference = (selectedReservation.EndTime.toDate().getTime() - currentTime.getTime())/1000;
+    setTimer(new Date(timeDifference * 1000).toISOString().slice(11, 19));
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+        setTime(isActive());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -22,11 +38,10 @@ const ActiveBooking = () => {
 
       {/* Active Duration Box */}
       <View style={styles.durationBox}>
-        <AnalogClock />
         <View style={styles.durationText}>
-          <Text style={styles.duration}>4 days</Text>
-          <Text style={styles.duration}>23 hours</Text>
-          <Text style={styles.duration}>42 mins</Text>
+            <Text style={styles.durationText}>
+                {timer}
+            </Text>
         </View>
       </View>
 

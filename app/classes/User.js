@@ -228,12 +228,6 @@ async function signinUser(email, password) {
   }
 }
 
-// Return user ID
-async function getUserID() {
-  const user = auth.currentUser;
-  return user.uid;
-}
-
 async function getUserVerified(email) {
   const q = query(collection(db, "users"), where("Email", "==", email));
   const querySnapshot = await getDocs(q);
@@ -291,7 +285,6 @@ export {
   verifyUser,
   addUser,
   signinUser,
-  getUserID,
   getUserVerified,
   getUserExists,
   readUserName,

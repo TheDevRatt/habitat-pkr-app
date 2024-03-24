@@ -6,9 +6,8 @@ import { useRouter } from "expo-router"; // import useRouter
 import { openCamera } from "./../classes/CloudStorage";
 import { selectedVehicle, selectedReservation } from "../(tabs)/Bookings";
 import { getUserID } from "../classes/UserUtils";
-
-import { useRouter } from "expo-router";
 import { verticalScale, moderateScale, horizontalScale } from '@/constants/Metrics'; // Import scales
+import { updateProgress } from "../classes/Rental";
 
 import CameraIcon from '../../components/CameraIcon'; // Import CameraIcon component
 
@@ -21,7 +20,7 @@ const FinalPictures = () => {
       alert('Error', 'Please take a photo of the gas level before submitting.');
       return;
     }
-
+    updateProgress(getUserID());
     console.log('Final photos submitted!');
     router.push('Pickup/ActiveReservation'); // navigate to Pickup/ActiveReservation
   };
@@ -29,7 +28,7 @@ const FinalPictures = () => {
   function handleOpenCamera(gasLevelImage){
     let filename = ("pickup" + gasLevelImage) ;
     let location = ("Reservations/" + selectedReservation.id);
-    openCamera(filename, location, getUserID());
+    openCamera(filename, location);
   }
 
   return (
@@ -39,7 +38,7 @@ const FinalPictures = () => {
       </Text>
 
       {/* Gas Level Photo */}
-      <TouchableOpacity onPress={() => handleOpenCamera(gasLevelImage)}>
+      <TouchableOpacity onPress={async () => handleOpenCamera(gasLevelImage)}>
         <View style={styles.photoContainer}>
           {gasLevelImage ? (
             <Image source={{ uri: gasLevelImage }} style={styles.photo} />
