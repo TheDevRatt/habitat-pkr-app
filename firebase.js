@@ -13,7 +13,7 @@ import {
   getStorage,
   connectStorageEmulator, // No need to import these again
 } from "firebase/storage";
-
+import { getFunctions, httpsCallable } from "firebase/functions";
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 
 export const firebaseConfig = {
@@ -31,6 +31,7 @@ export const app = initializeApp(firebaseConfig);
 export const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(ReactNativeAsyncStorage),
 });
+export const functions = getFunctions(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app); // This is correctly placed
 

@@ -38,8 +38,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUser(user);
       if (user) {
-        // Fetch custom claims to check for admin status
-        const idTokenResult = await user.getIdTokenResult();
+        // Refresh the token to get the latest custom claims
+        const idTokenResult = await user.getIdTokenResult(true); // Force token refresh
         setIsAdmin(!!idTokenResult.claims.admin);
       } else {
         setIsAdmin(false);

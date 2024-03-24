@@ -44,7 +44,7 @@ import {
   EmailAuthProvider,
 } from "firebase/auth";
 
-const myInfo = () => {
+const ChangePassword = () => {
   const router = useRouter();
 
   const user = auth.currentUser; // Assuming this is already defined in your component
@@ -160,7 +160,7 @@ const myInfo = () => {
   );
 };
 
-export default myInfo;
+export default ChangePassword;
 
 const styles = StyleSheet.create({
   gradient: {

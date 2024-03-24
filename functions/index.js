@@ -59,21 +59,18 @@ exports.sendApprovalEmail = functions.firestore
 exports.addAdminRole = functions.https.onCall((data, context) => {
   // Check if request is made by an authenticated admin
   if (context.auth.token.admin !== true) {
-    return {error: "Only admins can add other admins, sucker!"};
+    return {error: "Only admins can add other admins."};
   }
 
-  // Get user and add custom claim (admin)
+  // Directly set custom claim (admin) using the provided UID
   return admin
       .auth()
-      .getUserByEmail(data.email)
-      .then((user) => {
-        return admin.auth().setCustomUserClaims(user.uid, {
-          admin: true,
-        });
+      .setCustomUserClaims(data.id, {
+        admin: true,
       })
       .then(() => {
         return {
-          message: `Success! ${data.email} has been made an admin.`,
+          message: `Success! User with UID: ${data.id} has been made an admin.`,
         };
       })
       .catch((err) => {

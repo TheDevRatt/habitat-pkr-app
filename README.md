@@ -169,8 +169,8 @@ _For more examples, please refer to the [Documentation](https://example.com)_
   - [ ] Payment History Page (Dependant on Payment Service)
   - [x] FAQ Page
   - [x] Settings Page
-  - [ ] My Info Page
-  - [ ] Change Password Page
+  - [x] My Info Page
+  - [x] Change Password Page
   - [ ] Sub Account Page (Shelved Feature)
   - [ ] Add Sub Account Page (Shelved Feature)
 - [x] Reservation Page
@@ -179,19 +179,20 @@ _For more examples, please refer to the [Documentation](https://example.com)_
   - [x] My Reservations page
   - [x] Booking Details Page
   - [x] Choose Payment Page
-- [ ] Pick up and Drop off Page
-  - [ ] Active Reservation pages
-  - [ ] Accident Report Pages
-  - [ ] Reservation Warning page
-- [ ] Key Holder Page
-  - [ ] Reservations History page
-  - [ ] Active reservations page
-  - [ ] Damage report page
+- [x] Pick up and Drop off Page
+  - [x] Active Reservation pages
+  - [x] Accident Report Pages
+  - [x] Reservation Warning page
+- [x] Key Holder Page
+  - [x] Reservations History page
+  - [x] Active reservations page
+  - [x] Damage report page
 - [x] Admin Page
   - [x] Signed up users page
   - [ ] Blocked users page
   - [ ] Keyholders page
   - [x] Add user page
+  - [ ] Add admin page
   - [ ] Manage user page
   - [ ] Add car page
   - [ ] Manage car page

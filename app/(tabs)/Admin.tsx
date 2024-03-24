@@ -52,7 +52,7 @@ const Admin = () => {
   };
   const handleAddingNewAdmin = () => {
     console.log("Navigating to sign up requests");
-    //router.push("/tabs/Account/RideHistory");
+    router.push("/admin/addadmin");
   };
 
   return (

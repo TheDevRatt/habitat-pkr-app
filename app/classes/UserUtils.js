@@ -66,10 +66,43 @@ const approveUser = async (userId) => {
   });
 };
 
+async function fetchNonAdminUsers() {
+  const q = query(collection(db, "users"), where("isAdmin", "==", false));
+  const querySnapshot = await getDocs(q);
+  const users = querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    FirstName: doc.data().FirstName,
+    LastName: doc.data().LastName,
+    //Email: doc.data().Email,
+  }));
+  return users;
+}
+
+async function makeAdminUser(userId) {
+  try {
+    // Update the isAdmin field to true
+    const userRef = doc(db, "users", userId);
+    await updateDoc(userRef, {
+      isAdmin: true,
+    });
+
+    // Assign the custom admin claim
+    await auth.setCustomUserClaims(userId, { admin: true });
+
+    // Return success message or handle further actions
+    return "User successfully made admin.";
+  } catch (error) {
+    // Handle error
+    console.error("Error making user admin: ", error);
+    throw error;
+  }
+}
+
 export {
   getUserID,
   fileExists,
   signOutUser,
   fetchUnapprovedUsers,
   approveUser,
+  fetchNonAdminUsers,
 };

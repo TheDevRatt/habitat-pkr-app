@@ -139,6 +139,7 @@ function RootLayoutNav() {
         options={{ headerShown: false }}
       />
       <Stack.Screen name="admin/adduser" options={{ headerShown: false }} />
+      <Stack.Screen name="admin/addadmin" options={{ headerShown: false }} />
 
       <Stack.Screen
         name="profile/licenseAndInsurance"
