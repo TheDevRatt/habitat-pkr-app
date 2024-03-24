@@ -3,13 +3,39 @@ import { View, Text, StyleSheet } from 'react-native';
 import AppButton from '../../components/AppButton';
 import AnalogClock from '../../components/AnalogClock';
 import { useRouter } from "expo-router";
+import { selectedVehicle, selectedReservation } from "../(tabs)/Bookings";
 
 const Reservation = () => {
   const router = useRouter();
 
+  //const goBack = () => {
+      //navigation.goBack();
+    //};
+
+
   const handleDropOff = () => {
     router.push('Pickup/ReservationEnded');
   };
+
+  const [timer, setTimer] = useState("timer");
+  const [time, setTime] = useState(new Date());
+  function isActive(){
+    let currentTime = new Date();
+    let timeDifference = (selectedReservation.StartTime.toDate().getTime() - currentTime.getTime())/1000;
+    setTimer(new Date(timeDifference * 1000).toISOString().slice(11, 19));
+    //router.push({ pathname: "/Pickup/Reservation" });
+    }
+
+  useEffect(() => {
+       const interval = setInterval(() => {
+         setTime(isActive());
+       }, 1000);
+
+       return () => clearInterval(interval);
+     }, []);
+
+
+
 
   return (
     <View style={styles.container}>
@@ -20,16 +46,25 @@ const Reservation = () => {
       {/* Active Duration Box */}
       <View style={styles.durationBox}>
         <View style={styles.clockContainer}>
-          <AnalogClock />
         </View>
         <View>
-          <Text style={styles.durationText}>12:02PM</Text>
+          <Text style={styles.durationText}>
+          {timer}
+          </Text>
         </View>
       </View>
 
       <Text style={styles.infoText}>
       Please meet the key-holder at location within the 15 minute time slot to pick up the keys.
       </Text>
+      <AppButton
+        onPress={() => router.push('Pickup/Pictures')}
+        widthPercentage={40}
+        backgroundColor={ "#E55D25"}
+        textStyle={{ color: "white" }}
+        >
+        Key Collected
+      </AppButton>
 
     </View>
       

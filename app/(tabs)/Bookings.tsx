@@ -12,16 +12,13 @@ import { Ionicons } from "@expo/vector-icons";
 import BookingCard from "@/components/BookingCard";
 import AppButton from "@/components/AppButton";
 import { fetchUserReservations } from "../classes/UserUtils";
-import { vehicles } from "../(tabs)/Home";
+import { vehicleList } from "../(tabs)/Home";
 
 export let selectedReservation = [];
 export let selectedVehicle = [];
 let userReservations = [];
 let currentReservations = [];
 let previousReservations = [];
-
-
-
 
 const Bookings = () => {
 
@@ -38,12 +35,11 @@ const Bookings = () => {
 
   const goToDetails = (reservationID : number) => {
     selectedReservation = userReservations[userReservations.findIndex(p => p.id == reservationID)];
-    selectedVehicle = vehicles[vehicles.findIndex(p => p.id == selectedReservation.CarID)];
+    selectedVehicle = vehicleList[vehicleList.findIndex(p => p.id == selectedReservation.CarID)];
     router.push({ pathname: "/bookings/BookingInfo"});
   }
 
   if(userReservations){
-
     currentReservations = userReservations.filter(
         (reservation) => reservation.Active
     );
@@ -51,7 +47,6 @@ const Bookings = () => {
         (reservation) => !reservation.Active
     );
   }
-
 
   const handleCurrentPress = () => {
     setCurrentVisible(true);
@@ -98,14 +93,14 @@ const Bookings = () => {
                   style={styles.bookingCardContainer}
                 >
                   <BookingCard
-                    make={Object.values(vehicles)[vehicles.findIndex(p => p.CarID == userReservations.CarID)].Make}
-                    model={Object.values(vehicles)[vehicles.findIndex(p => p.CarID == userReservations.CarID)].Model}
+                    make={Object.values(vehicleList)[vehicleList.findIndex(p => p.CarID == userReservations.CarID)].Make}
+                    model={Object.values(vehicleList)[vehicleList.findIndex(p => p.CarID == userReservations.CarID)].Model}
                     date={reservation.StartTime.toDate().toLocaleString()}
                     amount={reservation.Cost}
                     time={reservation.TotalTime}
                     unit={"hours"}
                     bookingId={reservation.id}
-                    imageUrl={Object.values(vehicles)[vehicles.findIndex(p => p.CarID == userReservations.CarID)].imageURL}
+                    imageUrl={Object.values(vehicleList)[vehicleList.findIndex(p => p.CarID == userReservations.CarID)].imageURL}
                   />
                 </TouchableOpacity>
               ))}
@@ -119,14 +114,14 @@ const Bookings = () => {
                   onPress={() => goToDetails(reservation.id)}
                 >
                   <BookingCard
-                    make={Object.values(vehicles)[vehicles.findIndex(p => p.CarID == userReservations.CarID)].Make}
-                    model={Object.values(vehicles)[vehicles.findIndex(p => p.CarID == userReservations.CarID)].Model}
+                    make={Object.values(vehicleList)[vehicleList.findIndex(p => p.CarID == userReservations.CarID)].Make}
+                    model={Object.values(vehicleList)[vehicleList.findIndex(p => p.CarID == userReservations.CarID)].Model}
                     date={reservation.StartTime.toDate().toLocaleString()}
                     amount={reservation.Cost}
                     time={reservation.TotalTime}
                     unit={"hours"}
                     bookingId={reservation.id}
-                    imageUrl={Object.values(vehicles)[vehicles.findIndex(p => p.CarID == userReservations.CarID)].imageURL}                  />                                 />
+                    imageUrl={Object.values(vehicleList)[vehicleList.findIndex(p => p.CarID == userReservations.CarID)].imageURL}                  />                                 />
                 </TouchableOpacity>
               ))}
             </View>

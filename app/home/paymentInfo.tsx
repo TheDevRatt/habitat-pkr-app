@@ -11,7 +11,7 @@ import { Text, View, SafeAreaView, TextInput } from "@/components/Themed";
 import { LinearGradient } from "expo-linear-gradient";
 import AppButton from "../../components/AppButton";
 import { useRouter } from "expo-router";
-import PaymentCard from "@/components/PaymentCard";
+import PaymentCard from "@/components/paymentCard";
 import {
   verticalScale,
   moderateScale,

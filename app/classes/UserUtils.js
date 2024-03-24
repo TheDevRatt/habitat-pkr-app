@@ -81,7 +81,8 @@ async function fetchUserReservations(){
         TotalTime: doc.data().TotalTime,
         Cost: doc.data().Cost,
         Active: doc.data().Active,
-        Created: doc.data().Created
+        Created: doc.data().Created,
+        InProgress: doc.data().InProgress
     }));
     return userReservations
 }
