@@ -7,6 +7,8 @@ import {
   setDoc,
   query,
   where,
+  updateDoc,
+  deleteDoc
 } from "firebase/firestore";
 import { Link, useRouter } from "expo-router";
 import { db, auth } from "@/firebase";
@@ -48,7 +50,7 @@ async function availability(carID, startTime, endTime){
 
     let reserve = true;
 
-    const q = query(collection(db, "reservations"), where("CarID", "==", carID));
+    const q = query(collection(db, "reservations"), where("Status", "==", true));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
         let bookedStart = doc.data().StartTime.toDate().getTime();
@@ -76,10 +78,16 @@ async function availability(carID, startTime, endTime){
 }
 
 // Function to upload reservation to database
-async function reserve(carID, startTime, endTime){
+async function reserve(carID, start, end, dayRate, hourlyRate){
+
+     let startTime = start;
+     let endTime = end;
+
+     startTime.setSeconds(0);
+     endTime.setSeconds(0);
+
 
     let verifyTimes = bookingVerification(startTime, endTime);
-    console.log(verifyTimes);
     if (verifyTimes != "pass"){ return verifyTimes; }
 
     let checkAvailability = await availability(carID, startTime, endTime);
@@ -100,9 +108,28 @@ async function reserve(carID, startTime, endTime){
         userID = user.uid;
     }
 
+
     // Convert reserved time to hours
     let reservedTime = (endTime.getTime() - startTime.getTime())/3600000;
+    reservedTime = Math.round(reservedTime * 100) / 100
 
+    // Calculate cost
+    let cost = 0;
+    let rTime = reservedTime;
+    while(rTime > 0){
+        if (rTime > 24){
+            cost += dayRate;
+            rTime -= 24
+        }else if(rTime >= 1){
+            cost += hourlyRate * Math.ceil(rTime);
+            rTime -= rTime;
+        }
+    }
+
+    console.log(cost);
+
+
+    // Upload reservation
     try{
         await setDoc(doc(db, "reservations", tripName), {
             CarID: carID,
@@ -110,14 +137,65 @@ async function reserve(carID, startTime, endTime){
             StartTime: startTime,
             EndTime: endTime,
             TotalTime: reservedTime,
+            Cost: cost,
+            Active: true,
+            Created: new Date()
         });
     } catch(e){
-        alert(e);
+        return e;
+    }
+
+    // Add reservation to user reservation list, delete reservation
+    // if an error occurs
+    let res = await userReservations(userID, tripName, startTime);
+    if (res == false){
+        console.log("here");
+        try{
+            await deleteDoc(doc(db, "reservations", tripName));
+        }catch(e){
+            return e;
+        }
+        return "An error has occurred";
     }
 
     return "Booked";
 
 }
+
+// function to add reservation name and time to user reservation list
+async function userReservations(userID, reservationID, startTime){
+    const userDoc = await getDoc(doc(db, 'users', userID));
+
+    try{
+        if (userDoc.exists()) {
+            if (userDoc.data().Reservations){
+                const res = userDoc.data().Reservations;
+                res[reservationID] = startTime.getTime();
+
+                const userDocRef = doc(db, 'users', userID)
+                await updateDoc(userDocRef, {
+                    Reservations: res
+                });
+            }else {
+                let res = {};
+                res[reservationID] = startTime.getTime();
+                const userDocRef = doc(db, 'users', userID)
+                await updateDoc(userDocRef, {
+                Reservations: res
+                });
+            }
+        }
+    }catch (error) {
+        console.error(error);
+        return false;
+    }
+    return true
+
+
+}
+
+
+
 
 
 

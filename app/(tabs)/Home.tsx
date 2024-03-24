@@ -37,7 +37,7 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-let vehicles = [];
+export let vehicles = [];
 export let selectedVehicle = [];
 
 const Home = () => {

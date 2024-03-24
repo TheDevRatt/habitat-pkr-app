@@ -11,7 +11,7 @@ import {
   moderateScale,
   verticalScale,
 } from "@/constants/Metrics";
-import { vehicles } from "../(tabs)/Home";
+import { selectedVehicle, selectedReservation } from "../(tabs)/Bookings";
 
 const BookingDetails = () => {
   const ident = useLocalSearchParams();
@@ -22,8 +22,8 @@ const BookingDetails = () => {
   };
 
   const bookingDetails = {
-    make: vehicles.Make,
-    model: vehicles.Model,
+    make: selectedVehicle.Make,
+    model: selectedVehicle.Model,
     bookingId: ident.toString(),
     pickUpDate: "08/11/2023",
     pickUpTime: "9:30 AM",
@@ -52,7 +52,7 @@ const BookingDetails = () => {
           </Text>
         </View>
         <Image
-          source={{uri: vehicles.imageURL}}
+          source={{uri: selectedVehicle.imageURL}}
           style={styles.image}
         />
         <View style={styles.detailsContainer}>

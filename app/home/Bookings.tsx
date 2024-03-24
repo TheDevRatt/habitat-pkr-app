@@ -183,7 +183,7 @@ const Payment = () => {
           <View style={styles.buttonContainer}>
             <AppButton
               onPress={async () => {
-              let reservation = await reserve(selectedVehicle.id, Data[0].value, Data[1].value);
+              let reservation = await reserve(selectedVehicle.id, Data[0].value, Data[1].value, selectedVehicle.DayRate ,selectedVehicle.HourlyRate );
               if (reservation == "Booked"){
                 alert("Reservation complete");
                 //router.push({ pathname: "/home/${carId}" })}
