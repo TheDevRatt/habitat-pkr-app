@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
@@ -33,13 +33,42 @@ import RoadIconO from "@/components/RoadIconO";
 import ProfileContainer from "@/components/ProfileContainer";
 
 import { Link, useRouter } from "expo-router";
+import { auth, db } from "@/firebase";
+import { getDoc, doc } from "firebase/firestore";
 
 const Profile = () => {
-  const [user, setUser] = useState({
-    name: "John Smith",
+  const router = useRouter();
+
+  const user = auth.currentUser;
+  let userName = "Unknown";
+
+  if (user !== null && user.displayName !== null) {
+    userName = user.displayName;
+  }
+
+  const [userInfo, setUserInfo] = useState({
+    name: userName,
     totalRides: 14,
     // You can also store other user details here we grab these from Firebase later.
   });
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (user) {
+        const userDocRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          setUserInfo({
+            ...userInfo,
+            name: `${userData.FirstName} ${userData.LastName}`,
+          });
+        }
+      }
+    };
+
+    fetchUserData();
+  }, []); // Empty dependency array to run the effect only once
 
   // Dummy function to handle image press
   const handleImagePress = () => {
@@ -49,7 +78,6 @@ const Profile = () => {
   };
 
   // Dummy function to navigate to different screens
-  const router = useRouter();
   const handleRideHistoryPress = () => {
     console.log("Navigating to Ride History");
     //router.push("/tabs/Account/RideHistory");
@@ -76,7 +104,7 @@ const Profile = () => {
   };
   const handleSettingsPress = () => {
     console.log("Navigating to Settings");
-    //router.push("/tabs/Account/Settings");
+    router.push("/Settings/Setting");
   };
 
   return (
@@ -85,15 +113,19 @@ const Profile = () => {
         <TouchableOpacity onPress={handleImagePress}></TouchableOpacity>
         <Text style={styles.profileTitle}>Profile</Text>
         <View style={styles.profileContainer}>
-          <ProfileContainer width={99} height={99} style={styles.profileImage} />
-          <Text style={styles.profileName}>{user.name}</Text>
+          <ProfileContainer
+            width={99}
+            height={99}
+            style={styles.profileImage}
+          />
+          <Text style={styles.profileName}>{userInfo.name}</Text>
         </View>
 
         <View style={styles.totalRidesContainer}>
           <RoadIconO style={styles.iconStyle} />
           <View style={{ alignItems: "center" }}>
             <Text style={{ fontSize: 50, fontWeight: "bold" }}>
-              {user.totalRides}
+              {userInfo.totalRides}
             </Text>
             <Text style={{ fontSize: 20, fontWeight: "300" }}>Total Rides</Text>
           </View>
@@ -168,7 +200,7 @@ const Profile = () => {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => handleRideHistoryPress()}
+        onPress={() => handleSettingsPress()}
       >
         <View style={styles.iconContainer}>
           <SettingsIcon />

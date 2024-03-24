@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet, Button } from 'react-native';
-import AppButton from '../../components/AppButton';
+import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet, SafeAreaView, Button } from 'react-native';
+import AppButton from '@/components/AppButton';
 import * as ImagePicker from 'expo-image-picker';
-import DateTimePicker from '@react-native-community/datetimepicker'; // Import DateTimePicker
+import DateTimePicker from '@react-native-community/datetimepicker';
+import CameraIcon from '@/components/CameraIcon'; 
+import { verticalScale, moderateScale, horizontalScale } from '@/constants/Metrics';
 
 const ReportDamages = () => {
   const [description, setDescription] = useState('');
@@ -25,15 +27,14 @@ const ReportDamages = () => {
     });
 
     if (!pickerResult.cancelled) {
-      const imageResult = pickerResult.assets[0]; 
-      const newUri = imageResult.uri + '?' + new Date().getTime(); 
-      console.log('New photo URI:', newUri); 
+      const imageResult = pickerResult.assets[0];
+      const newUri = imageResult.uri + '?' + new Date().getTime();
+      console.log('New photo URI:', newUri);
       setPhotos([...photos, newUri]);
     }
   };
 
   const handleSubmit = () => {
-    // Handle submission logic here
     console.log('Description:', description);
     console.log('Location:', location);
     console.log('Time:', time);
@@ -41,14 +42,10 @@ const ReportDamages = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>
-        Report Accident or Damages
-      </Text>
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.title}>Report Accident or Damages</Text>
 
-      <Text style={styles.label}>
-        Please describe the damages or report it as much in detail as possible:
-      </Text>
+      <Text style={styles.label}>Please describe the damages or report it as much in detail as possible:</Text>
       <TextInput
         multiline
         numberOfLines={10}
@@ -56,21 +53,31 @@ const ReportDamages = () => {
         value={description}
         onChangeText={text => setDescription(text)}
       />
-       <Text style={styles.label}>Location of damage/accident:</Text>
-      <TextInput
-        style={styles.inlineInput}
-        value={location}
-        onChangeText={text => setLocation(text)}
-      />
-     
+
+      <Text style={styles.label}>Location of damage/accident:</Text>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.inlineInput}
+          value={location}
+          onChangeText={text => setLocation(text)}
+        />
+      </View>
+
+      <View style={styles.line} />
 
       <Text style={styles.label}>Time of damage/accident occurring:</Text>
-      <Button title="Show Date and Time Picker" onPress={() => setShowDatePicker(true)} />
+      <View style={styles.dateContainer}>
+        <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.dateButton}>
+          <Text style={styles.dateButtonText}>Select Date</Text>
+        </TouchableOpacity>
+        <Text style={styles.selectedDate}>{time.toDateString()}</Text>
+      </View>
+      
       {showDatePicker && (
         <DateTimePicker
           testID="dateTimePicker"
           value={time}
-          mode={'datetime'} // Change this to 'datetime'
+          mode={'date'}
           display="default"
           onChange={(event, selectedDate) => {
             const currentDate = selectedDate || time;
@@ -82,108 +89,130 @@ const ReportDamages = () => {
 
       <View style={styles.cameraRow}>
         <TouchableOpacity onPress={openCamera}>
-          <Image source={require('../../components/CameraIcon.tsx')} style={styles.cameraIcon} />
+          <CameraIcon style={styles.cameraIcon} />
         </TouchableOpacity>
-        <Text style={styles.cameraLabel}>
-          Attach photos of the accident/damages
-        </Text>
+        <Text style={styles.cameraLabel}>Attach photos of the accident/damages</Text>
       </View>
 
-      {/* Display selected photos */}
       <View style={styles.photoContainer}>
         {photos.map((photo, index) => (
           <Image key={index} source={{ uri: photo }} style={styles.photo} />
         ))}
       </View>
 
-      <AppButton
-        style={styles.submitButton}
-        onPress={handleSubmit}
-      >
+      <AppButton style={styles.submitButton} onPress={handleSubmit}>
         <Text style={styles.submitButtonText}>Submit</Text>
       </AppButton>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingVertical: verticalScale(100),
+    paddingHorizontal: 50,
     backgroundColor: 'white',
+    justifyContent:'center',
+    textAlign: 'center',
+    alignItems:'center',
   },
   title: {
-    fontSize: 30,
+    fontSize: moderateScale(30),
     fontWeight: 'bold',
-    marginBottom: 30,
-    marginTop: 50,
+    marginBottom: verticalScale(20),
+    marginTop: verticalScale(30),
+    textAlign: 'center',
   },
   label: {
-    fontSize: 24,
-    marginBottom: 20,
+    fontSize: moderateScale(27),
+    marginBottom: verticalScale(15),
+    textAlign: 'auto',
+    paddingHorizontal: 8,
   },
   input: {
     borderWidth: 1,
     borderColor: 'black',
-    padding: 10,
-    marginBottom: 40,
-    height: '10%',
+    width: horizontalScale(340),
+    marginBottom: verticalScale(20),
+    height: verticalScale(100),
+    alignItems:'center',
   },
-  inlineInput: {
+  inputContainer: {
     borderBottomWidth: 1,
     borderColor: 'black',
+  
   },
-  lineContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  inlineInput: {
+    height: verticalScale(40),
+    width: horizontalScale(340),
   },
   line: {
-    flex: 1,
-    height: 1,
-    backgroundColor: 'black',
-    marginTop:30,
-    marginBottom:60,
+    borderBottomWidth: 1,
+    borderBottomColor: 'black',
+    marginBottom: verticalScale(10),
+    width:horizontalScale(340),
+    justifyContent: 'center',
+  },
+  dateContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: verticalScale(20),
+    
+  },
+  dateButton: {
+    backgroundColor: 'orange',
+    borderRadius: moderateScale(25),
+    paddingVertical: verticalScale(10),
+    paddingHorizontal: horizontalScale(20),
+    marginRight: horizontalScale(20),
+  },
+  dateButtonText: {
+    color: 'white',
+    fontSize: moderateScale(16),
+  },
+  selectedDate: {
+    fontSize: moderateScale(16),
   },
   cameraRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop:10,
-    marginBottom: 10,
+    marginTop: verticalScale(10),
+    marginBottom: verticalScale(10),
+    paddingHorizontal:10,
   },
   cameraIcon: {
-    width: 60,
-    height: 60,
+    width: moderateScale(60),
+    height: moderateScale(60),
   },
   cameraLabel: {
-    fontSize: 30,
+    fontSize: moderateScale(24),
     flexShrink: 1,
-    marginLeft: 10,
+    marginLeft: horizontalScale(10),
   },
   photoContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginBottom: 20,
+    marginBottom: verticalScale(20),
   },
   photo: {
-    width: 60,
-    height: 60,
-    borderRadius: 10,
-    marginRight: 10,
+    width: moderateScale(60),
+    height: moderateScale(60),
+    borderRadius: moderateScale(10),
+    marginRight: horizontalScale(10),
   },
   submitButton: {
-    height: 50,
+    height: verticalScale(50),
     width: '90%',
     justifyContent: 'center',
     alignSelf: 'center',
     backgroundColor: 'orange', 
-    borderRadius: 25, 
-    color: 'white', 
-    marginBottom: 20,
+    borderRadius: moderateScale(25), 
+    marginBottom: verticalScale(10),
   },
   submitButtonText: {
-    color: 'white', // Change this to 'white'
+    color: 'white', 
     textAlign: 'center',
   },
 });
-
 export default ReportDamages;

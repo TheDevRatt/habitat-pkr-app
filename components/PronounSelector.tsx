@@ -34,7 +34,8 @@ const PronounSelector: React.FC<PronounSelectorProps> = ({
         setItems={setItems}
         placeholder="Select your pronouns"
         style={{
-          borderWidth: 1,
+          borderWidth: 0,
+          borderBottomWidth: 1,
           backgroundColor: "transparent",
           zIndex: 3000,
           borderTopColor: "transparent",

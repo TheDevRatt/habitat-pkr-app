@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import AppButton from '../../components/AppButton';
 import { useRouter } from "expo-router";
+import CameraIcon from '@/components/CameraIcon'; // Import CameraIcon component
+import { verticalScale, moderateScale, horizontalScale } from '@/constants/Metrics';
 
 const ReservationEnded = () => {
   const [frontImage, setFrontImage] = useState(null);
@@ -17,7 +19,7 @@ const ReservationEnded = () => {
     console.log('Back Image:', backImage);
     console.log('Right Image:', rightImage);
     console.log('Left Image:', leftImage);
-    router.push('Pickup/ReservationEnding');
+    router.push('/Pickup/ReservationEnding');
   };
 
   const openCamera = async (setImage) => {
@@ -46,18 +48,22 @@ const ReservationEnded = () => {
     return imageUri ? (
       <Image source={{ uri: imageUri }} style={styles.photo} key={imageUri} />
     ) : (
-      <Image source={require('../../components/CameraIcon.tsx')} style={styles.cameraIcon} />
+      <CameraIcon style={styles.cameraIcon} />
     );
+  };
+
+  const takePhoto = (setImage) => {
+    openCamera(setImage);
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>
+      <Text style={[styles.title, { marginBottom: verticalScale(30), marginTop: verticalScale(80) }]}>
         Reservation Ended
       </Text>
 
       {/* Front Photo */}
-      <TouchableOpacity onPress={() => openCamera(setFrontImage)}>
+      <TouchableOpacity onPress={() => takePhoto(setFrontImage)}>
         <View style={styles.photoContainer}>
           {renderImage(frontImage)}
           <Text style={styles.photoText}>Please take a photo of the front of the car</Text>
@@ -65,7 +71,7 @@ const ReservationEnded = () => {
       </TouchableOpacity>
 
       {/* Back Photo */}
-      <TouchableOpacity onPress={() => openCamera(setBackImage)}>
+      <TouchableOpacity onPress={() => takePhoto(setBackImage)}>
         <View style={styles.photoContainer}>
           {renderImage(backImage)}
           <Text style={styles.photoText}>Please take a photo of the back of the car</Text>
@@ -73,7 +79,7 @@ const ReservationEnded = () => {
       </TouchableOpacity>
 
       {/* Right Side Photo */}
-      <TouchableOpacity onPress={() => openCamera(setRightImage)}>
+      <TouchableOpacity onPress={() => takePhoto(setRightImage)}>
         <View style={styles.photoContainer}>
           {renderImage(rightImage)}
           <Text style={styles.photoText}>Please take a photo of the right side of the car</Text>
@@ -81,7 +87,7 @@ const ReservationEnded = () => {
       </TouchableOpacity>
 
       {/* Left Side Photo */}
-      <TouchableOpacity onPress={() => openCamera(setLeftImage)}>
+      <TouchableOpacity onPress={() => takePhoto(setLeftImage)}>
         <View style={styles.photoContainer}>
           {renderImage(leftImage)}
           <Text style={styles.photoText}>Please take a photo of the left side of the car</Text>
@@ -102,49 +108,49 @@ const ReservationEnded = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: horizontalScale(20),
     backgroundColor: 'white', 
   },
   title: {
-    fontSize: 30,
+    fontSize: moderateScale(35),
     fontWeight: 'bold',
-    marginBottom: 30,
-    marginTop: 80,
     textAlign: 'center',
+    marginBottom: horizontalScale(30),
   },
   photoContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 40,
+    marginBottom: verticalScale(30),
+    marginTop: moderateScale(40),
   },
   cameraIcon: {
-    width: 90,
-    height: 90,
-    marginRight:20
+    width: moderateScale(70),
+    height: moderateScale(70),
+    marginRight: horizontalScale(30),
   },
   photoText: {
     flexShrink: 1,
-    fontSize: 22,
+    fontSize: moderateScale(25),
     fontWeight: 'bold',
   },
   photo: {
-    width: 60,
-    height: 60,
-    borderRadius: 10,
-    marginRight: 10,
+    width: moderateScale(60),
+    height: moderateScale(60),
+    borderRadius: moderateScale(10),
+    marginRight: horizontalScale(10),
   },
   buttonText: {
     color: 'white',
     textAlign: 'center',
   },
   submitButton: {
-    height: 50,
+    height: verticalScale(50),
     width: '90%',
     justifyContent: 'center',
     alignSelf: 'center',
-    marginTop: 30,
+    marginTop: verticalScale(30),
     backgroundColor: 'orange', 
-    borderRadius: 25, 
+    borderRadius: moderateScale(25), 
   },
 });
 

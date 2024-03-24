@@ -114,13 +114,27 @@ No prerequisites required other than the above tools and a decent computer capab
    ```sh
    git clone https://github.com/TheDevRatt/habitat-pkr-app.git
    ```
-2. Install the required dependancies by running:
+2. Open a command prompt within the working folder by click on the address bar and typing `CMD` then `Enter` on windows.
+
+3. Install the required Node Modules by running the following command:
    ```sh
    npm ci
    ```
-3. Once dependancies have been successfully installed, run the project with
+4. Navigate to the functions folder after Step 3 finishes by typing:
    ```sh
-   npx expo start
+   cd functions
+   ```
+5. Install the required firebase node-modules by running the following command:
+   ```sh
+   npm ci
+   ```
+6. Navigate back out to the working folder by typing in the command line:
+   ```sh
+   cd ..
+   ```
+7. You should finally be able to start the project by running the following:
+   ```sh
+   npx expo start -c
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -171,7 +185,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
   - [ ] Reservations History page
   - [ ] Active reservations page
   - [ ] Damage report page
-- [ ] Admin Page
+- [x] Admin Page
   - [ ] Signed up users page
   - [ ] Blocked users page
   - [ ] Keyholders page

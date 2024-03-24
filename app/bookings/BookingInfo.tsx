@@ -28,7 +28,9 @@ const BookingDetails = () => {
         let timeWindow = startTime.toDate();
         timeWindow = new Date(timeWindow + ONE_MINUTE * 15);
 
-        if (currentTime >= startTime.toDate() || currentTime < timeWindow) {
+        if (selectedReservation.InProgress === true){
+            router.push({ pathname: "/Pickup/ActiveReservation" });
+        }else if (currentTime >= startTime.toDate() || currentTime < timeWindow) {
             console.log("meet with key holder");
             router.push({ pathname: "/Pickup/Reservation" });
 

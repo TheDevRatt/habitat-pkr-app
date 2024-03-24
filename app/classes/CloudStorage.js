@@ -13,11 +13,12 @@ import { Camera, CameraType } from "expo-camera";
 const storage = getStorage();
 
 // This function uploads a file to Firebase Storage and then updates the user document with the file URL
-const uploadToFirebase = async (uri, name, location) => {
+const uploadToFirebase = async (uri, name, location, userID = null) => {
   const fetchResponse = await fetch(uri);
   const theBlob = await fetchResponse.blob();
-  const imageRef = ref(getStorage(), `${location}/${name}`);
-  const userID = await getUserID();
+  const imageRef = ref(storage, `${location}/${name}`); // Use the initialized storage
+
+  const effectiveUserID = userID || (await getUserID());
 
   const uploadTask = uploadBytesResumable(imageRef, theBlob);
 
@@ -27,14 +28,13 @@ const uploadToFirebase = async (uri, name, location) => {
       (snapshot) => {
       },
       (error) => {
-        // Handle unsuccessful uploads
-        console.log(error);
+        console.error(error);
         reject(error);
       },
       async () => {
         const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
         updateUserDocumentWithFileUrl(
-          userID,
+          effectiveUserID,
           downloadUrl,
           location.toLowerCase()
         )
@@ -103,6 +103,7 @@ async function openFilePicker(fileName, location, userID) {
 // Check if a file exists
 async function fileExists(fileName, location) {
   const filepath = location + "/" + fileName;
+  //console.log(filepath);
   const docRef = ref(storage, filepath);
   try {
     await getDownloadURL(docRef);

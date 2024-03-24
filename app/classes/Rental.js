@@ -191,6 +191,20 @@ async function userReservations(userID, reservationID, startTime){
         return false;
     }
     return true
+}
+
+async function updateProgress(userID){
+
+    const userDoc = await getDoc(doc(db, 'users', userID));
+    try{
+        if (userDoc.exists()) {
+            await updateDoc(userDocRef, {
+                InProgress: true
+            });
+        }
+    }catch (error) {
+        alert(error);
+    }
 
 
 }
@@ -199,5 +213,4 @@ async function userReservations(userID, reservationID, startTime){
 
 
 
-
-export { reserve };
+export { reserve, updateProgress };
