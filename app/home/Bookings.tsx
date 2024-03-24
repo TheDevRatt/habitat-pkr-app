@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import { StyleSheet, View, Image, ScrollView } from "react-native";
 import { SafeAreaView, Text, TouchableOpacity } from "@/components/Themed";
 import { LinearGradient } from "expo-linear-gradient";
@@ -14,7 +14,7 @@ import { Link, useRouter } from "expo-router";
 import AppButton from "@/components/AppButton";
 import { selectedVehicle } from "../(tabs)/Home";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { reserve } from "../classes/Rental";
 
 const Payment = () => {
@@ -24,21 +24,21 @@ const Payment = () => {
     navigation.goBack(); // Navigate to the previous screen
   };
 
-  const options= {
+  const options = {
     year: "numeric",
     month: "long",
     day: "numeric",
-  }
-
+  };
 
   let t = new Date();
   t.setHours(t.getHours() + 1);
-  const Init = [{ id: 1, value: new Date(), visible: false, },
-                { id: 2, value: t, visible: false, },];
+  const Init = [
+    { id: 1, value: new Date(), visible: false },
+    { id: 2, value: t, visible: false },
+  ];
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [Data, SetData] = useState(Init);
-
 
   const handleDateConfirm = (data, index) => {
     let temp = [...Data];
@@ -51,7 +51,7 @@ const Payment = () => {
     let temp = [...Data];
     temp[index].visible = false;
     SetData(temp);
-    };
+  };
 
   const onOpen = (index) => {
     try {
@@ -79,127 +79,167 @@ const Payment = () => {
   return (
     <LinearGradient colors={["#FFFFFF", "#59C9F0"]} style={styles.gradient}>
       <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.back}>
-          <AntDesign
-            name="arrowleft"
-            size={24}
-            color="black"
-            onPress={goBack}
-          />
-        </View>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>Select Booking Dates:</Text>
-        </View>
-
-        <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>Pick Up:</Text>
-            <View style={styles.buttonContainer}>
-                <AppButton
-                    onPress={() => onOpen(0)}
-                    backgroundColor="#E55D25"
-                    widthPercentage={45}
-                    textStyle={{ color: "white" }}
-                    >
-                    Pickup Time
-                </AppButton>
-                    <DateTimePickerModal
-                        isVisible={Data[0].visible}
-                        minimumDate={new Date()}
-                        maximumDate={new Date(new Date().setFullYear(new Date().getFullYear() + 1))}
-                        minuteInterval={30}
-                        mode="datetime"
-                        onConfirm={(data) => handleDateConfirm(data, 0)}
-                        onCancel={() => onCancel(0)}
-                    />
+        <ScrollView style={styles.scrollView}>
+          <View style={styles.container}>
+            <View style={styles.back}>
+              <AntDesign
+                name="arrowleft"
+                size={24}
+                color="black"
+                onPress={goBack}
+              />
+            </View>
+            <View>
+              <Text style={styles.title}>Select Booking Dates:</Text>
             </View>
 
-            <Text style={styles.detailValue}>
-              <EvilIcons name="calendar" size={24} color="#0099cc" />{" "}
-              {Data[0].value.toLocaleDateString("en-US", options)}
-              {"     "}
-              <EvilIcons name="clock" size={24} color="#0099cc" />
-              {Data[0].value.toLocaleTimeString()}
-            </Text>
-          </View>
-          <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>Drop Off:</Text>
-            <View style={styles.buttonContainer}>
+            <View style={styles.detailRow}>
+              <Text style={styles.detailLabel}>Pick Up:</Text>
+              <View style={styles.buttonContainer}>
                 <AppButton
-                    onPress={() => onOpen(1)}
-                    backgroundColor="#E55D25"
-                    widthPercentage={45}
-                    textStyle={{ color: "white" }}
-                    >
-                    Drop Off Time
+                  onPress={() => onOpen(0)}
+                  backgroundColor="#FFF"
+                  widthPercentage={85}
+                  borderRadius={10}
+                  borderWidth={1}
+                  borderStyle="solid"
+                  borderColor="#0099cc"
+                >
+                  Select Pickup Time
                 </AppButton>
-                    <DateTimePickerModal
-                        isVisible={Data[1].visible}
-                        minimumDate={new Date()}
-                        maximumDate={new Date(new Date().setFullYear(new Date().getFullYear() + 1))}
-                        minuteInterval={30}
-                        mode="datetime"
-                        onConfirm={(data) => handleDateConfirm(data, 1)}
-                        onCancel={() => onCancel(1)}
-                    />
-            </View>
-            <Text style={styles.detailValue}>
-              <EvilIcons name="calendar" size={24} color="#0099cc" />{" "}
-              {Data[1].value.toLocaleDateString("en-US", options)}
-              {"    "}
-              <EvilIcons name="clock" size={24} color="#0099cc" />
-              {Data[1].value.toLocaleTimeString()}
-            </Text>
-          </View>
-        <View style={styles.detailsContainer}>
-          <View style={styles.detailRowCard}>
-            <Text style={styles.detailLabelCard}>Mileage:</Text>
-            <Text style={styles.detailValueCard}>{bookingDetails.mileage}</Text>
-          </View>
-          <View style={styles.detailRowCard}>
-            <Text style={styles.detailLabelCard}>Insurance:</Text>
-            <Text style={styles.detailValueCard}>{bookingDetails.insurance}</Text>
-          </View>
-          <View style={styles.detailRowCard}>
-            <Text style={styles.detailLabelCard}>Rental Price:</Text>
-            <Text style={styles.detailValueCard}>{bookingDetails.rentalPrice}</Text>
-          </View>
-          <View style={styles.detailRowCard}>
-            <Text style={styles.detailLabelCard}>Weekend Premium:</Text>
-            <Text style={styles.detailValueCard}>
-              {bookingDetails.weekendPremium}
-            </Text>
-          </View>
-          <View style={styles.detailRowCard}>
-            <Text style={styles.detailLabelCard}>Taxes:</Text>
-            <Text style={styles.detailValueCard}>{bookingDetails.taxes}</Text>
-          </View>
-          <View style={styles.detailRowCard}>
-            <Text style={styles.detailLabelCard}>Total Price:</Text>
-            <Text style={styles.detailValueCard}>{bookingDetails.totalPrice}</Text>
-          </View>
-         
-          </View>
-          <View style={styles.buttonContainer}>
-            <AppButton
-              onPress={async () => {
-              let reservation = await reserve(selectedVehicle.id, Data[0].value, Data[1].value);
-              if (reservation == "Booked"){
-                alert("Reservation complete");
-                //router.push({ pathname: "/home/${carId}" })}
-              }else{
-                alert(reservation);
-              }
-              }}
+                <DateTimePickerModal
+                  isVisible={Data[0].visible}
+                  minimumDate={new Date()}
+                  maximumDate={
+                    new Date(
+                      new Date().setFullYear(new Date().getFullYear() + 1)
+                    )
+                  }
+                  minuteInterval={30}
+                  mode="datetime"
+                  onConfirm={(data) => handleDateConfirm(data, 0)}
+                  onCancel={() => onCancel(0)}
+                />
+              </View>
 
-              backgroundColor="#E55D25"
-              widthPercentage={45}
-                textStyle={{color:"#fff"}}
-            >
-              Pay
-            </AppButton>
-        </View>
-      </ScrollView>
+              <View style={styles.detailValue}>
+                <Text style={styles.timeSlot}>
+                  <EvilIcons name="calendar" size={24} color="#0099cc" />{" "}
+                  {Data[0].value.toLocaleDateString("en-US", options)}
+                </Text>
+                <Text style={styles.timeSlot}>
+                  <EvilIcons name="clock" size={24} color="#0099cc" />
+                  {Data[0].value.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.detailRow}>
+              <Text style={styles.detailLabel}>Drop Off:</Text>
+              <View style={styles.buttonContainer}>
+                <AppButton
+                  onPress={() => onOpen(1)}
+                  backgroundColor="#FFF"
+                  widthPercentage={85}
+                  borderRadius={10}
+                  borderWidth={1}
+                  borderStyle="solid"
+                  borderColor="#0099cc"
+                >
+                  Drop Off Time
+                </AppButton>
+                <DateTimePickerModal
+                  isVisible={Data[1].visible}
+                  minimumDate={new Date()}
+                  maximumDate={
+                    new Date(
+                      new Date().setFullYear(new Date().getFullYear() + 1)
+                    )
+                  }
+                  minuteInterval={30}
+                  mode="datetime"
+                  onConfirm={(data) => handleDateConfirm(data, 1)}
+                  onCancel={() => onCancel(1)}
+                />
+              </View>
+              <View style={styles.detailValue}>
+                <Text style={styles.timeSlot}>
+                  <EvilIcons name="calendar" size={24} color="#0099cc" />{" "}
+                  {Data[1].value.toLocaleDateString("en-US", options)}
+                </Text>
+                <Text style={styles.timeSlot}>
+                  <EvilIcons name="clock" size={24} color="#0099cc" />
+                  {Data[1].value.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.detailsContainer}>
+              <View style={styles.detailRowCard}>
+                <Text style={styles.detailLabelCard}>Mileage:</Text>
+                <Text style={styles.detailValueCard}>
+                  {bookingDetails.mileage}
+                </Text>
+              </View>
+              <View style={styles.detailRowCard}>
+                <Text style={styles.detailLabelCard}>Insurance:</Text>
+                <Text style={styles.detailValueCard}>
+                  {bookingDetails.insurance}
+                </Text>
+              </View>
+              <View style={styles.detailRowCard}>
+                <Text style={styles.detailLabelCard}>Rental Price:</Text>
+                <Text style={styles.detailValueCard}>
+                  {bookingDetails.rentalPrice}
+                </Text>
+              </View>
+              <View style={styles.detailRowCard}>
+                <Text style={styles.detailLabelCard}>Weekend Premium:</Text>
+                <Text style={styles.detailValueCard}>
+                  {bookingDetails.weekendPremium}
+                </Text>
+              </View>
+              <View style={styles.detailRowCard}>
+                <Text style={styles.detailLabelCard}>Taxes:</Text>
+                <Text style={styles.detailValueCard}>
+                  {bookingDetails.taxes}
+                </Text>
+              </View>
+              <View style={styles.detailRowCard}>
+                <Text style={styles.detailPrice}>Total Price:</Text>
+                <Text style={styles.detailPrice}>
+                  {bookingDetails.totalPrice}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.buttonContainer}>
+              <AppButton
+                onPress={async () => {
+                  let reservation = await reserve(
+                    selectedVehicle.id,
+                    Data[0].value,
+                    Data[1].value
+                  );
+                  if (reservation == "Booked") {
+                    alert("Reservation complete");
+                    router.push({ pathname: "/home/paymentInfo" })
+                  } else {
+                    alert(reservation);
+                  }
+                }}
+                backgroundColor="#E55D25"
+                widthPercentage={45}
+                textStyle={{ color: "#fff" }}
+              >
+                Pay
+              </AppButton>
+            </View>
+          </View>
+        </ScrollView>
       </SafeAreaView>
     </LinearGradient>
   );
@@ -211,35 +251,23 @@ const styles = StyleSheet.create({
   },
   back: {
     width: "90%",
+    height:"3%"
   },
   container: {
     flex: 1,
     alignItems: "center",
-    paddingTop: verticalScale(20),
-    paddingHorizontal: horizontalScale(20),
     backgroundColor: "transparent",
   },
-  titleContainer: {
-    marginVertical: moderateScale(15),
+  scrollView: {
+    width: "100%",
+    flex: 1,
   },
+
   title: {
     fontFamily: "karlaM",
     fontSize: moderateScale(44),
     alignItems: "center",
-  },
-  subtitle: {
-    fontSize: moderateScale(20),
-    fontFamily: "karlaB",
-  },
-  subtitleContainer: {
-    width: "80%",
-    marginTop: moderateScale(15),
-  },
-  image: {
-    width: 300,
-    height: 200,
-    marginBottom: verticalScale(20),
-    resizeMode: "contain",
+    marginBottom: verticalScale(5),
   },
   detailsContainer: {
     backgroundColor: "white",
@@ -251,33 +279,32 @@ const styles = StyleSheet.create({
   detailRow: {
     flexDirection: "column",
     justifyContent: "space-between",
-    marginVertical: verticalScale(20),
-    width:"80%"
+    marginVertical: verticalScale(18),
+    width: "80%",
   },
   detailLabel: {
     fontFamily: "karlaB",
     fontSize: moderateScale(25),
-    marginBottom: verticalScale(10),
+    marginBottom: verticalScale(5),
   },
   detailValue: {
-    marginLeft: moderateScale(10),
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "70%",
+  },
+  timeSlot: {
     fontFamily: "karlaR",
-    fontSize: moderateScale(22),
+    fontSize: moderateScale(20),
+    width: "100%",
+    marginTop: verticalScale(4),
   },
   buttonContainer: {
     alignItems: "center",
-    marginTop: verticalScale(20),
+    marginTop: verticalScale(5),
   },
   payButton: {
-    backgroundColor: "#0099cc",
-    borderRadius: 10,
     paddingVertical: verticalScale(10),
     paddingHorizontal: horizontalScale(20),
-  },
-  payButtonText: {
-    fontFamily: "karlaB",
-    fontSize: moderateScale(18),
-    color: "white",
   },
   detailRowCard: {
     flexDirection: "row",
@@ -291,6 +318,11 @@ const styles = StyleSheet.create({
   },
   detailValueCard: {
     fontFamily: "karlaR",
+    fontSize: moderateScale(16),
+    marginBottom: verticalScale(5),
+  },
+  detailPrice: {
+    fontFamily: "karlaEB",
     fontSize: moderateScale(16),
     marginBottom: verticalScale(5),
   },

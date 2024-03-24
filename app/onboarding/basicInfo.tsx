@@ -215,12 +215,12 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(10),
     alignItems: "center",
     backgroundColor: "transparent",
+    textDecorationLine:"none",
   },
   subTitleContainer: {
     alignItems: "center",
     backgroundColor: "transparent",
-    borderBottomColor: "black",
-    borderBottomWidth: 1,
+    marginTop: verticalScale(10),
   },
   buttonGroup: {
     backgroundColor: "transparent",

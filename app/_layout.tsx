@@ -79,6 +79,7 @@ function RootLayoutNav() {
         name="onboarding/paymentInfo"
         options={{ headerShown: false }}
       />
+      <Stack.Screen name="home/paymentInfo" options={{ headerShown: false }} />
       <Stack.Screen
         name="onboarding/termsAndConditions"
         options={{ headerShown: false }}
@@ -128,6 +129,8 @@ function RootLayoutNav() {
       <Stack.Screen name="home/CarInfo" options={{ headerShown: false }} />
       <Stack.Screen name="home/Booking" options={{ headerShown: false }} />
       <Stack.Screen name="home/Bookings" options={{ headerShown: false }} />
+      <Stack.Screen name="home/BookingComplete" options={{ headerShown: false }} />
+ 
     </Stack>
   );
 }

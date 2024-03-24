@@ -218,7 +218,7 @@ Matthew Makary - [@LinkedIn](https://www.linkedin.com/in/matthew-makary-52b09324
 
 Brady Gibson -
 
-Emma Villas -
+Emma Villas - [@LinkedIn](https://www.linkedin.com/in/emmavillas/) - emmavillas@trentu.ca
 
 Rishit Arora -
 

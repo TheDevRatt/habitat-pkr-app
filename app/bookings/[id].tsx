@@ -18,8 +18,9 @@ const BookingDetails = () => {
   const navigation = useNavigation();
 
   const goBack = () => {
-    navigation.goBack(); // Navigate to the previous screen
+    navigation.goBack(); 
   };
+
 
   const bookingDetails = {
     make: vehicles.Make,
