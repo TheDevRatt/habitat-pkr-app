@@ -7,6 +7,10 @@ import { openCamera } from "./../classes/CloudStorage";
 import { selectedVehicle, selectedReservation } from "../(tabs)/Bookings";
 import { getUserID } from "../classes/UserUtils";
 
+import { useRouter } from "expo-router";
+import { verticalScale, moderateScale, horizontalScale } from '@/constants/Metrics'; // Import scales
+
+import CameraIcon from '../../components/CameraIcon'; // Import CameraIcon component
 
 const FinalPictures = () => {
   const [gasLevelImage, setGasLevelImage] = useState("Gas");
@@ -17,6 +21,7 @@ const FinalPictures = () => {
       alert('Error', 'Please take a photo of the gas level before submitting.');
       return;
     }
+
     console.log('Final photos submitted!');
     router.push('Pickup/ActiveReservation'); // navigate to Pickup/ActiveReservation
   };
@@ -39,7 +44,7 @@ const FinalPictures = () => {
           {gasLevelImage ? (
             <Image source={{ uri: gasLevelImage }} style={styles.photo} />
           ) : (
-            <Image source={require('../../components/CameraIcon.tsx')} style={styles.cameraIcon} />
+            <CameraIcon style={styles.cameraIcon} />
           )}
           <Text style={styles.photoText}>Please take a photo of the gas level on the dashboard</Text>
         </View>
@@ -72,63 +77,63 @@ const FinalPictures = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: moderateScale(20),
     backgroundColor: 'white',
   },
   title: {
-    fontSize: 30,
+    fontSize: moderateScale(35),
     fontWeight: 'bold',
-    marginBottom: 30,
-    marginTop: 80,
-    textAlign: 'center',
+    marginBottom: moderateScale(45),
+    marginTop: verticalScale(50),
+
+    flexDirection: 'row',
   },
   photoContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 40,
+    marginBottom: moderateScale(40),
   },
   cameraIcon: {
-    width: 60,
-    height: 60,
-    marginRight: 30,
+    width: moderateScale(60),
+    height: moderateScale(60),
+    marginRight: moderateScale(40),
   },
   photoText: {
     flexShrink: 1,
-    fontSize: 22,
-    fontWeight: 'bold',
+    fontSize: moderateScale(28),
+    marginLeft: verticalScale(10),
   },
   photo: {
-    width: 60,
-    height: 60,
-    borderRadius: 10,
-    marginRight: 10,
+    width: moderateScale(60),
+    height: moderateScale(60),
+    borderRadius: moderateScale(10),
+    marginRight: moderateScale(10),
   },
   disclaimerContainer: {
     alignItems: 'center',
-    marginBottom: 40,
-    marginTop: 30,
+    marginBottom: moderateScale(40),
+    marginTop: verticalScale(30),
   },
   disclaimerBox: {
-    borderWidth: 2,
+    borderWidth: moderateScale(2),
     borderColor: 'red',
-    padding: 20,
-    borderRadius: 4,
+    padding: moderateScale(20),
+    borderRadius: moderateScale(4),
   },
   disclaimerText: {
-    fontSize: 24,
+    fontSize: moderateScale(24),
   },
   agreementText: {
-    marginTop: 30,
+    marginTop: moderateScale(30),
   },
   submitButton: {
-    height: 50,
+    height: verticalScale(50),
     width: '90%',
     justifyContent: 'center',
     alignSelf: 'center',
-    marginTop: 30,
-    borderRadius: 25, // Set border radius to half of the height for full roundness
-    backgroundColor: 'orange', // Set the background color to orange
-    color: 'white', // Set the text color to white
+    marginTop: verticalScale(30),
+    borderRadius: moderateScale(25),
+    backgroundColor: 'orange',
   },
   buttonText: {
     color: 'white',

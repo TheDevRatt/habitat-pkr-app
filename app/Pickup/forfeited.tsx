@@ -2,10 +2,11 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import AppButton from '../../components/AppButton';
 import AnalogClock from '../../components/AnalogClock';
-import { useRouter } from 'expo-router'; // import useRouter
+import { useRouter } from 'expo-router'; // Import useRouter
+import { verticalScale, moderateScale, horizontalScale } from '@/constants/Metrics'; // Import all three scales
 
 const Forfeited = () => {
-  const router = useRouter(); // initialize router
+  const router = useRouter(); // Initialize router
 
   return (
     <View style={styles.container}>
@@ -31,7 +32,7 @@ const Forfeited = () => {
 
       <AppButton
         style={styles.button}
-        onPress={() => router.push('/Pickup/UserReservation')} // navigate to Pickup/UserReservation
+        onPress={() => router.push('/(tabs)/Bookings')} // Navigate to Pickup/UserReservation
       >
         <Text style={styles.buttonText}>Go to My Reservations</Text>
       </AppButton>
@@ -42,41 +43,42 @@ const Forfeited = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: moderateScale(20),
     backgroundColor: 'white',
   },
   headerText: {
-    fontSize: 50,
+    fontSize: moderateScale(45),
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: moderateScale(20),
+    marginTop: horizontalScale(20),
   },
   timeSlotBox: {
     flexDirection: 'row', 
     justifyContent: 'space-between', 
-    borderWidth: 1,
+    borderWidth: moderateScale(1),
     borderColor: 'black',
-    padding: 20,
-    borderRadius: 10,
-    marginBottom: 20,
-    height: 150,
+    padding: moderateScale(20),
+    borderRadius: moderateScale(10),
+    marginBottom: moderateScale(20),
+    height: verticalScale(180),
     alignItems: 'center', 
   },
   clock: {
-    width: 60,
-    height: 60,
+    width: moderateScale(60),
+    height: moderateScale(60),
   },
   instructionText: {
-    fontSize: 30,
+    fontSize: moderateScale(30),
   },
   button: {
-    height: 60,
+    height: verticalScale(60),
     width: '100%',
     justifyContent: 'center',
     alignSelf: 'center',
     backgroundColor: 'orange',
-    marginTop: 40,
-    marginBottom: 20,
-    borderRadius: 30, 
+    marginTop: verticalScale(40),
+    marginBottom: verticalScale(20),
+    borderRadius: moderateScale(30), 
   },
   buttonText: {
     color: 'white', 

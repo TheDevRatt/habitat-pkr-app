@@ -5,13 +5,19 @@ import { LinearGradient } from "expo-linear-gradient";
 import { moderateScale, verticalScale } from "@/constants/Metrics";
 import AppButton from "@/components/AppButton";
 import { Link, useRouter } from "expo-router";
+import { signOutUser } from "../classes/UserUtils";
 
-export default function ModalScreen() {
+const ModalScreen = () => {
   const router = useRouter();
 
-  const handleHomePress = () => {
-    console.log("Navigating to Create Account Page");
-    router.push("/(tabs)/Home");
+  const handleLogout = async () => {
+    try {
+      await signOutUser();
+      router.push("/"); // Navigate to the home screen after signing out
+    } catch (error) {
+      // Handle error if sign out failed
+      console.error(error);
+    }
   };
 
   return (
@@ -36,16 +42,16 @@ export default function ModalScreen() {
             <AppButton
               widthPercentage={85}
               paddingVertical={10}
-              onPress={handleHomePress}
+              onPress={handleLogout}
             >
-              (DEV) Home Page Button
+              Back To Login
             </AppButton>
           </View>
         </View>
       </SafeAreaView>
     </LinearGradient>
   );
-}
+};
 
 const styles = StyleSheet.create({
   gradient: {
@@ -84,3 +90,5 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(35),
   },
 });
+
+export default ModalScreen;

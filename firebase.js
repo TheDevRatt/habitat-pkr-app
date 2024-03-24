@@ -20,5 +20,23 @@ export const firebaseConfig = {
 const app = !getApps().length ? initializeApp( firebaseConfig ) : getApp();
 export const db = getFirestore(app);
 export const auth = initializeAuth(app, {
-    persistence: getReactNativePersistence(ReactNativeAsyncStorage)
-    });
+  persistence: getReactNativePersistence(ReactNativeAsyncStorage),
+});
+export const db = getFirestore(app);
+export const storage = getStorage(app); // This is correctly placed
+
+// No need to re-import or redeclare getAuth or getFirestore inside the development check
+
+// Ensure your environment check correctly identifies the development environment
+// process.env.NODE_ENV might not always be set as expected in some environments like React Native
+// Consider using a different method to determine if you're in a development environment if necessary
+
+// if (process.env.NODE_ENV === "development") {
+//   // No need for require statements, use the imported functions directly
+//   connectAuthEmulator(auth, "http://10.0.2.2:9099");
+//   signInAnonymously(auth).catch((error) => {
+//     console.error("Error signing in anonymously: ", error);
+//   });
+//   connectFirestoreEmulator(db, "10.0.2.2", 8080);
+//   connectStorageEmulator(storage, "10.0.2.2", 9199);
+// }

@@ -2,23 +2,34 @@ import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import AppButton from '../../components/AppButton';
 import * as ImagePicker from 'expo-image-picker';
+import CameraIcon from '@/components/CameraIcon'; // Import CameraIcon component
+import { useRouter } from 'expo-router';
 import AnalogClock from '../../components/AnalogClock';
-import { useRouter } from 'expo-router'; // import useRouter
-import cameraImg from "../../assets/images/camera.png";
+import { verticalScale, moderateScale, horizontalScale } from '@/constants/Metrics';
 
 const ReservationEnding = () => {
   const [image, setImage] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-  const router = useRouter(); // initialize router
+  const router = useRouter();
 
   const openCamera = async () => {
-    const imageResult = await ImagePicker.launchCameraAsync({
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+  
+    if (permissionResult.granted === false) {
+      alert('Permission to access camera is required!');
+      return;
+    }
+  
+    const pickerResult = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       aspect: [4, 3],
     });
-
-    if (!imageResult.cancelled) {
-      setImage(imageResult.uri);
+  
+    if (!pickerResult.cancelled) {
+      const imageResult = pickerResult.assets[0]; 
+      const newUri = imageResult.uri + '?' + new Date().getTime(); 
+      console.log('New photo URI:', newUri); 
+      setImage(newUri);
     }
   };
 
@@ -39,7 +50,7 @@ const ReservationEnding = () => {
       {/* Gas Level Photo */}
       <View style={styles.photoContainer}>
         <TouchableOpacity onPress={openCamera}>
-          {image ? <Image source={{ uri: image }} style={styles.image} /> : <Image source={cameraImg} style={styles.image} />}
+          {image ? <Image source={{ uri: image }} style={styles.image} /> : <CameraIcon />}
         </TouchableOpacity>
         <Text style={styles.instructionText}>
           Please take a photo of the gas level on the dashboard
@@ -81,8 +92,8 @@ const ReservationEnding = () => {
             <TouchableOpacity
               style={styles.modalButton}
               onPress={() => {
-                setModalVisible(false); // close the modal
-                router.push('/Pickup/UserReservation'); // navigate to Pickup/UserReservation
+                setModalVisible(false);
+                router.push('/(tabs)/Bookings');
               }}
             >
               <Text style={styles.modalButtonText}>Go to My Reservations</Text>
@@ -92,58 +103,71 @@ const ReservationEnding = () => {
       </Modal>
     </View>
   );
-};
+}
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: moderateScale(20),
     backgroundColor: 'white',
   },
   headerText: {
-    fontSize: 50,
+    fontSize: moderateScale(50),
     fontWeight: 'bold',
-    marginBottom: 10,
   },
   photoContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: moderateScale(20),
     flexWrap: 'wrap',
   },
   image: {
-    width: 80,
-    height: 80,
-    marginRight: 10,
+    width: moderateScale(80),
+    height: moderateScale(80),
+    marginRight: moderateScale(10),
   },
   instructionText: {
-    fontSize: 30,
+    fontSize: moderateScale(30),
+    marginBottom: moderateScale(20),
   },
   button: {
-    height: 60,
+    height: moderateScale(60),
     width: '100%',
     justifyContent: 'center',
     alignSelf: 'center',
-    backgroundColor: 'orange',
-    marginBottom: 20,
+    backgroundColor: 'white',
+    marginBottom: moderateScale(20),
+    borderRadius: moderateScale(30),
+    borderWidth: moderateScale(1),
+    borderColor: 'black',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
   timeSlotBox: {
-    borderWidth: 1,
+    borderWidth: moderateScale(1),
     borderColor: 'black',
-    padding: 20,
-    borderRadius: 10,
-    marginBottom: 20,
-    height: 150,
-    justifyContent: 'center', // Center the items vertically
+    padding: moderateScale(20),
+    borderRadius: moderateScale(10),
+    marginBottom: moderateScale(20),
+    height: verticalScale(200),
+    justifyContent: 'center',
+    shadowColor: '#000',
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between', // Add space between the clock and the text
+    justifyContent: 'space-between',
   },
   clock: {
-    width: 60,
-    height: 60,
+    width: moderateScale(60),
+    height: moderateScale(60),
   },
   modalContainer: {
     flex: 1,
@@ -153,11 +177,11 @@ const styles = StyleSheet.create({
   },
   modalView: {
     width: '100%',
-    height: '50%', // make the modal cover half of the screen
+    height: '50%',
     backgroundColor: 'white',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    padding: 35,
+    borderTopLeftRadius: moderateScale(20),
+    borderTopRightRadius: moderateScale(20),
+    padding: moderateScale(35),
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -169,22 +193,22 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   modalTitle: {
-    fontSize: 24,
+    fontSize: moderateScale(24),
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: moderateScale(20),
   },
   modalText: {
-    fontSize: 18,
-    marginBottom: 10,
+    fontSize: moderateScale(22),
+    marginBottom: moderateScale(10),
   },
   modalButton: {
     backgroundColor: 'blue',
-    marginTop: 20,
-    borderRadius: 20, // rounded border
-    padding: 10,
+    marginTop: moderateScale(20),
+    borderRadius: moderateScale(20),
+    padding: moderateScale(12),
   },
   modalButtonText: {
-    color: 'white', // white text
+    color: 'white',
   },
 });
 

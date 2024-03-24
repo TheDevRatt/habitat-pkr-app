@@ -8,6 +8,7 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import { AuthProvider } from "@/components/AuthContext";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -55,7 +56,11 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return (
+    <AuthProvider>
+      <RootLayoutNav />
+    </AuthProvider>
+  );
 }
 
 function RootLayoutNav() {
@@ -75,6 +80,7 @@ function RootLayoutNav() {
         name="onboarding/membership"
         options={{ headerShown: false }}
       />
+
       <Stack.Screen
         name="onboarding/paymentInfo"
         options={{ headerShown: false }}
@@ -86,6 +92,10 @@ function RootLayoutNav() {
       />
       <Stack.Screen
         name="onboarding/ForgotPassword"
+        options={{ headerShown: false }}
+      />
+       <Stack.Screen
+        name="Pickup/ActiveBooking"
         options={{ headerShown: false }}
       />
       <Stack.Screen name="Pickup/Pictures" options={{ headerShown: false }} />
@@ -124,9 +134,23 @@ function RootLayoutNav() {
       <Stack.Screen name="bookings/BookingInfo" options={{ headerShown: false }} />
       <Stack.Screen name="home/CarInfo" options={{ headerShown: false }} />
       <Stack.Screen name="home/Booking" options={{ headerShown: false }} />
+      <Stack.Screen name="home/Payment" options={{ headerShown: false }} />
+
+      <Stack.Screen
+        name="admin/signuprequests"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="admin/adduser" options={{ headerShown: false }} />
+      <Stack.Screen name="KeyHolder/AllReservations" options={{ headerShown: false }} />
+      <Stack.Screen name="KeyHolder/ActiveReservations" options={{ headerShown: false }} />
+      <Stack.Screen name="KeyHolder/DamageReport" options={{ headerShown: false }} />
+      <Stack.Screen name="Settings/ChangePassword" options={{ headerShown: false }} />
+      <Stack.Screen name="Settings/Info" options={{ headerShown: false }} />
+      <Stack.Screen name="Settings/Setting" options={{ headerShown: false }} />
+
       <Stack.Screen name="home/Bookings" options={{ headerShown: false }} />
       <Stack.Screen name="home/BookingComplete" options={{ headerShown: false }} />
- 
+
     </Stack>
   );
 }
