@@ -33,7 +33,7 @@ function bookingVerification(startTime, endTime){
     }
 
     // Make sure the booking is for an hour or more
-    if ( (end - start) <= ONE_HOUR){
+    if ( (end - start) < ONE_HOUR){
         return "You cannot reserve the vehicle for less than 1 hour";
     }
     return "pass";
