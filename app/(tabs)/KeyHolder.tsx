@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'; // Import StyleSheet directly from react-native
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router'; 
 import { auth } from "@/firebase"; 
 import { isKeyholder } from '../classes/KeyHolder.js'; 
+import OrangeArrowIcon from "@/components/OrangeArrowIcon";
+import { verticalScale, horizontalScale, moderateScale } from "@/constants/Metrics";
 
 const KeyHolder = () => {
   const router = useRouter(); 
@@ -12,9 +14,7 @@ const KeyHolder = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        // User is signed in, get the uid
         const uid = user.uid;
-
         isKeyholder(uid)
           .then((result) => {
             setIsKeyholderStatus(result);
@@ -23,11 +23,9 @@ const KeyHolder = () => {
             console.error("Error checking keyholder status:", error);
           });
       } else {
-        // No user is signed in
       }
     });
 
-   
     return () => unsubscribe();
   }, []);
 
@@ -44,28 +42,24 @@ const KeyHolder = () => {
   };
 
   if (isKeyholderStatus === null) {
-   
     return <Text>Loading...</Text>;
   } else if (isKeyholderStatus === false) {
-    // The user is not a keyholder
     return <Text>You must be a keyholder to view this page.</Text>;
   } else {
-    // The user is a keyholder
-  
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Key-holder</Text>
         <TouchableOpacity style={styles.option} onPress={navigateToAllReservations}>
           <Text style={styles.optionText}>All reservations</Text>
-          <Ionicons name="chevron-forward" size={24} color="orange" />
+          <OrangeArrowIcon />
         </TouchableOpacity>
         <TouchableOpacity style={styles.option} onPress={navigateToActiveReservations}>
           <Text style={styles.optionText}>Active Reservations</Text>
-          <Ionicons name="chevron-forward" size={24} color="orange" />
+          <OrangeArrowIcon />
         </TouchableOpacity>
         <TouchableOpacity style={styles.option} onPress={navigateToDamageReport}>
           <Text style={styles.optionText}>Damage Reports</Text>
-          <Ionicons name="chevron-forward" size={24} color="orange" />
+          <OrangeArrowIcon />
         </TouchableOpacity>
       </View>
     );
@@ -75,28 +69,29 @@ const KeyHolder = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingVertical: verticalScale(20),
+    paddingHorizontal: horizontalScale(20),
     backgroundColor: '#fff',
     alignItems: 'center', 
   },
   title: {
-    fontSize: 50,
+    fontSize: moderateScale(50),
     fontWeight: 'bold',
-    marginBottom: 50,
-    marginTop: 50,
+    marginBottom: verticalScale(50),
+    marginTop: verticalScale(50),
     textAlign: 'center', 
   },
   option: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 15,
+    paddingVertical: verticalScale(15),
     width: '100%', 
     borderBottomWidth: 1,
     borderBottomColor: 'black',
   },
   optionText: {
-    fontSize: 20,
+    fontSize: moderateScale(20),
     fontWeight: 'bold',
   },
 });

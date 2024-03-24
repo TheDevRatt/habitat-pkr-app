@@ -1,14 +1,16 @@
-
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'; // Import ScrollView
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-const AllReservations = () => {
+import { horizontalScale, verticalScale, moderateScale } from "@/constants/Metrics";
+import BackButton from "@/components/BackButton";
+import SignoutIcon from "@/components/SignoutIcon";
+import CheckBoxIcon from "@/components/CheckBoxIcon";
 
+const AllReservations = () => {
   const router = useRouter();
   const [selectedId, setSelectedId] = useState(null);
 
-  // Sample data
   const reservations = [
     { id: '223', dateTime: '11/09/2022 9:43am', fullName: 'John Smith' },
     { id: '443', dateTime: '11/09/2022 9:43am', fullName: 'John Smith' },
@@ -19,7 +21,6 @@ const AllReservations = () => {
     { id: '363', dateTime: '11/09/2022 9:43am', fullName: 'John Smith' },
     { id: '373', dateTime: '11/09/2022 9:43am', fullName: 'John Smith' },
     { id: '347', dateTime: '11/09/2022 9:43am', fullName: 'John Smith' },
-
   ];
 
   const [keysPickedUp, setKeysPickedUp] = useState(false);
@@ -36,18 +37,14 @@ const AllReservations = () => {
   };
 
   return (
-    <ScrollView style={styles.container}> 
+    <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.push('/(tabs)/KeyHolder')}>
-          <Ionicons name="arrow-back" size={24} color="black" />
-        </TouchableOpacity>
+        <BackButton onPress={() => router.push('/(tabs)/KeyHolder')} />
         <View style={styles.titleContainer}>
           <Text style={styles.title}>All</Text>
           <Text style={styles.title}>Reservations</Text>
         </View>
-        <TouchableOpacity onPress={() => router.push('/(tabs)/Home')}>
-          <Ionicons name="exit" size={24} color="black" />
-        </TouchableOpacity>
+        <SignoutIcon onPress={() => router.push('/(tabs)/Home')} />
       </View>
       <View style={styles.row}>
         <Text style={[styles.cell, styles.headerCell]}>Id</Text>
@@ -61,8 +58,8 @@ const AllReservations = () => {
             <Text style={[styles.cell, styles.textCell]}>{reservation.id}</Text>
             <Text style={[styles.cell, styles.textCell]}>{reservation.dateTime}</Text>
             <Text style={[styles.cell, styles.textCell]}>{reservation.fullName}</Text>
-            <TouchableOpacity 
-              style={[styles.cell, styles.actionCell]} 
+            <TouchableOpacity
+              style={[styles.cell, styles.actionCell]}
               onPress={() => handleActionPress(reservation.id)}
             >
               <Ionicons name={selectedId === reservation.id ? "chevron-up" : "chevron-down"} size={24} color="black" />
@@ -78,11 +75,7 @@ const AllReservations = () => {
                     setKeysDroppedOff(false);
                   }}
                 >
-                  <Ionicons
-                    name={keysPickedUp ? "checkbox" : "checkbox-outline"}
-                    size={24}
-                    color="black"
-                  />
+                  <CheckBoxIcon checked={keysPickedUp} />
                   <Text>Keys Picked Up</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -92,15 +85,10 @@ const AllReservations = () => {
                     setKeysPickedUp(false);
                   }}
                 >
-                  <Ionicons
-                    name={keysDroppedOff ? "checkbox" : "checkbox-outline"}
-                    size={24}
-                    color="black"
-                  />
+                  <CheckBoxIcon checked={keysDroppedOff} />
                   <Text>Keys Dropped Off</Text>
                 </TouchableOpacity>
               </View>
-              {/* Add Save button here */}
               <TouchableOpacity style={styles.saveButton} onPress={() => console.log('Save')}>
                 <Text style={styles.saveButtonText}>Save</Text>
               </TouchableOpacity>
@@ -108,82 +96,83 @@ const AllReservations = () => {
           )}
         </View>
       ))}
-    </ScrollView> 
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: horizontalScale(20),
     backgroundColor: '#fff',
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: verticalScale(20),
   },
   titleContainer: {
     alignItems: 'center',
   },
   title: {
-    marginTop:20,
-    fontSize: 30,
+    marginTop: verticalScale(20),
+    fontSize: moderateScale(30),
     fontWeight: 'bold',
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 10,
+    paddingVertical: verticalScale(10),
     borderBottomWidth: 1,
     borderBottomColor: 'black',
   },
   headerCell: {
     flex: 1,
-    fontSize: 16,
+    fontSize: moderateScale(16),
     fontWeight: 'bold',
   },
   cell: {
     flex: 1,
-    fontSize: 16,
+    fontSize: moderateScale(16),
   },
   textCell: {
-    // textAlign: 'center', removed this line
+
   },
   actionCell: {
     alignItems: 'center',
   },
   optionsContainer: {
-    flexDirection: 'row', // Change this back to 'row'
+    flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center', // Change this back to 'center'
-    paddingVertical: 10,
+    alignItems: 'center',
+    paddingVertical: verticalScale(10),
   },
   options: {
-    flexDirection: 'column', // Change this from 'row' to 'column'
-    justifyContent: 'flex-start', // Change this from 'space-between' to 'flex-start'
-    alignItems: 'flex-start', // Change this from 'center' to 'flex-start'
-    marginBottom: 10, // Add this line
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    marginBottom: verticalScale(10),
   },
   checkboxContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginRight: 10, // Add this line
+    marginRight: horizontalScale(10),
   },
   saveButton: {
     backgroundColor: 'orange',
-    padding: 4, // Change this back to 10
-    borderRadius: 20, // Add this line
-    alignSelf: 'flex-end', // Change this from 'flex-start' to 'flex-end'
-    flex: 0.5, // Add this line
+    paddingVertical: verticalScale(4),
+    paddingHorizontal: horizontalScale(8),
+    borderRadius: 20,
+    alignSelf: 'flex-end',
+    flex: 0.5,
   },
   saveButtonText: {
     color: 'white',
-    fontSize: 22, // Increase this from default to 18
-    textAlign: 'center', // Add this line
+    fontSize: moderateScale(22),
+    textAlign: 'center',
   },
 });
-export default AllReservations;
 
+export default AllReservations;

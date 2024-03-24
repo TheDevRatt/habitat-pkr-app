@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import { getAuth, EmailAuthProvider, reauthenticateWithCredential, updatePassword } from 'firebase/auth';
-import Icon from 'react-native-vector-icons/Ionicons'; 
+import { Ionicons } from '@expo/vector-icons'; // Import Ionicons from @expo/vector-icons
 import { useRouter } from 'expo-router';
 import SignoutIcon from '@/components/SignoutIcon'; 
+import BackButton from '@/components/BackButton'; 
+import { SafeAreaView } from "@/components/Themed"; 
+import { verticalScale, moderateScale } from "@/constants/Metrics"; 
 
 const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -38,11 +41,9 @@ const ChangePassword = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.push('/(tabs)/Account')} style={styles.backButton}>
-          <Icon name="arrow-back" size={30} /> 
-        </TouchableOpacity>
+        <BackButton onPress={() => router.push('/(tabs)/Account')} />
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Change</Text>
           <Text style={styles.title}>Password</Text>
@@ -62,7 +63,7 @@ const ChangePassword = () => {
           style={[styles.inputField, styles.passwordField]}
         />
         <TouchableOpacity onPress={() => setShowCurrentPassword(!showCurrentPassword)} style={styles.eyeIcon}>
-          <Icon name={showCurrentPassword ? "eye" : "eye-off"} size={20} /> 
+          <Ionicons name={showCurrentPassword ? "eye" : "eye-off"} size={moderateScale(20)} /> 
         </TouchableOpacity>
       </View>
 
@@ -75,50 +76,46 @@ const ChangePassword = () => {
           style={[styles.inputField, styles.passwordField]}
         />
         <TouchableOpacity onPress={() => setShowNewPassword(!showNewPassword)} style={styles.eyeIcon}>
-          <Icon name={showNewPassword ? "eye" : "eye-off"} size={20} /> 
+          <Ionicons name={showNewPassword ? "eye" : "eye-off"} size={moderateScale(20)} /> 
         </TouchableOpacity>
       </View>
 
       <TouchableOpacity onPress={handleChangePassword} style={styles.changePasswordButton}>
         <Text style={styles.changePasswordButtonText}>Change Password</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: moderateScale(20),
     backgroundColor: '#fff',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 50,
-    marginTop: 40,
-  },
-  backButton: {
-    position: 'absolute', 
-    left: 0,
+    marginBottom: verticalScale(50),
+    marginTop: verticalScale(40),
   },
   titleContainer: {
     flex: 1,
     alignItems: 'center',
   },
   title: {
-    fontSize: 30,
+    fontSize: moderateScale(30),
     fontWeight: 'bold',
   },
   homeButton: {
     position: 'absolute', 
     right: 0,
-    paddingRight: 10, 
+    paddingRight: moderateScale(10), 
   },
   inputContainer: {
     flexDirection: 'row',
     borderBottomWidth: 1,
-    marginBottom: 30,
+    marginBottom: verticalScale(30),
     width: '100%',
   },
   inputField: {
@@ -126,26 +123,25 @@ const styles = StyleSheet.create({
   },
   eyeIcon: {
     justifyContent: 'center',
-    marginLeft: 10,
+    marginLeft: moderateScale(10),
   },
   passwordField: {
-    fontSize: 20, 
+    fontSize: moderateScale(20), 
   },
   changePasswordButton: {
     backgroundColor: 'white', 
-    padding: 15,
-    borderRadius: 30, 
+    padding: moderateScale(15),
+    borderRadius: moderateScale(30), 
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: verticalScale(20),
     borderWidth: 1,
     borderColor: 'black', 
   },
   changePasswordButtonText: {
     color: 'black', 
-    fontSize: 20,
+    fontSize: moderateScale(20),
     fontWeight: 'bold',
   },
 });
 
 export default ChangePassword;
-

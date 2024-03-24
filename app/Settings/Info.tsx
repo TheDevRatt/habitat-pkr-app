@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Keyboard } from 'react-native'; 
-import Icon from 'react-native-vector-icons/Ionicons';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Keyboard } from 'react-native';
+import { Ionicons } from '@expo/vector-icons'; // Import Ionicons from @expo/vector-icons
 import { useRouter } from 'expo-router';
 import { auth, db } from "@/firebase";
 import { getDoc, doc, updateDoc } from "firebase/firestore";
-import SignoutIcon from '@/components/SignoutIcon'; 
+import SignoutIcon from '@/components/SignoutIcon';
+import BackButton from '@/components/BackButton';
+import { horizontalScale, verticalScale, moderateScale } from "@/constants/Metrics"; // Import scaling utilities
 
 const Info = () => {
   const [userInfo, setUserInfo] = useState({
@@ -59,11 +61,8 @@ const Info = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.push('/(tabs)/Account')} style={styles.backButton}>
-          <Icon name="arrow-back" size={30} /> 
-        </TouchableOpacity>
+        <BackButton onPress={() => router.push('/(tabs)/Account')} />
         <Text style={styles.title}>My Info</Text>
-        {/* Use SignoutIcon for the home button */}
         <TouchableOpacity onPress={() => router.push('/(tabs)/Home')} style={styles.homeButton}>
           <SignoutIcon />
         </TouchableOpacity>
@@ -81,7 +80,7 @@ const Info = () => {
             placeholderTextColor='gray'
             selectionColor='black'
             multiline={true}
-            blurOnSubmit={true} // Add this line
+            blurOnSubmit={true}
             onSubmitEditing={Keyboard.dismiss}          
           />
         </View>
@@ -96,19 +95,18 @@ const Info = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: horizontalScale(20),
     backgroundColor: '#fff',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between', 
-    marginBottom: 50,
+    marginBottom: verticalScale(50),
   },
-
   title: {
-    marginTop:50,
-    fontSize: 24,
+    marginTop: verticalScale(40),
+    fontSize: moderateScale(24),
     fontWeight: 'bold',
     textAlign: 'center',
     flex: 1,
@@ -117,35 +115,34 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    paddingVertical: 5,
+    paddingVertical: verticalScale(5),
     borderBottomWidth: 1,
     borderBottomColor: 'black',
-    marginBottom:40,
+    marginBottom: verticalScale(40),
   },
   infoKey: {
-    fontSize: 20,
+    fontSize: moderateScale(20),
     fontWeight: 'bold',
     color: 'grey',
   },
   input: {
-    fontSize: 20,
+    fontSize: moderateScale(20),
     color: 'black',
-    marginRight:60,
-    marginTop:20,
-    height:20,
+    marginRight: horizontalScale(60),
+    marginTop: verticalScale(20),
+    height: verticalScale(20),
   },
   confirmButton: {
     backgroundColor: 'orange',
-    padding: 15,
-    borderRadius: 10,
+    padding: verticalScale(15),
+    borderRadius: moderateScale(10),
     alignItems: 'center',
-    marginTop: 40,
+    marginTop: verticalScale(20),
   },
   confirmButtonText: {
     color: 'white',
-    fontSize: 20,
+    fontSize: moderateScale(20),
   },
 });
 
 export default Info;
-
