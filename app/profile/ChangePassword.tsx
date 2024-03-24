@@ -17,6 +17,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Platform,
+  Image,
+  LogBox,
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { LinearGradient } from "expo-linear-gradient";
@@ -26,185 +28,139 @@ import PronounSelector from "@/components/PronounSelector";
 import BackButton from "@/components/BackButton";
 import { Link, useRouter } from "expo-router";
 import { verifyUser } from "./../classes/User.js";
+import DriversLicenseLogo from "@/components/DriversLicenseLogo";
+import InsuranceLogo from "@/components/InsuranceLogo";
+import ProfileContainer from "@/components/ProfileContainer";
+import { openCamera, openFilePicker } from "./../classes/CloudStorage";
+import { getUserData } from "../classes/User";
+import { getFirestore, setDoc, doc, onSnapshot } from "firebase/firestore";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { getFunctions, httpsCallable } from "firebase/functions";
+import { auth, db } from "@/firebase";
+import SignoutIcon from "@/components/SignoutIcon";
+import {
+  updatePassword,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+} from "firebase/auth";
 
-const SignUp = () => {
-  const [showPassword, setShowPassword] = useState(false);
-
+const myInfo = () => {
   const router = useRouter();
-  const handleTermsPress = () => {
-    console.log("Navigating to TermsAndConditions");
-    router.push("/onboarding/termsAndConditions");
-  };
 
-  const handleLoginPress = () => {
-    console.log("Navigating to LogIn");
-    router.push("/onboarding/logIn");
-  };
+  const user = auth.currentUser; // Assuming this is already defined in your component
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
 
-  const formatPhoneNumber = (value: any) => {
-    // Remove non-numeric characters
-    const numericValue = value.replace(/\D/g, "");
-    // Format to US/Canadian phone number standard
-    const formattedValue = numericValue.replace(
-      /(\d{3})(\d{3})(\d{4})/,
-      "$1-$2-$3"
+  const handleChangePassword = async () => {
+    if (!auth.currentUser) {
+      console.log("No user logged in");
+      return;
+    }
+
+    // Re-authenticate the user with their current password
+    const credential = EmailAuthProvider.credential(
+      auth.currentUser?.email ?? "",
+      currentPassword
     );
-    return formattedValue;
+
+    try {
+      await reauthenticateWithCredential(auth.currentUser, credential);
+      await updatePassword(auth.currentUser, newPassword);
+      alert("Password updated successfully.");
+    } catch (error) {
+      console.error("Error updating password: ", error);
+      alert("Failed to update password. Please try again.");
+    }
   };
-
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [age, setAge] = useState("");
-  const [pronouns, setPronouns] = useState("");
-
-  useEffect(() => {
-    console.log(pronouns); // Log the current value of pronouns
-  }, [pronouns]);
 
   return (
-    <LinearGradient colors={["#FFFFFF", "#0099CC"]} style={styles.gradient}>
-      <SafeAreaView style={styles.container}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={styles.keyboardAvoidContainer}
+    <SafeAreaView style={styles.container}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={styles.keyboardAvoidContainer}
+        >
+          <KeyboardAwareScrollView
+            contentContainerStyle={{ flexGrow: 1 }}
+            resetScrollToCoords={{ x: 0, y: 0 }}
+            scrollEnabled={true}
+            extraScrollHeight={verticalScale(-250)}
+            enableOnAndroid={true}
           >
             <View style={styles.topContainer}>
               <View style={styles.backButtonContainer}>
                 <BackButton />
               </View>
               <View style={styles.welcomeTextContainer}>
-                <Text style={styles.welcomeText}>Welcome</Text>
+                <Text style={styles.welcomeText}>Change Password</Text>
+              </View>
+              <View style={styles.signoutContainer}>
+                <SignoutIcon />
               </View>
             </View>
 
             <View style={styles.inputGroup}>
-              <TextInput
-                value={firstName}
-                placeholder={"First Name"}
-                onChangeText={(newFirstName) => setFirstName(newFirstName)}
-                placeholderTextColor="#000"
-                style={styles.inputField}
-              />
-              <TextInput
-                value={lastName}
-                placeholder={"Last Name"}
-                onChangeText={(newLastName) => setLastName(newLastName)}
-                placeholderTextColor="#000"
-                style={styles.inputField}
-              />
-              <TextInput
-                value={email}
-                placeholder={"Email"}
-                onChangeText={(newEmail) => setEmail(newEmail)}
-                placeholderTextColor="#000"
-                style={styles.inputField}
-              />
               <View style={styles.passwordField}>
-                <TextInput
-                  value={password}
-                  secureTextEntry={!showPassword}
-                  placeholder={"Password"}
-                  onChangeText={(newPassword) => setPassword(newPassword)}
-                  placeholderTextColor="#000"
-                  style={[styles.inputField, { flex: 1 }]}
-                />
-                <TouchableOpacity
-                  onPress={() => setShowPassword(!showPassword)}
-                  style={styles.passwordIcon}
-                >
-                  <FontAwesome
-                    name={showPassword ? "eye" : "eye-slash"}
-                    size={28}
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    secureTextEntry={!showCurrentPassword}
+                    placeholder="Current Password"
+                    onChangeText={setCurrentPassword}
+                    style={[styles.inputField, { flex: 1 }]}
                   />
-                </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => setShowCurrentPassword(!showCurrentPassword)}
+                    style={styles.passwordIcon}
+                  >
+                    <FontAwesome
+                      name={showCurrentPassword ? "eye" : "eye-slash"}
+                      size={24}
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
-              <TextInput
-                value={phoneNumber}
-                keyboardType="numeric"
-                placeholder={"Phone Number"}
-                onChangeText={(newPhoneNumber) => {
-                  const formattedPhoneNumber =
-                    formatPhoneNumber(newPhoneNumber);
-                  setPhoneNumber(formattedPhoneNumber);
-                }}
-                placeholderTextColor="#000"
-                style={styles.inputField}
-              />
-
-              <View style={styles.dropdownContainer}>
-                <TextInput
-                  value={age}
-                  keyboardType="numeric"
-                  placeholder={"Age"}
-                  onChangeText={(newAge) => setAge(newAge)}
-                  placeholderTextColor="#000"
-                  style={[
-                    styles.inputField,
-                    { width: "25%", marginRight: "27%" },
-                  ]}
-                />
-                <View style={styles.dropDownPicker}>
-                  <PronounSelector value={pronouns} setValue={setPronouns} />
+              <View style={styles.passwordField}>
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    secureTextEntry={!showNewPassword}
+                    placeholder="New Password"
+                    onChangeText={setNewPassword}
+                    style={[styles.inputField, { flex: 1 }]}
+                  />
+                  <TouchableOpacity
+                    onPress={() => setShowNewPassword(!showNewPassword)}
+                    style={styles.passwordIcon}
+                  >
+                    <FontAwesome
+                      name={showNewPassword ? "eye" : "eye-slash"}
+                      size={24}
+                    />
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>
+
             <View style={styles.buttonContainer}>
               <AppButton
                 widthPercentage={85}
                 paddingVertical={11}
                 borderRadius={25}
                 textStyle={{ fontSize: 25 }}
-                onPress={async () => {
-                  let response = await verifyUser(
-                    email.trim(),
-                    password.trim(),
-                    firstName.trim(),
-                    lastName.trim(),
-                    phoneNumber,
-                    pronouns,
-                    age
-                  );
-                  if (response == "good") {
-                    router.push("/onboarding/basicInfo");
-                  } else {
-                    alert(response);
-                  }
-                }}
+                onPress={handleChangePassword}
               >
-                Create Account
+                Change Password
               </AppButton>
             </View>
-
-            <View style={styles.termsContainer}>
-              <Text style={styles.termsText}>
-                By clicking 'Create Account' you agree to Habitat PKR's{" "}
-                <Text style={styles.termsLink} onPress={handleTermsPress}>
-                  terms and conditions
-                </Text>
-              </Text>
-            </View>
-
-            <View style={styles.loginContainer}>
-              <Text style={styles.loginText}>Already have an account?</Text>
-              <TouchableOpacity
-                onPress={handleLoginPress}
-                style={{ backgroundColor: "transparent" }}
-              >
-                <Text style={styles.loginLink}>Log in</Text>
-              </TouchableOpacity>
-            </View>
-          </KeyboardAvoidingView>
-        </TouchableWithoutFeedback>
-      </SafeAreaView>
-    </LinearGradient>
+          </KeyboardAwareScrollView>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
+    </SafeAreaView>
   );
 };
 
-export default SignUp;
+export default myInfo;
 
 const styles = StyleSheet.create({
   gradient: {
@@ -213,6 +169,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "transparent",
+    alignItems: "center", // Center children horizontally
     ...Platform.select({
       ios: {
         paddingTop: verticalScale(10),
@@ -239,28 +196,24 @@ const styles = StyleSheet.create({
     paddingLeft: horizontalScale(20),
     ...Platform.select({
       ios: {},
-      android: {
-        paddingBottom: verticalScale(40),
-      },
+      android: {},
     }),
+  },
+  signoutContainer: {
+    backgroundColor: "transparent",
+    justifyContent: "center",
+    paddingRight: horizontalScale(20),
   },
   topContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: verticalScale(30),
     backgroundColor: "transparent",
+    marginBottom: verticalScale(30),
   },
   welcomeTextContainer: {
     flex: 1,
     alignItems: "center",
     backgroundColor: "transparent",
-    marginRight: verticalScale(50),
-    ...Platform.select({
-      ios: {},
-      android: {
-        marginBottom: verticalScale(40),
-      },
-    }),
   },
   welcomeText: {
     fontFamily: "karlaM",
@@ -268,88 +221,43 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   inputGroup: {
-    alignItems: "center",
-    marginHorizontal: horizontalScale(20),
+    width: "100%", // Ensure the input group takes the full width
+    alignItems: "center", // Center children horizontally
     backgroundColor: "transparent",
   },
   inputField: {
     fontFamily: "karlaR",
     fontSize: moderateScale(22),
     paddingVertical: moderateScale(10),
-    borderBottomWidth: 1,
-    borderBottomColor: "black",
-    marginBottom: verticalScale(25),
-    width: "90%",
+    flex: 1, // Allow input field to expand and fill the space
     backgroundColor: "transparent",
   },
   passwordField: {
     flexDirection: "row",
-    alignItems: "center",
-    width: "90%",
+    justifyContent: "center", // Center the password field container
+    width: "100%", // Take full width to align children inside it
+    backgroundColor: "transparent",
+  },
+  inputContainer: {
+    flexDirection: "row",
+    borderBottomWidth: 1,
+    borderBottomColor: "black",
+    marginBottom: verticalScale(25),
+    justifyContent: "center", // Center the input and icon within the container
+    alignItems: "center", // Vertically align items in the middle
+    width: "90%", // Adjust based on your design preference
     backgroundColor: "transparent",
   },
   passwordIcon: {
-    backgroundColor: "transparent",
-    position: "absolute",
-    right: horizontalScale(5),
-    paddingBottom: verticalScale(15),
-  },
-  dropdownContainer: {
-    flexDirection: "row",
-    marginBottom: verticalScale(10),
-    width: "90%",
-    justifyContent: "space-between",
+    padding: moderateScale(10),
     backgroundColor: "transparent",
   },
-  dropDownPicker: {
-    backgroundColor: "transparent",
-    borderWidth: 0,
-    width: "60%",
-    right: horizontalScale(35),
-  },
-  dropDownText: {
-    fontSize: moderateScale(22),
-  },
-  dropDownContainer: {
-    backgroundColor: "transparent",
-  },
+  // Ensure the button container is also centered if necessary
   buttonContainer: {
+    width: "100%", // Ensure full width to center the button inside it
     marginBottom: verticalScale(15),
-    alignItems: "center",
-    backgroundColor: "transparent",
-    zIndex: -1,
-  },
-  termsContainer: {
-    alignItems: "center",
-    backgroundColor: "transparent",
-    zIndex: -1,
-    marginHorizontal: horizontalScale(25),
-  },
-  termsText: {
-    fontFamily: "karlaL",
-    fontSize: moderateScale(14),
-    textAlign: "center",
-  },
-  termsLink: {
-    textDecorationLine: "underline",
-    color: "#00126D",
-  },
-  loginContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: verticalScale(40),
-    backgroundColor: "transparent",
-  },
-  loginText: {
-    fontFamily: "karlaR",
-    fontSize: moderateScale(20),
-    right: horizontalScale(10),
-  },
-  loginLink: {
-    fontFamily: "karlaB",
-    fontSize: moderateScale(22),
-    color: "#000",
-    textDecorationLine: "underline",
+    paddingTop: verticalScale(20),
+    alignItems: "center", // Center the button horizontally
     backgroundColor: "transparent",
   },
 });
