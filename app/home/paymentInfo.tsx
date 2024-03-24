@@ -5,6 +5,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Platform,
+  ScrollView,
 } from "react-native";
 import { Text, View, SafeAreaView, TextInput } from "@/components/Themed";
 import { LinearGradient } from "expo-linear-gradient";
@@ -47,7 +48,7 @@ const PaymentInfo = () => {
   const years = Array.from({ length: 10 }, (_, i) => (2024 + i).toString());
 
   const handleOpenModal = () => {
-    router.push("/onboarding/restricted");
+    router.push("/home/BookingComplete");
   };
 
   const formatCardNumber = (value: any) => {
@@ -73,9 +74,21 @@ const PaymentInfo = () => {
     setCardCVC(value);
   };
 
+  const booking =
+    {
+      id: 1,
+      make: "Honda",
+      model: "Civic",
+      pickup: "Dec 11 2023",
+      dropoff:"Dec 15 2023",
+      amount: 700,
+      imageUrl: require("@/assets/images/carImagesTEMP/image 13.png"),
+    }
+
   return (
     <LinearGradient colors={["#FFFFFF", "#0099CC"]} style={styles.gradient}>
       <SafeAreaView style={{ flex: 1, backgroundColor: "transparent" }}>
+        <ScrollView>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -183,18 +196,31 @@ const PaymentInfo = () => {
                 </View>
               </View>
             </View>
+
+            <View style={styles.Card}>
+              <Text style={styles.CardText}>Summary</Text>
+              <PaymentCard
+              make={booking.make}
+              model={booking.model}
+              pickup={booking.pickup}
+              dropoff={booking.dropoff}
+              amount={booking.amount}
+              imageUrl={booking.imageUrl}
+               />
+            </View>
             <View style={styles.submitButton}>
               <AppButton
-                backgroundColor="white"
+                backgroundColor="#E55D25"
                 widthPercentage={85}
-                borderRadius={20}
+                textStyle={{ color: "#fff" }}
                 onPress={handleOpenModal}
               >
-                Submit
+                Confirm Payment
               </AppButton>
             </View>
           </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
+        </ScrollView>
       </SafeAreaView>
     </LinearGradient>
   );
@@ -211,8 +237,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: horizontalScale(10),
   },
   titleContainer: {
-    marginTop: verticalScale(30),
-    marginBottom: verticalScale(20),
+    // marginTop: verticalScale(30),
+    marginBottom: verticalScale(10),
     alignItems: "center",
     backgroundColor: "transparent",
   },
@@ -227,10 +253,10 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(44),
     ...Platform.select({
       ios: {
-        marginBottom: verticalScale(20),
+        marginBottom: verticalScale(15),
       },
       android: {
-        marginBottom: verticalScale(20),
+        marginBottom: verticalScale(15),
       },
     }),
   },
@@ -275,7 +301,7 @@ const styles = StyleSheet.create({
     marginBottom: verticalScale(30),
   },
   containerInput: {
-    marginTop: verticalScale(30),
+    marginTop: verticalScale(5),
     backgroundColor: "transparent",
   },
   row: {
@@ -358,6 +384,16 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     alignItems: "center",
+    backgroundColor: "transparent",
+    marginTop: verticalScale(5),
+  },
+  CardText:{
+    fontSize: moderateScale(22),
+    fontFamily: "karlaB",
+    marginLeft: horizontalScale(15),
+  },
+  Card:{
+    marginBottom: verticalScale(10),
     backgroundColor: "transparent",
   },
 });

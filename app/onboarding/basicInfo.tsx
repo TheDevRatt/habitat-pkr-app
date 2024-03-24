@@ -18,7 +18,6 @@ import AppButton from "../../components/AppButton";
 import { Link, useRouter } from "expo-router";
 import DriversLicenseLogo from "@/components/DriversLicenseLogo";
 import InsuranceLogo from "@/components/InsuranceLogo";
-// import * as Progress from 'react-native-progress';
 import { openCamera, openFilePicker } from "./../classes/CloudStorage";
 import BackButton from "@/components/BackButton";
 import { auth } from "@/firebase";
@@ -216,12 +215,12 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(10),
     alignItems: "center",
     backgroundColor: "transparent",
+    textDecorationLine:"none",
   },
   subTitleContainer: {
     alignItems: "center",
     backgroundColor: "transparent",
-    borderBottomColor: "black",
-    borderBottomWidth: 1,
+    marginTop: verticalScale(10),
   },
   buttonGroup: {
     backgroundColor: "transparent",

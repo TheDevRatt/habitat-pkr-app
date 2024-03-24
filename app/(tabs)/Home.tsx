@@ -28,6 +28,7 @@ import CarCard from "@/components/CarCard";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 import ProfileContainer from "@/components/ProfileContainer";
+import { fetchVehicles } from "../classes/UserUtils";
 
 if (
   Platform.OS === "android" &&
@@ -36,56 +37,55 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-const Home = () => {
-  const router = useRouter();
+export let vehicles = [];
+export let selectedVehicle = [];
 
+const Home = () => {
+
+  const [vehicles, setVehicles] = useState([]); 
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null); 
+  const [filter, setFilter] = useState("all"); 
+
+  useEffect(() => {
+    async function fetchVehicleList() {
+        try {
+          const vehicleList  = await fetchVehicles();
+            setVehicles(vehicleList);
+            setLoading(false);
+        } catch (error) {
+            setError(error);
+            setLoading(false);
+        }
+    }
+    fetchVehicleList();
+    }, []);
+
+
+
+  // user info
   const user = auth.currentUser;
   let userName = " ";
-
   if (user !== null && user.displayName !== null) {
     userName = user.displayName;
   }
 
+  // location
   const location = "Ptbo region";
 
-  const carData = [
-    {
-      make: "Honda",
-      model: "Civic",
-      transmission: "Automatic",
-      dailyRate: 150,
-      hourlyRate: 22,
-      imageUrl: require("@/assets/images/carImagesTEMP/image 8.png"),
-    },
-    {
-      make: "Toyota",
-      model: "Yaris",
-      transmission: "Automatic",
-      dailyRate: 130,
-      hourlyRate: 20,
-      imageUrl: require("@/assets/images/carImagesTEMP/image 9.png"),
-    },
-    {
-      make: "Nissan",
-      model: "Juke",
-      transmission: "Automatic",
-      dailyRate: 165,
-      hourlyRate: 25,
-      imageUrl: require("@/assets/images/carImagesTEMP/image 10.png"),
-    },
-  ];
+  // navigation
+  const router = useRouter();
 
-  const [filter, setFilter] = useState("all");
+ const goToBooking = (carId: number) => {
+    selectedVehicle = vehicles[carId];
+    router.push({ pathname: "/home/CarInfo" });
+  };
 
   const filteredCars =
-    filter === "all" ? carData : carData.filter((car) => car.make === filter);
+    filter === "all" ? vehicles : vehicles.filter((car) => car.Make === filter);
 
   const handleFilterPress = (selectedFilter: any) => {
     setFilter(selectedFilter);
-  };
-
-  const goToBooking = (carId: number) => {
-    router.push({ pathname: "/home/${carId}" });
   };
 
   const filterOptions = [
@@ -107,6 +107,9 @@ const Home = () => {
     },
   ];
 
+
+  // Search bar
+
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
 
   const toggleSearch = () => {
@@ -120,13 +123,22 @@ const Home = () => {
     }
   };
 
+ 
+   if (loading) {
+    return <Text>Loading...</Text>;
+  }
+
+  if (error) {
+    return <Text>Error: {error.message}</Text>;
+  }
+
   return (
     <LinearGradient colors={["#FFFFFF", "#59C9F0"]} style={styles.gradient}>
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <ProfileContainer width={50} height={50} style={styles.smallImage} />
           <Text style={styles.greeting}>Hello, {userName}!</Text>
-          <EvilIcons name="bell" size={35} color="black" />
+          {/* <EvilIcons name="bell" size={35} color="black" /> */}
         </View>
         <View style={styles.searchContainer}>
           {!isSearchExpanded ? (
@@ -194,12 +206,12 @@ const Home = () => {
                 onPress={() => goToBooking(index)}
               >
                 <CarCard
-                  make={car.make}
-                  model={car.model}
-                  transmission={car.transmission}
-                  dailyRate={car.dailyRate}
-                  hourlyRate={car.hourlyRate}
-                  imageUrl={car.imageUrl}
+                  make={car.Make}
+                  model={car.Model}
+                  transmission={car.Transmission}
+                  dailyRate={car.DayRate}
+                  hourlyRate={car.HourlyRate}
+                  imageUrl={car.imageURL}
                 />
               </TouchableOpacity>
             ))}
@@ -209,6 +221,34 @@ const Home = () => {
     </LinearGradient>
   );
 };
+
+// const loadData = () =>{
+//   let [vehicleList, setVehicleList] = useState(null);
+//   let [loading, setLoading] = useState(true);
+//   let [error, setError] = useState(null);
+//       useEffect(() => {
+//           async function fetchVehicleList() {
+//               try {
+//                   vehicleList = await fetchVehicles();
+//                   setVehicleList(vehicleList);
+//                   setLoading(false);
+//               } catch (error) {
+//                   setError(error);
+//                   setLoading(false);
+//               }
+//           }
+//           fetchVehicleList();
+//           }, []);
+//       if (loading) {
+//           return <Text style={styles.greeting}>Loading</Text>;
+//           }
+//       if (error) {
+//           return <Text style={styles.greeting}>Error: {error.message}</Text>;
+//           }
+//       vehicles = vehicleList;
+//       return;
+//   }
+
 
 const styles = StyleSheet.create({
   gradient: {

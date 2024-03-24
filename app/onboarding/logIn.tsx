@@ -119,8 +119,6 @@ const LogIn = () => {
                     );
                   } else if (response == "basicinfo") {
                     router.push("/onboarding/basicInfo");
-                  } else if (response == "An error has occurred") {
-                    alert("An error has occurred, please try again");
                   } else {
                     alert(response);
                   }
