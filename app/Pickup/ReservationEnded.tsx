@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import AppButton from '../../components/AppButton';
 import { useRouter } from "expo-router";
 import CameraIcon from '@/components/CameraIcon'; // Import CameraIcon component
+import { verticalScale, moderateScale, horizontalScale } from '@/constants/Metrics';
 
 const ReservationEnded = () => {
   const [frontImage, setFrontImage] = useState(null);
@@ -57,7 +58,7 @@ const ReservationEnded = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>
+      <Text style={[styles.title, { marginBottom: verticalScale(30), marginTop: verticalScale(80) }]}>
         Reservation Ended
       </Text>
 
@@ -107,49 +108,49 @@ const ReservationEnded = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: horizontalScale(20),
     backgroundColor: 'white', 
   },
   title: {
-    fontSize: 30,
+    fontSize: moderateScale(35),
     fontWeight: 'bold',
-    marginBottom: 30,
-    marginTop: 80,
     textAlign: 'center',
+    marginBottom: horizontalScale(30),
   },
   photoContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 40,
+    marginBottom: verticalScale(30),
+    marginTop: moderateScale(40),
   },
   cameraIcon: {
-    width: 60,
-    height: 60,
-    marginRight: 20,
+    width: moderateScale(70),
+    height: moderateScale(70),
+    marginRight: horizontalScale(30),
   },
   photoText: {
     flexShrink: 1,
-    fontSize: 22,
+    fontSize: moderateScale(25),
     fontWeight: 'bold',
   },
   photo: {
-    width: 60,
-    height: 60,
-    borderRadius: 10,
-    marginRight: 10,
+    width: moderateScale(60),
+    height: moderateScale(60),
+    borderRadius: moderateScale(10),
+    marginRight: horizontalScale(10),
   },
   buttonText: {
     color: 'white',
     textAlign: 'center',
   },
   submitButton: {
-    height: 50,
+    height: verticalScale(50),
     width: '90%',
     justifyContent: 'center',
     alignSelf: 'center',
-    marginTop: 30,
+    marginTop: verticalScale(30),
     backgroundColor: 'orange', 
-    borderRadius: 25, 
+    borderRadius: moderateScale(25), 
   },
 });
 

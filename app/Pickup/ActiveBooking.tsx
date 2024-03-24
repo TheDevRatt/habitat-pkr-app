@@ -1,21 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import AppButton from '../../components/AppButton';
 import AnalogClock from '../../components/AnalogClock';
-import { useRouter } from "expo-router";
 import { verticalScale, moderateScale, horizontalScale } from "@/constants/Metrics";
 
-const DropOff = () => {
-  const router = useRouter();
-
-  const handleDropOff = () => {
-    router.push('/Pickup/ReservationEnded');
-  };
-
+const ActiveBooking = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>
-        Your reservation is Ending soon
+        Your reservation is Active
       </Text>
 
       {/* Active Duration Box */}
@@ -24,24 +16,17 @@ const DropOff = () => {
           <AnalogClock />
         </View>
         <View>
-          <Text style={styles.durationText}>4:00Min</Text>
+          <Text style={styles.durationText}>12:02</Text>
         </View>
       </View>
 
       <Text style={styles.infoText}>
-        Please return to drop off location and press drop off location and press drop off before the timer ends
+      Please meet the key-holder at location within the 15 minute time slot to pick up the keys.
       </Text>
-
-      {/* Drop Off */}
-      <AppButton
-        style={styles.button}
-        onPress={handleDropOff}
-      >
-        <Text style={styles.buttonText}>Drop Off</Text>
-      </AppButton>
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -90,22 +75,6 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(30),
     textAlign: 'center',
   },
-  button: {
-    height: verticalScale(50),
-    width: '90%',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    marginTop: verticalScale(20),
-    borderRadius: moderateScale(25),
-    backgroundColor: 'orange',
-    borderWidth: 1,
-    borderColor: 'black',
-  },
-  buttonText: {
-    color: 'white',
-    textAlign: 'center',
-  },
 });
 
-export default DropOff;
-
+export default ActiveBooking;

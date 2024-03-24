@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import AppButton from '../../components/AppButton';
-import AnalogClock from '../../components/AnalogClock';
-import { useRouter } from "expo-router";
+import { View, Text, StyleSheet, TextInput, SafeAreaView } from 'react-native';
+import AnalogClock from '@/components/AnalogClock';
+import AppButton from '@/components/AppButton';
+import { useRouter } from 'expo-router';
+import { verticalScale, moderateScale, horizontalScale } from '@/constants/Metrics';
 
 const ActiveBooking = () => {
   const router = useRouter();
@@ -16,10 +17,8 @@ const ActiveBooking = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>
-        Your Reservation is Active
-      </Text>
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.heading}>Your Reservation is Active</Text>
 
       {/* Active Duration Box */}
       <View style={styles.durationBox}>
@@ -32,71 +31,67 @@ const ActiveBooking = () => {
       </View>
 
       {/* Report Accident Button */}
-      <AppButton
-        style={styles.button}
-        onPress={reportAccident}
-      >
+      <AppButton style={styles.button} onPress={reportAccident}>
         <Text style={styles.buttonText}>Report an accident or damages</Text>
       </AppButton>
 
       {/* End Reservation Button */}
-      <AppButton
-        style={[styles.button, styles.endButton]}
-        onPress={endReservationEarly}
-      >
+      <AppButton style={[styles.button, styles.endButton]} onPress={endReservationEarly}>
         <Text style={styles.buttonText}>End reservation early</Text>
       </AppButton>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingVertical: verticalScale(20),
+    paddingHorizontal: 10,
     backgroundColor: 'white',
+    alignItems: 'center',
   },
   heading: {
-    fontSize: 40,
+    fontSize: moderateScale(40),
     fontWeight: 'bold',
-    marginBottom: 10,
-    marginTop: 80,
+    marginBottom: verticalScale(5),
+    marginTop: horizontalScale(30),
     textAlign: 'center',
   },
   durationBox: {
     alignItems: 'center',
-    marginBottom: 40,
-    marginTop: 100,
+    marginBottom: verticalScale(40),
+    marginTop: verticalScale(100),
     backgroundColor: 'white',
     borderWidth: 1,
     borderColor: 'black',
-    padding: 50,
-    borderRadius: 10,
+    padding: horizontalScale(40),
+    borderRadius: moderateScale(5),
     flexDirection: 'row',
-    justifyContent: 'center',
-    shadowColor: "0000",
+    justifyContent: 'space-between', // Adjusted alignment
+    shadowColor: '0000',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: verticalScale(2),
     },
     shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    shadowRadius: moderateScale(3.84),
     elevation: 5,
   },
   durationText: {},
   duration: {
-    fontSize: 28,
+    fontSize: moderateScale(28),
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: verticalScale(10),
   },
   button: {
-    height: 80,
+    height: verticalScale(80),
     width: '90%',
     justifyContent: 'center',
     alignSelf: 'center',
-    marginTop: 30,
-    marginBottom: 20,
-    borderRadius: 20,
+    marginTop: verticalScale(30),
+    marginBottom: verticalScale(20),
+    borderRadius: moderateScale(20),
     backgroundColor: 'white',
     borderWidth: 1,
     borderColor: 'black',
@@ -104,10 +99,11 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'black',
     textAlign: 'center',
+    fontSize: moderateScale(20),
   },
   endButton: {
-    height: 50,
-    marginTop: 20,
+    height: verticalScale(50),
+    marginTop: verticalScale(20),
   },
 });
 

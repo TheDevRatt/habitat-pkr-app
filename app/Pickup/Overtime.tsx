@@ -2,10 +2,11 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import AppButton from '../../components/AppButton';
 import AnalogClock from '../../components/AnalogClock';
-import { useRouter } from 'expo-router'; // import useRouter
+import { useRouter } from 'expo-router'; // Import useRouter
+import { verticalScale, moderateScale, horizontalScale } from '@/constants/Metrics'; // Import all three scales
 
 const Overtime = () => {
-  const router = useRouter(); // initialize router
+  const router = useRouter(); // Initialize router
 
   return (
     <View style={styles.container}>
@@ -19,7 +20,7 @@ const Overtime = () => {
       {/* Time Slot Box */}
       <View style={styles.timeSlotBox}>
         <AnalogClock style={styles.clock} />
-        <Text style={styles.headerText}>-8:40min</Text>
+        <Text style={styles.TimeText}>-8:40Min</Text>
       </View>
 
       <Text style={styles.instructionText}>
@@ -31,7 +32,7 @@ const Overtime = () => {
 
       <AppButton
         style={styles.button}
-        onPress={() => router.push('/Pickup/DropOff')} 
+        onPress={() => router.push('/Pickup/ReservationEnded')} 
       >
         <Text style={styles.buttonText}>End Reservation</Text>
       </AppButton>
@@ -42,42 +43,45 @@ const Overtime = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: moderateScale(20),
     backgroundColor: 'white',
   },
   headerText: {
-    fontSize: 45,
+    fontSize: moderateScale(45),
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: moderateScale(10),
   },
   timeSlotBox: {
     flexDirection: 'row', 
     justifyContent: 'space-between', 
-    borderWidth: 1,
+    borderWidth: moderateScale(1),
     borderColor: 'black',
-    padding: 5,
-    borderRadius: 10,
-    marginBottom: 20,
-    marginTop:10,
-    height: 250,
+    padding: moderateScale(4),
+    borderRadius: moderateScale(10),
+    marginBottom: moderateScale(20),
+    marginTop: verticalScale(10),
+    height: verticalScale(250),
     alignItems: 'center', 
   },
+  TimeText: {
+   fontSize: moderateScale(45),
+  },
   clock: {
-    width: 60,
-    height: 60,
+    width: moderateScale(60),
+    height: moderateScale(60),
   },
   instructionText: {
-    fontSize: 20,
+    fontSize: moderateScale(25),
   },
   button: {
-    height: 60,
+    height: verticalScale(60),
     width: '100%',
     justifyContent: 'center',
     alignSelf: 'center',
     backgroundColor: 'orange',
-    marginTop: 40,
-    marginBottom: 20,
-    borderRadius: 30, 
+    marginTop: verticalScale(40),
+    marginBottom: verticalScale(20),
+    borderRadius: moderateScale(30), 
   },
   buttonText: {
     color: 'white', 

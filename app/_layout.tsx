@@ -80,6 +80,7 @@ function RootLayoutNav() {
         name="onboarding/membership"
         options={{ headerShown: false }}
       />
+    
       <Stack.Screen
         name="onboarding/paymentInfo"
         options={{ headerShown: false }}
@@ -90,6 +91,10 @@ function RootLayoutNav() {
       />
       <Stack.Screen
         name="onboarding/ForgotPassword"
+        options={{ headerShown: false }}
+      />
+       <Stack.Screen
+        name="Pickup/ActiveBooking"
         options={{ headerShown: false }}
       />
       <Stack.Screen name="Pickup/Pictures" options={{ headerShown: false }} />
@@ -112,10 +117,6 @@ function RootLayoutNav() {
       />
       <Stack.Screen
         name="Pickup/ReservationEnded"
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Pickup/UserReservation"
         options={{ headerShown: false }}
       />
       <Stack.Screen name="Pickup/forfeited" options={{ headerShown: false }} />
