@@ -26,22 +26,24 @@ const BookingDetails = () => {
     function isActive(startTime){
         let currentTime = new Date();
         let timeWindow = startTime.toDate();
-        timeWindow = new Date(timeWindow + ONE_MINUTE * 15);
+        timeWindow = new Date(timeWindow - ONE_MINUTE * 15);
+        if(selectedReservation.Active === true){
+            if (selectedReservation.InProgress === true){
+                router.push({ pathname: "/Pickup/ActiveReservation" });
 
-        if (selectedReservation.InProgress === true){
-            router.push({ pathname: "/Pickup/ActiveReservation" });
-        }else if (currentTime >= startTime.toDate() || currentTime < timeWindow) {
-            console.log("meet with key holder");
-            router.push({ pathname: "/Pickup/Reservation" });
+            }else if (currentTime <= startTime.toDate() || currentTime > timeWindow) {
+                console.log("meet with key holder");
+                router.push({ pathname: "/Pickup/Reservation" });
 
-        }else if ( currentTime > timeWindow ){
-            console.log("your reservation is forfeited");
-            router.push({ pathname: "/Pickup/forfeited" });
+            }else if ( currentTime > timeWindow ){
+                console.log("your reservation is forfeited");
+                router.push({ pathname: "/Pickup/forfeited" });
 
-        }else if( currentTime < startTime.toDate()){
-            let timeDifference = (startTime.toDate().getTime() - currentTime.getTime())/1000;
-            timeDifference = new Date(timeDifference * 1000).toISOString().slice(11, 19);
-            router.push({ pathname: "/Pickup/Reservation" });
+            }else if( currentTime < startTime.toDate()){
+                let timeDifference = (startTime.toDate().getTime() - currentTime.getTime())/1000;
+                timeDifference = new Date(timeDifference * 1000).toISOString().slice(11, 19);
+                router.push({ pathname: "/Pickup/Reservation" });
+            }
         }
     }
     useEffect(() => {

@@ -6,35 +6,27 @@ import CameraIcon from '@/components/CameraIcon'; // Import CameraIcon component
 import { useRouter } from 'expo-router';
 import AnalogClock from '../../components/AnalogClock';
 import { verticalScale, moderateScale, horizontalScale } from '@/constants/Metrics';
+import { openCamera } from "./../classes/CloudStorage";
+import { selectedVehicle, selectedReservation } from "../(tabs)/Bookings";
+import { updateActiveStatus } from "../classes/Rental";
+import { getUserID } from "../classes/UserUtils";
 
 const ReservationEnding = () => {
   const [image, setImage] = useState(null);
+  const [gasLevelImage, setGasLevelImage] = useState("Gas");
   const [modalVisible, setModalVisible] = useState(false);
   const router = useRouter();
 
-  const openCamera = async () => {
-    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-  
-    if (permissionResult.granted === false) {
-      alert('Permission to access camera is required!');
-      return;
+  function handleOpenCamera(gasLevelImage){
+      let filename = ("pickup" + gasLevelImage) ;
+      let location = ("Reservations/" + selectedReservation.id);
+      openCamera(filename, location);
     }
-  
-    const pickerResult = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      aspect: [4, 3],
-    });
-  
-    if (!pickerResult.cancelled) {
-      const imageResult = pickerResult.assets[0]; 
-      const newUri = imageResult.uri + '?' + new Date().getTime(); 
-      console.log('New photo URI:', newUri); 
-      setImage(newUri);
-    }
-  };
 
   const handlePhotoSubmission = () => {
     console.log('Submit photo');
+    updateActiveStatus(getUserID());
+    router.push("(tabs)/Home")
     setModalVisible(true);
   };
 
@@ -49,7 +41,7 @@ const ReservationEnding = () => {
 
       {/* Gas Level Photo */}
       <View style={styles.photoContainer}>
-        <TouchableOpacity onPress={openCamera}>
+        <TouchableOpacity onPress={() => handleOpenCamera(gasLevelImage)}>
           {image ? <Image source={{ uri: image }} style={styles.image} /> : <CameraIcon />}
         </TouchableOpacity>
         <Text style={styles.instructionText}>

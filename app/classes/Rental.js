@@ -148,16 +148,16 @@ async function reserve(carID, start, end, dayRate, hourlyRate){
 
     // Add reservation to user reservation list, delete reservation
     // if an error occurs
-    let res = await userReservations(userID, tripName, startTime);
-    if (res == false){
-        console.log("here");
-        try{
-            await deleteDoc(doc(db, "reservations", tripName));
-        }catch(e){
-            return e;
-        }
-        return "An error has occurred";
-    }
+    //let res = await userReservations(userID, tripName, startTime);
+    //if (res == false){
+        //console.log("here");
+        //try{
+            //await deleteDoc(doc(db, "reservations", tripName));
+        //}catch(e){
+            //return e;
+        //}
+        //return "An error has occurred";
+    //}
 
     return "Booked";
 
@@ -194,7 +194,6 @@ async function userReservations(userID, reservationID, startTime){
 }
 
 async function updateProgress(userID){
-
     const userDoc = await getDoc(doc(db, 'users', userID));
     try{
         if (userDoc.exists()) {
@@ -205,12 +204,19 @@ async function updateProgress(userID){
     }catch (error) {
         alert(error);
     }
-
-
 }
 
+async function updateActiveStatus(userID){
+    const userDoc = await getDoc(doc(db, 'users', userID));
+    try{
+        if (userDoc.exists()) {
+            await updateDoc(userDocRef, {
+                Active: false
+            });
+        }
+    }catch (error) {
+        alert(error);
+    }
+}
 
-
-
-
-export { reserve, updateProgress };
+export { reserve, updateProgress, updateActiveStatus };

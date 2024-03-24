@@ -6,6 +6,9 @@ import { useRouter } from 'expo-router';
 import { verticalScale, moderateScale, horizontalScale } from '@/constants/Metrics';
 import { selectedVehicle, selectedReservation } from "../(tabs)/Bookings";
 
+
+const ONE_MINUTE = 60000;
+
 const ActiveBooking = () => {
   const router = useRouter();
 
@@ -20,8 +23,14 @@ const ActiveBooking = () => {
   const [time, setTime] = useState(new Date());
   function isActive(){
     let currentTime = new Date();
-    let timeDifference = (selectedReservation.EndTime.toDate().getTime() - currentTime.getTime())/1000;
-    setTimer(new Date(timeDifference * 1000).toISOString().slice(11, 19));
+    let timeWindow = new Date(selectedReservation.EndTime.toDate() + ONE_MINUTE*30);
+    timeWindow = (currentTime - timeWindow)/1000;
+
+    if(timeWindow < ONE_MINUTE*30){
+        router.push("Pickup/DropOff")
+    }
+
+    setTimer(new Date(timeWindow * 1000).toISOString().slice(11, 19));
   }
 
   useEffect(() => {
@@ -37,13 +46,15 @@ const ActiveBooking = () => {
       <Text style={styles.heading}>Your Reservation is Active</Text>
 
       {/* Active Duration Box */}
-      <View style={styles.durationBox}>
-        <View style={styles.durationText}>
+       <View style={styles.durationBox}>
+        <View style={styles.clockContainer}>
+        </View>
+        <View>
             <Text style={styles.durationText}>
                 {timer}
             </Text>
         </View>
-      </View>
+        </View>
 
       {/* Report Accident Button */}
       <AppButton style={styles.button} onPress={reportAccident}>
