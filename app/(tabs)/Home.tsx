@@ -37,7 +37,7 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-export let vehicles = [];
+export let vehicleList = [];
 export let selectedVehicle = [];
 
 const Home = () => {
@@ -50,9 +50,10 @@ const Home = () => {
   useEffect(() => {
     async function fetchVehicleList() {
         try {
-          const vehicleList  = await fetchVehicles();
+            vehicleList  = await fetchVehicles();
             setVehicles(vehicleList);
             setLoading(false);
+
         } catch (error) {
             setError(error);
             setLoading(false);
@@ -60,7 +61,6 @@ const Home = () => {
     }
     fetchVehicleList();
     }, []);
-
 
 
   // user info
@@ -77,7 +77,7 @@ const Home = () => {
   const router = useRouter();
 
  const goToBooking = (carId: number) => {
-    selectedVehicle = vehicles[carId];
+    selectedVehicle = vehicleList[carId];
     router.push({ pathname: "/home/CarInfo" });
   };
 
@@ -221,33 +221,6 @@ const Home = () => {
     </LinearGradient>
   );
 };
-
-// const loadData = () =>{
-//   let [vehicleList, setVehicleList] = useState(null);
-//   let [loading, setLoading] = useState(true);
-//   let [error, setError] = useState(null);
-//       useEffect(() => {
-//           async function fetchVehicleList() {
-//               try {
-//                   vehicleList = await fetchVehicles();
-//                   setVehicleList(vehicleList);
-//                   setLoading(false);
-//               } catch (error) {
-//                   setError(error);
-//                   setLoading(false);
-//               }
-//           }
-//           fetchVehicleList();
-//           }, []);
-//       if (loading) {
-//           return <Text style={styles.greeting}>Loading</Text>;
-//           }
-//       if (error) {
-//           return <Text style={styles.greeting}>Error: {error.message}</Text>;
-//           }
-//       vehicles = vehicleList;
-//       return;
-//   }
 
 
 const styles = StyleSheet.create({

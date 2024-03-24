@@ -3,42 +3,29 @@ import { View, Text, Image, TouchableOpacity, Alert, StyleSheet } from 'react-na
 import * as ImagePicker from 'expo-image-picker';
 import AppButton from '../../components/AppButton';
 import { useRouter } from "expo-router"; // import useRouter
+import { openCamera } from "./../classes/CloudStorage";
+import { selectedVehicle, selectedReservation } from "../(tabs)/Bookings";
+import { getUserID } from "../classes/UserUtils";
+
 
 const FinalPictures = () => {
-  const [gasLevelImage, setGasLevelImage] = useState(null);
+  const [gasLevelImage, setGasLevelImage] = useState("Gas");
   const router = useRouter(); // initialize router
 
   const handleSubmission = () => {
     if (!gasLevelImage) {
-      Alert.alert('Error', 'Please take a photo of the gas level before submitting.');
+      alert('Error', 'Please take a photo of the gas level before submitting.');
       return;
     }
-
     console.log('Final photos submitted!');
-    console.log('Gas Level Image:', gasLevelImage);
     router.push('Pickup/ActiveReservation'); // navigate to Pickup/ActiveReservation
   };
 
-  const openCamera = async () => {
-    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-
-    if (permissionResult.granted === false) {
-      Alert.alert('Permission required', 'You need to grant camera permissions to take photos.');
-      return;
-    }
-
-    const pickerResult = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      aspect: [4, 3],
-    });
-
-    if (!pickerResult.cancelled) {
-      const imageResult = pickerResult.assets[0]; // Extract the first item from the assets array
-      const newUri = imageResult.uri + '?' + new Date().getTime(); // Add timestamp to URI
-      console.log('New photo URI:', newUri); // Log the new URI for debugging
-      setGasLevelImage(newUri);
-    }
-  };
+  function handleOpenCamera(gasLevelImage){
+    let filename = ("pickup" + gasLevelImage) ;
+    let location = ("Reservations/" + selectedReservation.id);
+    openCamera(filename, location, getUserID());
+  }
 
   return (
     <View style={styles.container}>
@@ -47,7 +34,7 @@ const FinalPictures = () => {
       </Text>
 
       {/* Gas Level Photo */}
-      <TouchableOpacity onPress={openCamera}>
+      <TouchableOpacity onPress={() => handleOpenCamera(gasLevelImage)}>
         <View style={styles.photoContainer}>
           {gasLevelImage ? (
             <Image source={{ uri: gasLevelImage }} style={styles.photo} />

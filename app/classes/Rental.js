@@ -120,7 +120,7 @@ async function reserve(carID, start, end, dayRate, hourlyRate){
         if (rTime > 24){
             cost += dayRate;
             rTime -= 24
-        }else if(rTime >= 1){
+        }else if(rTime >= 0.5){
             cost += hourlyRate * Math.ceil(rTime);
             rTime -= rTime;
         }
@@ -139,7 +139,8 @@ async function reserve(carID, start, end, dayRate, hourlyRate){
             TotalTime: reservedTime,
             Cost: cost,
             Active: true,
-            Created: new Date()
+            Created: new Date(),
+            InProgress: false,
         });
     } catch(e){
         return e;

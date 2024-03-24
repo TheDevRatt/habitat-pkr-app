@@ -3,50 +3,44 @@ import { View, Text, Image, TouchableOpacity, StyleSheet, ActivityIndicator } fr
 import * as ImagePicker from 'expo-image-picker';
 import AppButton from '../../components/AppButton';
 import { useRouter } from "expo-router";
+import { openCamera } from "./../classes/CloudStorage";
+import { selectedVehicle, selectedReservation } from "../(tabs)/Bookings";
+import { getUserID } from "../classes/UserUtils";
+
 
 const Pictures = () => {
-  const [frontImage, setFrontImage] = useState(null);
-  const [backImage, setBackImage] = useState(null);
-  const [rightImage, setRightImage] = useState(null);
-  const [leftImage, setLeftImage] = useState(null);
+  const [frontImage, setFrontImage] = useState('Front');
+  const [backImage, setBackImage] = useState('Back');
+  const [rightImage, setRightImage] = useState('Right');
+  const [leftImage, setLeftImage] = useState('Left');
   const router = useRouter();
+
+  const userID = getUserID();
 
   const handleSubmission = () => {
     console.log('Photos submitted!');
-    console.log('Front Image:', frontImage);
-    console.log('Back Image:', backImage);
-    console.log('Right Image:', rightImage);
-    console.log('Left Image:', leftImage);
     router.push('Pickup/FinalPictures');
   };
 
-  const openCamera = async (setImage) => {
-    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-  
-    if (permissionResult.granted === false) {
-      alert('Permission to access camera is required!');
-      return;
-    }
-  
-    const pickerResult = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      aspect: [4, 3],
-    });
-  
-    if (!pickerResult.canceled) {
-      const imageResult = pickerResult.assets[0]; 
-      const newUri = imageResult.uri + '?' + new Date().getTime(); 
-      console.log('New photo URI:', newUri); 
-      setImage(newUri);
-    }
-  };
-  
+  let imageURI;
+  function handleOpenCamera(imageSide){
+    let filename = ("pickup" + imageSide) ;
+    let location = ("Reservations/" + selectedReservation.id);
+    console.log(filename);
+    console.log(location);
+    console.log(userID);
+    openCamera(filename, location, userID);
+    imageURI = ("gs://pkrides-d3c59.appspot.com/" + location + "/" + filename);
+
+  }
+
+
 
   const renderImage = (imageUri: string | null | undefined) => {
     return imageUri ? (
-      <Image source={{ uri: imageUri }} style={styles.photo} key={imageUri} />
+      <Image source={{ uri: imageUri }} style={styles.image} />
     ) : (
-      <Image source={cameraImg} style={styles.cameraIcon} />
+      <Image source={{ uri: imageUri }} style={styles.cameraIcon} />
     );
   };
 
@@ -57,7 +51,7 @@ const Pictures = () => {
       </Text>
 
       {/* Front Photo */}
-      <TouchableOpacity onPress={() => openCamera(setFrontImage)}>
+      <TouchableOpacity onPress={() => handleOpenCamera(frontImage)}>
         <View style={styles.photoContainer}>
           {renderImage(frontImage)}
           <Text style={styles.photoText}>Please take a photo of the front of the car</Text>
@@ -65,7 +59,7 @@ const Pictures = () => {
       </TouchableOpacity>
 
       {/* Back Photo */}
-      <TouchableOpacity onPress={() => openCamera(setBackImage)}>
+      <TouchableOpacity onPress={() => handleOpenCamera(backImage)}>
         <View style={styles.photoContainer}>
           {renderImage(backImage)}
           <Text style={styles.photoText}>Please take a photo of the back of the car</Text>
@@ -73,7 +67,7 @@ const Pictures = () => {
       </TouchableOpacity>
 
       {/* Right Side Photo */}
-      <TouchableOpacity onPress={() => openCamera(setRightImage)}>
+      <TouchableOpacity onPress={() => handleOpenCamera(rightImage)}>
         <View style={styles.photoContainer}>
           {renderImage(rightImage)}
           <Text style={styles.photoText}>Please take a photo of the right side of the car</Text>
@@ -81,7 +75,7 @@ const Pictures = () => {
       </TouchableOpacity>
 
       {/* Left Side Photo */}
-      <TouchableOpacity onPress={() => openCamera(setLeftImage)}>
+      <TouchableOpacity onPress={() => handleOpenCamera(leftImage)}>
         <View style={styles.photoContainer}>
           {renderImage(leftImage)}
           <Text style={styles.photoText}>Please take a photo of the left side of the car</Text>

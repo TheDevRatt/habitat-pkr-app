@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Image } from "react-native";
 import { Stack, useRouter, useLocalSearchParams } from "expo-router";
 import { SafeAreaView, Text, TouchableOpacity } from "@/components/Themed";
@@ -13,13 +13,41 @@ import {
 } from "@/constants/Metrics";
 import { selectedVehicle, selectedReservation } from "../(tabs)/Bookings";
 
+const ONE_MINUTE = 60000;
+
 const BookingDetails = () => {
   const ident = useLocalSearchParams();
   const navigation = useNavigation();
+  const router = useRouter();
 
   const goBack = () => {
     navigation.goBack(); 
   };
+    function isActive(startTime){
+        let currentTime = new Date();
+        let timeWindow = startTime.toDate();
+        timeWindow = new Date(timeWindow + ONE_MINUTE * 15);
+
+        if (currentTime >= startTime.toDate() || currentTime < timeWindow) {
+            console.log("meet with key holder");
+            router.push({ pathname: "/Pickup/Reservation" });
+
+        }else if ( currentTime > timeWindow ){
+            console.log("your reservation is forfeited");
+            router.push({ pathname: "/Pickup/forfeited" });
+
+        }else if( currentTime < startTime.toDate()){
+            let timeDifference = (startTime.toDate().getTime() - currentTime.getTime())/1000;
+            timeDifference = new Date(timeDifference * 1000).toISOString().slice(11, 19);
+            router.push({ pathname: "/Pickup/Reservation" });
+        }
+    }
+    useEffect(() => {
+        if (selectedReservation){
+            isActive(selectedReservation.StartTime);
+        }
+    }, []);
+
 
 
   const bookingDetails = {
@@ -91,6 +119,11 @@ const BookingDetails = () => {
             Your booking will become active when the handover period of 15
             minutes starts.
           </Text>
+
+
+
+
+
         </View>
       </SafeAreaView>
     </LinearGradient>
