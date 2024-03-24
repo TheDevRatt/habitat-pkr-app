@@ -16,8 +16,6 @@ import {
 
 import BackButton from "@/components/BackButton";
 import SignoutIcon from "@/components/SignoutIcon";
-import FaqUpIcon from "@/components/faqUpIcon";
-import FaqDownIcon from "@/components/faqDownIcon";
 
 const Accordion = ({ title, content }: { title: string; content: string }) => {
   const [expanded, setExpanded] = useState(false);

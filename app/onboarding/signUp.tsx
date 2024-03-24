@@ -26,6 +26,7 @@ import PronounSelector from "@/components/PronounSelector";
 import BackButton from "@/components/BackButton";
 import { Link, useRouter } from "expo-router";
 import { verifyUser } from "./../classes/User.js";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -72,131 +73,139 @@ const SignUp = () => {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={styles.keyboardAvoidContainer}
           >
-            <View style={styles.topContainer}>
-              <View style={styles.backButtonContainer}>
-                <BackButton />
-              </View>
-              <View style={styles.welcomeTextContainer}>
-                <Text style={styles.welcomeText}>Welcome</Text>
-              </View>
-            </View>
-
-            <View style={styles.inputGroup}>
-              <TextInput
-                value={firstName}
-                placeholder={"First Name"}
-                onChangeText={(newFirstName) => setFirstName(newFirstName)}
-                placeholderTextColor="#000"
-                style={styles.inputField}
-              />
-              <TextInput
-                value={lastName}
-                placeholder={"Last Name"}
-                onChangeText={(newLastName) => setLastName(newLastName)}
-                placeholderTextColor="#000"
-                style={styles.inputField}
-              />
-              <TextInput
-                value={email}
-                placeholder={"Email"}
-                onChangeText={(newEmail) => setEmail(newEmail)}
-                placeholderTextColor="#000"
-                style={styles.inputField}
-              />
-              <View style={styles.passwordField}>
-                <TextInput
-                  value={password}
-                  secureTextEntry={!showPassword}
-                  placeholder={"Password"}
-                  onChangeText={(newPassword) => setPassword(newPassword)}
-                  placeholderTextColor="#000"
-                  style={[styles.inputField, { flex: 1 }]}
-                />
-                <TouchableOpacity
-                  onPress={() => setShowPassword(!showPassword)}
-                  style={styles.passwordIcon}
-                >
-                  <FontAwesome
-                    name={showPassword ? "eye" : "eye-slash"}
-                    size={28}
-                  />
-                </TouchableOpacity>
-              </View>
-              <TextInput
-                value={phoneNumber}
-                keyboardType="numeric"
-                placeholder={"Phone Number"}
-                onChangeText={(newPhoneNumber) => {
-                  const formattedPhoneNumber =
-                    formatPhoneNumber(newPhoneNumber);
-                  setPhoneNumber(formattedPhoneNumber);
-                }}
-                placeholderTextColor="#000"
-                style={styles.inputField}
-              />
-
-              <View style={styles.dropdownContainer}>
-                <TextInput
-                  value={age}
-                  keyboardType="numeric"
-                  placeholder={"Age"}
-                  onChangeText={(newAge) => setAge(newAge)}
-                  placeholderTextColor="#000"
-                  style={[
-                    styles.inputField,
-                    { width: "25%", marginRight: "27%" },
-                  ]}
-                />
-                <View style={styles.dropDownPicker}>
-                  <PronounSelector value={pronouns} setValue={setPronouns} />
+            <KeyboardAwareScrollView
+              contentContainerStyle={{ flexGrow: 1 }}
+              resetScrollToCoords={{ x: 0, y: 0 }}
+              scrollEnabled={true}
+              extraScrollHeight={verticalScale(-250)}
+              enableOnAndroid={true}
+            >
+              <View style={styles.topContainer}>
+                <View style={styles.backButtonContainer}>
+                  <BackButton />
+                </View>
+                <View style={styles.welcomeTextContainer}>
+                  <Text style={styles.welcomeText}>Welcome</Text>
                 </View>
               </View>
-            </View>
-            <View style={styles.buttonContainer}>
-              <AppButton
-                widthPercentage={85}
-                paddingVertical={11}
-                borderRadius={25}
-                textStyle={{ fontSize: 25 }}
-                onPress={async () => {
-                  let response = await verifyUser(
-                    email.trim(),
-                    password.trim(),
-                    firstName.trim(),
-                    lastName.trim(),
-                    phoneNumber,
-                    pronouns,
-                    age
-                  );
-                  if (response == "good") {
-                    router.push("/onboarding/basicInfo");
-                  } else {
-                    alert(response);
-                  }
-                }}
-              >
-                Create Account
-              </AppButton>
-            </View>
 
-            <View style={styles.termsContainer}>
-              <Text style={styles.termsText}>
-                By clicking 'Create Account' you agree to Habitat PKR's{" "}
-                <Text style={styles.termsLink} onPress={handleTermsPress}>
-                  terms and conditions
+              <View style={styles.inputGroup}>
+                <TextInput
+                  value={firstName}
+                  placeholder={"First Name"}
+                  onChangeText={(newFirstName) => setFirstName(newFirstName)}
+                  placeholderTextColor="#000"
+                  style={styles.inputField}
+                />
+                <TextInput
+                  value={lastName}
+                  placeholder={"Last Name"}
+                  onChangeText={(newLastName) => setLastName(newLastName)}
+                  placeholderTextColor="#000"
+                  style={styles.inputField}
+                />
+                <TextInput
+                  value={email}
+                  placeholder={"Email"}
+                  onChangeText={(newEmail) => setEmail(newEmail)}
+                  placeholderTextColor="#000"
+                  style={styles.inputField}
+                />
+                <View style={styles.passwordField}>
+                  <TextInput
+                    value={password}
+                    secureTextEntry={!showPassword}
+                    placeholder={"Password"}
+                    onChangeText={(newPassword) => setPassword(newPassword)}
+                    placeholderTextColor="#000"
+                    style={[styles.inputField, { flex: 1 }]}
+                  />
+                  <TouchableOpacity
+                    onPress={() => setShowPassword(!showPassword)}
+                    style={styles.passwordIcon}
+                  >
+                    <FontAwesome
+                      name={showPassword ? "eye" : "eye-slash"}
+                      size={28}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <TextInput
+                  value={phoneNumber}
+                  keyboardType="numeric"
+                  placeholder={"Phone Number"}
+                  onChangeText={(newPhoneNumber) => {
+                    const formattedPhoneNumber =
+                      formatPhoneNumber(newPhoneNumber);
+                    setPhoneNumber(formattedPhoneNumber);
+                  }}
+                  placeholderTextColor="#000"
+                  style={styles.inputField}
+                />
+
+                <View style={styles.dropdownContainer}>
+                  <TextInput
+                    value={age}
+                    keyboardType="numeric"
+                    placeholder={"Age"}
+                    onChangeText={(newAge) => setAge(newAge)}
+                    placeholderTextColor="#000"
+                    style={[
+                      styles.inputField,
+                      { width: "25%", marginRight: "27%" },
+                    ]}
+                  />
+                  <View style={styles.dropDownPicker}>
+                    <PronounSelector value={pronouns} setValue={setPronouns} />
+                  </View>
+                </View>
+              </View>
+              <View style={styles.buttonContainer}>
+                <AppButton
+                  widthPercentage={85}
+                  paddingVertical={11}
+                  borderRadius={25}
+                  textStyle={{ fontSize: 25 }}
+                  onPress={async () => {
+                    let response = await verifyUser(
+                      email.trim(),
+                      password.trim(),
+                      firstName.trim(),
+                      lastName.trim(),
+                      phoneNumber,
+                      pronouns,
+                      age
+                    );
+                    if (response == "good") {
+                      router.push("/onboarding/basicInfo");
+                    } else {
+                      alert(response);
+                    }
+                  }}
+                >
+                  Create Account
+                </AppButton>
+              </View>
+
+              <View style={styles.termsContainer}>
+                <Text style={styles.termsText}>
+                  By clicking 'Create Account' you agree to Habitat PKR's{" "}
+                  <Text style={styles.termsLink} onPress={handleTermsPress}>
+                    terms and conditions
+                  </Text>
                 </Text>
-              </Text>
-            </View>
+              </View>
 
-            <View style={styles.loginContainer}>
-              <Text style={styles.loginText}>Already have an account?</Text>
-              <TouchableOpacity
-                onPress={handleLoginPress}
-                style={{ backgroundColor: "transparent" }}
-              >
-                <Text style={styles.loginLink}>Log in</Text>
-              </TouchableOpacity>
-            </View>
+              <View style={styles.loginContainer}>
+                <Text style={styles.loginText}>Already have an account?</Text>
+                <TouchableOpacity
+                  onPress={handleLoginPress}
+                  style={{ backgroundColor: "transparent" }}
+                >
+                  <Text style={styles.loginLink}>Log in</Text>
+                </TouchableOpacity>
+              </View>
+            </KeyboardAwareScrollView>
           </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
       </SafeAreaView>
@@ -239,16 +248,14 @@ const styles = StyleSheet.create({
     paddingLeft: horizontalScale(20),
     ...Platform.select({
       ios: {},
-      android: {
-        paddingBottom: verticalScale(40),
-      },
+      android: {},
     }),
   },
   topContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: verticalScale(30),
     backgroundColor: "transparent",
+    marginBottom: verticalScale(50),
   },
   welcomeTextContainer: {
     flex: 1,
@@ -257,9 +264,7 @@ const styles = StyleSheet.create({
     marginRight: verticalScale(50),
     ...Platform.select({
       ios: {},
-      android: {
-        marginBottom: verticalScale(40),
-      },
+      android: {},
     }),
   },
   welcomeText: {
@@ -303,7 +308,6 @@ const styles = StyleSheet.create({
   },
   dropDownPicker: {
     backgroundColor: "transparent",
-    borderWidth: 0,
     width: "60%",
     right: horizontalScale(35),
   },

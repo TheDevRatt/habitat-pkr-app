@@ -46,8 +46,8 @@ const Profile = () => {
     router.push("/profile/myInfo");
   };
   const handleChangePassword = () => {
-    console.log("Navigating to Sub Accounts");
-    //router.push("/tabs/Account/SubAccounts");
+    console.log("Navigating to Change Password");
+    router.push("/profile/ChangePassword");
   };
 
   return (

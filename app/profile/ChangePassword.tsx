@@ -17,8 +17,6 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Platform,
-  Image,
-  LogBox,
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { LinearGradient } from "expo-linear-gradient";
@@ -28,39 +26,20 @@ import PronounSelector from "@/components/PronounSelector";
 import BackButton from "@/components/BackButton";
 import { Link, useRouter } from "expo-router";
 import { verifyUser } from "./../classes/User.js";
-import DriversLicenseLogo from "@/components/DriversLicenseLogo";
-import InsuranceLogo from "@/components/InsuranceLogo";
-// import * as Progress from 'react-native-progress';
-import { openCamera, openFilePicker } from "./../classes/CloudStorage";
-import { auth } from "@/firebase";
-import { getUserData } from "../classes/User";
-import { getFirestore, setDoc, doc, onSnapshot } from "firebase/firestore";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { getFunctions, httpsCallable } from "firebase/functions";
 
-LogBox.ignoreLogs([
-  "VirtualizedLists should never be nested inside plain ScrollViews with the same orientation because it can break windowing and other functionality - use another VirtualizedList-backed container instead.",
-]);
-
-const addUser = () => {
-  interface CreateUserResponse {
-    uid: string; // Assuming the cloud function returns an object with a uid property
-  }
-
-  // State management
+const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [age, setAge] = useState("");
-  const [pronouns, setPronouns] = useState("");
-  const [userCreated, setUserCreated] = useState(false); // Track if the user has been created
-  const [newUserId, setNewUserId] = useState(""); // Store the new user's ID
-  const [licenseUrl, setLicenseUrl] = useState(null);
 
   const router = useRouter();
+  const handleTermsPress = () => {
+    console.log("Navigating to TermsAndConditions");
+    router.push("/onboarding/termsAndConditions");
+  };
+
+  const handleLoginPress = () => {
+    console.log("Navigating to LogIn");
+    router.push("/onboarding/logIn");
+  };
 
   const formatPhoneNumber = (value: any) => {
     // Remove non-numeric characters
@@ -72,61 +51,33 @@ const addUser = () => {
     );
     return formattedValue;
   };
-  // Function to create a user or upload driver's license
-  const handleSubmit = async () => {
-    if (!userCreated) {
-      const functions = getFunctions();
-      const createUserByAdmin = httpsCallable(functions, "createUserByAdmin");
 
-      try {
-        const result = await createUserByAdmin({
-          firstName,
-          lastName,
-          email,
-          password,
-          phoneNumber,
-          age,
-          pronouns,
-        });
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [age, setAge] = useState("");
+  const [pronouns, setPronouns] = useState("");
 
-        // Using the interface to assert the type of result.data
-        const data = result.data as CreateUserResponse;
-        const createdUserId = data.uid;
-        setNewUserId(createdUserId);
-        setUserCreated(true);
-        alert("User created successfully!");
-
-        // Optionally reset form here or redirect admin to another page
-      } catch (error) {
-        console.error("Error creating user:", error);
-        alert("Failed to create user. Please try again.");
-      }
-    } else {
-      // If the user has been created, you can now upload the driver's license
-      // This part is handled by the openCamera or openFilePicker functions when they are called
-    }
-  };
+  useEffect(() => {
+    console.log(pronouns); // Log the current value of pronouns
+  }, [pronouns]);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.keyboardAvoidContainer}
-        >
-          <KeyboardAwareScrollView
-            contentContainerStyle={{ flexGrow: 1 }}
-            resetScrollToCoords={{ x: 0, y: 0 }}
-            scrollEnabled={true}
-            extraScrollHeight={verticalScale(-250)}
-            enableOnAndroid={true}
+    <LinearGradient colors={["#FFFFFF", "#0099CC"]} style={styles.gradient}>
+      <SafeAreaView style={styles.container}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={styles.keyboardAvoidContainer}
           >
             <View style={styles.topContainer}>
               <View style={styles.backButtonContainer}>
                 <BackButton />
               </View>
               <View style={styles.welcomeTextContainer}>
-                <Text style={styles.welcomeText}>Add User</Text>
+                <Text style={styles.welcomeText}>Welcome</Text>
               </View>
             </View>
 
@@ -201,80 +152,59 @@ const addUser = () => {
                 </View>
               </View>
             </View>
-
-            <View style={styles.itemContainer}>
-              <View style={styles.subTitleContainer}>
-                <Text style={styles.label}>Driver's License</Text>
-              </View>
-              <View style={styles.imageButtonContainer}>
-                {licenseUrl ? (
-                  <Image
-                    source={{ uri: licenseUrl }}
-                    style={{
-                      width: 150,
-                      height: 150,
-                      marginTop: verticalScale(10),
-                      borderRadius: 5,
-                      marginBottom: verticalScale(10),
-                    }}
-                  />
-                ) : (
-                  <DriversLicenseLogo style={styles.driversLicenseContainer} />
-                )}
-                <View style={styles.buttonGroup}>
-                  <View style={styles.camera}>
-                    <AppButton
-                      onPress={() =>
-                        openCamera(newUserId, "License", newUserId)
-                      }
-                      backgroundColor="transparent"
-                      widthPercentage={45}
-                      borderStyle="dashed"
-                      borderRadius={5}
-                      borderColor="black"
-                      borderWidth={1}
-                    >
-                      <FontAwesome name={"camera"} size={15} />
-                      <Text style={styles.buttonText}>&nbsp;Open Camera</Text>
-                    </AppButton>
-                  </View>
-                  <AppButton
-                    onPress={() =>
-                      openFilePicker(newUserId, "License", newUserId)
-                    }
-                    backgroundColor="transparent"
-                    widthPercentage={45}
-                    borderStyle="dashed"
-                    borderRadius={5}
-                    borderColor="black"
-                    borderWidth={1}
-                  >
-                    <FontAwesome name={"upload"} size={15} />
-                    <Text style={styles.buttonText}>&nbsp;Upload File</Text>
-                  </AppButton>
-                </View>
-              </View>
-            </View>
-
             <View style={styles.buttonContainer}>
               <AppButton
                 widthPercentage={85}
                 paddingVertical={11}
                 borderRadius={25}
                 textStyle={{ fontSize: 25 }}
-                onPress={handleSubmit}
+                onPress={async () => {
+                  let response = await verifyUser(
+                    email.trim(),
+                    password.trim(),
+                    firstName.trim(),
+                    lastName.trim(),
+                    phoneNumber,
+                    pronouns,
+                    age
+                  );
+                  if (response == "good") {
+                    router.push("/onboarding/basicInfo");
+                  } else {
+                    alert(response);
+                  }
+                }}
               >
-                {userCreated ? "Upload Driver's License" : "Create Account"}
+                Create Account
               </AppButton>
             </View>
-          </KeyboardAwareScrollView>
-        </KeyboardAvoidingView>
-      </TouchableWithoutFeedback>
-    </SafeAreaView>
+
+            <View style={styles.termsContainer}>
+              <Text style={styles.termsText}>
+                By clicking 'Create Account' you agree to Habitat PKR's{" "}
+                <Text style={styles.termsLink} onPress={handleTermsPress}>
+                  terms and conditions
+                </Text>
+              </Text>
+            </View>
+
+            <View style={styles.loginContainer}>
+              <Text style={styles.loginText}>Already have an account?</Text>
+              <TouchableOpacity
+                onPress={handleLoginPress}
+                style={{ backgroundColor: "transparent" }}
+              >
+                <Text style={styles.loginLink}>Log in</Text>
+              </TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
+      </SafeAreaView>
+    </LinearGradient>
   );
 };
 
-export default addUser;
+export default SignUp;
 
 const styles = StyleSheet.create({
   gradient: {
@@ -288,7 +218,7 @@ const styles = StyleSheet.create({
         paddingTop: verticalScale(10),
       },
       android: {
-        paddingTop: verticalScale(30),
+        paddingTop: verticalScale(10),
       },
     }),
   },
@@ -298,7 +228,9 @@ const styles = StyleSheet.create({
       ios: {
         paddingTop: verticalScale(20),
       },
-      android: {},
+      android: {
+        paddingTop: verticalScale(10),
+      },
     }),
   },
   backButtonContainer: {
@@ -307,14 +239,16 @@ const styles = StyleSheet.create({
     paddingLeft: horizontalScale(20),
     ...Platform.select({
       ios: {},
-      android: {},
+      android: {
+        paddingBottom: verticalScale(40),
+      },
     }),
   },
   topContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "transparent",
     marginBottom: verticalScale(30),
+    backgroundColor: "transparent",
   },
   welcomeTextContainer: {
     flex: 1,
@@ -323,7 +257,9 @@ const styles = StyleSheet.create({
     marginRight: verticalScale(50),
     ...Platform.select({
       ios: {},
-      android: {},
+      android: {
+        marginBottom: verticalScale(40),
+      },
     }),
   },
   welcomeText: {
@@ -367,6 +303,7 @@ const styles = StyleSheet.create({
   },
   dropDownPicker: {
     backgroundColor: "transparent",
+    borderWidth: 0,
     width: "60%",
     right: horizontalScale(35),
   },
@@ -382,44 +319,37 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     zIndex: -1,
   },
-  itemContainer: {
-    alignItems: "flex-start",
-    marginHorizontal: horizontalScale(20),
+  termsContainer: {
+    alignItems: "center",
     backgroundColor: "transparent",
-    marginTop: verticalScale(-20),
     zIndex: -1,
+    marginHorizontal: horizontalScale(25),
   },
-  subTitleContainer: {
-    alignItems: "center",
-    backgroundColor: "transparent",
-  },
-  label: {
-    fontSize: moderateScale(22),
-    fontFamily: "karlaM",
-    marginTop: verticalScale(10),
-    alignItems: "center",
-    backgroundColor: "transparent",
-  },
-  imageButtonContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "transparent",
-  },
-  buttonGroup: {
-    backgroundColor: "transparent",
-    alignItems: "center",
-    paddingLeft: horizontalScale(-40),
-  },
-  buttonText: {
-    fontSize: moderateScale(18),
-    fontFamily: "karlaR",
+  termsText: {
+    fontFamily: "karlaL",
+    fontSize: moderateScale(14),
     textAlign: "center",
   },
-  camera: {
-    marginBottom: verticalScale(12),
+  termsLink: {
+    textDecorationLine: "underline",
+    color: "#00126D",
+  },
+  loginContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: verticalScale(40),
     backgroundColor: "transparent",
   },
-  driversLicenseContainer: {
-    left: horizontalScale(-20),
+  loginText: {
+    fontFamily: "karlaR",
+    fontSize: moderateScale(20),
+    right: horizontalScale(10),
+  },
+  loginLink: {
+    fontFamily: "karlaB",
+    fontSize: moderateScale(22),
+    color: "#000",
+    textDecorationLine: "underline",
+    backgroundColor: "transparent",
   },
 });
