@@ -46,33 +46,37 @@ const Membership = () => {
           <Text style={styles.subtitle}>Select a membership plan</Text>
         </View>
 
-        <TouchableOpacity
-          onPress={() => handleSelectMembership("Monthly Plan")}
-        >
-          <View style={styles.cardContainer}>
-            <Card
-              isSelected={selectedMembership === "Monthly Plan"}
-              onPress={() => handleSelectMembership("Monthly Plan")}
-            >
-              <Text style={styles.cardTitle}>Monthly Plan</Text>
-              <Text style={styles.cardPrice}>$12.99</Text>
-              <Text style={styles.cardDescription}>per Month</Text>
-            </Card>
-          </View>
-        </TouchableOpacity>
+        <View>
+          <TouchableOpacity
+            onPress={() => handleSelectMembership("Monthly Plan")}
+          >
+            <View style={styles.cardContainer}>
+              <Card
+                isSelected={selectedMembership === "Monthly Plan"}
+                onPress={() => handleSelectMembership("Monthly Plan")}
+              >
+                <Text style={styles.cardTitle}>Monthly Plan</Text>
+                <Text style={styles.cardPrice}>$12.99</Text>
+                <Text style={styles.cardDescription}>per Month</Text>
+              </Card>
+            </View>
+          </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => handleSelectMembership("Yearly Plan")}>
-          <View style={styles.cardContainer}>
-            <Card
-              isSelected={selectedMembership === "Yearly Plan"}
-              onPress={() => handleSelectMembership("Yearly Plan")}
-            >
-              <Text style={styles.cardTitle}>Yearly Plan</Text>
-              <Text style={styles.cardPrice}>$120.99</Text>
-              <Text style={styles.cardDescription}>per Year</Text>
-            </Card>
-          </View>
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => handleSelectMembership("Yearly Plan")}
+          >
+            <View style={styles.cardContainer}>
+              <Card
+                isSelected={selectedMembership === "Yearly Plan"}
+                onPress={() => handleSelectMembership("Yearly Plan")}
+              >
+                <Text style={styles.cardTitle}>Yearly Plan</Text>
+                <Text style={styles.cardPrice}>$120.99</Text>
+                <Text style={styles.cardDescription}>per Year</Text>
+              </Card>
+            </View>
+          </TouchableOpacity>
+        </View>
 
         <View style={styles.buttonContainer}>
           <AppButton
@@ -96,7 +100,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "transparent",
-    justifyContent: "center",
+    justifyContent: "space-around",
     paddingHorizontal: horizontalScale(10),
   },
   backButtonContainer: {
@@ -107,7 +111,6 @@ const styles = StyleSheet.create({
   titleContainer: {
     alignItems: "center",
     backgroundColor: "transparent",
-    marginTop: verticalScale(10),
   },
   title: {
     fontFamily: "karlaM",
@@ -119,13 +122,13 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontFamily: "karlaM",
-    marginVertical: verticalScale(40),
+    marginVertical: verticalScale(10),
     fontSize: moderateScale(26),
   },
   cardContainer: {
     width: "100%",
     alignItems: "center",
-    marginVertical: verticalScale(25),
+    marginVertical: "5%",
   },
   cardTitle: {
     fontFamily: "karlaR",
@@ -148,7 +151,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     alignItems: "center",
     backgroundColor: "transparent",
-    marginTop: verticalScale(35),
+    marginVertical: verticalScale(10),
   },
 });
 

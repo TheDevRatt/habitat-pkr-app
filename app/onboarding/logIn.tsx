@@ -150,13 +150,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "transparent",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
     paddingHorizontal: horizontalScale(10),
+    marginTop : verticalScale(20),
   },
   logo: {
     alignItems: "center",
     backgroundColor: "transparent",
-    marginTop: verticalScale(30),
   },
   backButtonContainer: {
     flexDirection: "row",
@@ -164,7 +164,6 @@ const styles = StyleSheet.create({
     marginLeft: horizontalScale(10),
   },
   titleContainer: {
-    marginTop: verticalScale(30),
     marginBottom: verticalScale(20),
     alignItems: "center",
     backgroundColor: "transparent",
@@ -218,7 +217,7 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(35),
   },
   newAccountContainer: {
-    marginTop: verticalScale(60),
+    marginTop: verticalScale(20),
     alignItems: "center",
     backgroundColor: "transparent",
   },

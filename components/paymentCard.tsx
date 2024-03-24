@@ -15,11 +15,9 @@ import {
 interface PaymentCardProps {
   make: string;
   model: string;
-  date: string;
+  pickup: string;
+  dropoff: string;
   amount: number;
-  time: number;
-  unit: string;
-  paymentId: string;
   imageUrl: ImageSourcePropType;
 }
 

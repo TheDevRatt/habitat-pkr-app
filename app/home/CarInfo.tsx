@@ -56,58 +56,62 @@ const Details = () => {
             onPress={goBack}
           />
         </View>
-        </SafeAreaView>
-        <ScrollView>
-          <Text style={styles.title}>{Details.make}</Text>
-          <Image
-            source={{ uri: selectedVehicle.imageURL }}
-            style={styles.image}
-          />
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.specificationContainer}
-          >
-            {Details.specifications.map((spec, index) => (
-              <View style={styles.specificationCard} key={index}>
-                <Text style={styles.specificationLabel}>{spec.label}</Text>
-                <View style={styles.specificationText}>
-                  <MaterialCommunityIcons
-                    name={spec.icon}
-                    size={28}
-                    color="#E55D25"
-                  />
-                  <Text style={styles.specificationValue}>{spec.value}</Text>
-                </View>
-              </View>
-            ))}
-          </ScrollView>
-     
-          <View style={styles.card}>
-            <View style={styles.cardHeader}>
-              <Text style={styles.cardTitle}>
-                {Details.make} {Details.model}
-              </Text>
-              <View style={styles.cardRate}>
-                <Text style={styles.cardRateText}>${Details.dailyRate} per day</Text>
-                <Text style={styles.cardRateText}>${Details.hourlyRate}/hour</Text>
+      </SafeAreaView>
+      <ScrollView>
+        <View  style={styles.Car}>
+        <Text style={styles.title}>{Details.make}</Text>
+        <Image
+          source={{ uri: selectedVehicle.imageURL }}
+          style={styles.image}
+        />
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.specificationContainer}
+        >
+          {Details.specifications.map((spec, index) => (
+            <View style={styles.specificationCard} key={index}>
+              <Text style={styles.specificationLabel}>{spec.label}</Text>
+              <View style={styles.specificationText}>
+                <MaterialCommunityIcons
+                  name={spec.icon}
+                  size={28}
+                  color="#E55D25"
+                />
+                <Text style={styles.specificationValue}>{spec.value}</Text>
               </View>
             </View>
-            <Text style={styles.cardText}>{Details.description}</Text>
-            <View style={styles.buttonContainer}>
-              <AppButton
-                backgroundColor="#E55D25"
-                widthPercentage={50}
-                textStyle={{ color: "white" }}
-                //onPress={() => console.log("Rent Now")}
-                onPress={() => router.push("/home/Bookings")}
-              >
-                Rent Now
-              </AppButton>
-            </View>
-          </View>
+          ))}
         </ScrollView>
-
+        </View>
+      </ScrollView>
+      <View style={styles.card}>
+        <View style={styles.cardHeader}>
+          <Text style={styles.cardTitle}>
+            {Details.make} {Details.model}
+          </Text>
+          <View style={styles.cardRate}>
+            <Text style={styles.cardRateText}>
+              ${Details.dailyRate} per day
+            </Text>
+            <Text style={styles.cardRateText}>${Details.hourlyRate}/hour</Text>
+          </View>
+        </View>
+        <ScrollView style={styles.scrollText}>
+          <Text style={styles.cardText}>{Details.description}</Text>
+        </ScrollView>
+        <View style={styles.buttonContainer}>
+          <AppButton
+            backgroundColor="#E55D25"
+            widthPercentage={50}
+            textStyle={{ color: "white" }}
+            //onPress={() => console.log("Rent Now")}
+            onPress={() => router.push("/home/Bookings")}
+          >
+            Rent Now
+          </AppButton>
+        </View>
+      </View>
     </LinearGradient>
   );
 };
@@ -121,13 +125,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: horizontalScale(20),
     paddingTop: verticalScale(20),
     backgroundColor: "transparent",
-
+    justifyContent: "space-around",
   },
   title: {
     fontFamily: "karlaM",
     fontSize: moderateScale(40),
     textAlign: "left",
-    marginTop: verticalScale(20),
+    marginTop: verticalScale(10),
     marginLeft: horizontalScale(20),
   },
   subtitle: {
@@ -142,6 +146,10 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     resizeMode: "contain",
   },
+  Car:{
+    flex: 1,
+    justifyContent: "space-evenly",
+  },
   specificationContainer: {
     marginTop: moderateScale(10),
   },
@@ -153,7 +161,6 @@ const styles = StyleSheet.create({
     marginHorizontal: moderateScale(5),
     backgroundColor: "#fff",
     borderRadius: moderateScale(10),
-    height: verticalScale(60),
   },
   specificationText: {
     marginLeft: moderateScale(10),
@@ -174,10 +181,12 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: moderateScale(15),
     paddingHorizontal: moderateScale(20),
-    paddingTop: verticalScale(20),
-    marginTop: 50,
-    height: verticalScale(330),
-    
+    paddingTop: verticalScale(10),
+    paddingBottom: verticalScale(20),
+    height: "38%",
+  },
+  scrollText: {
+    height: verticalScale(100),
   },
   cardHeader: {
     flexDirection: "row",
@@ -206,7 +215,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     alignItems: "center",
     marginVertical: verticalScale(10),
-    marginTop: verticalScale(40),
+    marginTop: verticalScale(10),
   },
 });
 

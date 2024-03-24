@@ -25,6 +25,8 @@ let previousReservations = [];
 
 const Bookings = () => {
 
+  console.log(vehicles)
+
   loadData();
 
   const router = useRouter();

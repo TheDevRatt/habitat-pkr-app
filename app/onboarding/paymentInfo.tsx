@@ -5,6 +5,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Platform,
+  ScrollView,
 } from "react-native";
 import { Text, View, SafeAreaView, TextInput } from "@/components/Themed";
 import { LinearGradient } from "expo-linear-gradient";
@@ -81,6 +82,7 @@ const PaymentInfo = () => {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={styles.container}
           >
+            <ScrollView>
             <View style={styles.backButtonContainer}>
               <BackButton />
             </View>
@@ -193,6 +195,7 @@ const PaymentInfo = () => {
                 Submit
               </AppButton>
             </View>
+            </ScrollView>
           </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
       </SafeAreaView>
@@ -207,11 +210,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "transparent",
-    justifyContent: "center",
+    justifyContent: "space-around",
     paddingHorizontal: horizontalScale(10),
+    marginTop: verticalScale(10),
   },
   titleContainer: {
-    marginTop: verticalScale(30),
+    marginTop: verticalScale(15),
     marginBottom: verticalScale(20),
     alignItems: "center",
     backgroundColor: "transparent",
@@ -235,7 +239,7 @@ const styles = StyleSheet.create({
     }),
   },
   subtitleContainer: {
-    marginBottom: verticalScale(40),
+    marginBottom: verticalScale(30),
     backgroundColor: "transparent",
     alignItems: "center",
   },
@@ -300,7 +304,6 @@ const styles = StyleSheet.create({
   },
   expirationContainer: {
     backgroundColor: "transparent",
-    marginTop: verticalScale(0),
     ...Platform.select({
       ios: {},
       android: {

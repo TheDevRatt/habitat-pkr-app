@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Image } from "react-native";
+import { StyleSheet, Image, ScrollView } from "react-native";
 import {
   Text,
   View,
@@ -56,37 +56,53 @@ const BasicInfo = () => {
   return (
     <LinearGradient colors={["#FFFFFF", "#0099CC"]} style={styles.gradient}>
       <SafeAreaView style={styles.container}>
-        <View style={styles.backButtonContainer}>
-          <BackButton />
-        </View>
-
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>Add Information</Text>
-        </View>
-
-        <View style={styles.itemContainer}>
-          <View style={styles.subTitleContainer}>
-            <Text style={styles.label}>Driver's License</Text>
+        <ScrollView>
+          <View style={styles.backButtonContainer}>
+            <BackButton />
           </View>
-          {licenseUrl ? (
-            <Image
-              source={{ uri: licenseUrl }}
-              style={{
-                width: 150,
-                height: 150,
-                marginTop: verticalScale(10),
-                borderRadius: 5,
-                marginBottom: verticalScale(10),
-              }}
-            />
-          ) : (
-            <DriversLicenseLogo />
-          )}
-          <View style={styles.buttonGroup}>
-            <View style={styles.camera}>
+
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>Add Information</Text>
+          </View>
+
+          <View style={styles.itemContainer}>
+            <View style={styles.subTitleContainer}>
+              <Text style={styles.label}>Driver's License</Text>
+            </View>
+            {licenseUrl ? (
+              <Image
+                source={{ uri: licenseUrl }}
+                style={{
+                  width: 150,
+                  height: 150,
+                  marginTop: verticalScale(10),
+                  borderRadius: 5,
+                  marginBottom: verticalScale(10),
+                }}
+              />
+            ) : (
+              <DriversLicenseLogo />
+            )}
+            <View style={styles.buttonGroup}>
+              <View style={styles.camera}>
+                <AppButton
+                  onPress={() => {
+                    openCamera(userID, "License");
+                  }}
+                  backgroundColor="transparent"
+                  widthPercentage={45}
+                  borderStyle="dashed"
+                  borderRadius={5}
+                  borderColor="black"
+                  borderWidth={1}
+                >
+                  <FontAwesome name={"camera"} size={15} />
+                  <Text style={styles.buttonText}>&nbsp;Open Camera</Text>
+                </AppButton>
+              </View>
               <AppButton
                 onPress={() => {
-                  openCamera(userID, "License");
+                  openFilePicker(userID, "License");
                 }}
                 backgroundColor="transparent"
                 widthPercentage={45}
@@ -95,49 +111,49 @@ const BasicInfo = () => {
                 borderColor="black"
                 borderWidth={1}
               >
-                <FontAwesome name={"camera"} size={15} />
-                <Text style={styles.buttonText}>&nbsp;Open Camera</Text>
+                <FontAwesome name={"upload"} size={15} />
+                <Text style={styles.buttonText}>&nbsp;Upload File</Text>
               </AppButton>
             </View>
-            <AppButton
-              onPress={() => {
-                openFilePicker(userID, "License");
-              }}
-              backgroundColor="transparent"
-              widthPercentage={45}
-              borderStyle="dashed"
-              borderRadius={5}
-              borderColor="black"
-              borderWidth={1}
-            >
-              <FontAwesome name={"upload"} size={15} />
-              <Text style={styles.buttonText}>&nbsp;Upload File</Text>
-            </AppButton>
           </View>
-        </View>
-        <View style={styles.itemContainer}>
-          <View style={styles.subTitleContainer}>
-            <Text style={styles.label}>Insurance</Text>
-          </View>
-          {insuranceUrl ? (
-            <Image
-              source={{ uri: insuranceUrl }}
-              style={{
-                width: 150,
-                height: 150,
-                marginTop: verticalScale(10),
-                borderRadius: 5,
-                marginBottom: verticalScale(10),
-              }}
-            />
-          ) : (
-            <InsuranceLogo style={styles.insuranceLogo} />
-          )}
-          <View style={styles.buttonGroup}>
-            <View style={styles.camera}>
+          <View style={styles.itemContainer}>
+            <View style={styles.subTitleContainer}>
+              <Text style={styles.label}>Insurance</Text>
+            </View>
+            {insuranceUrl ? (
+              <Image
+                source={{ uri: insuranceUrl }}
+                style={{
+                  width: 150,
+                  height: 150,
+                  marginTop: verticalScale(10),
+                  borderRadius: 5,
+                  marginBottom: verticalScale(10),
+                }}
+              />
+            ) : (
+              <InsuranceLogo style={styles.insuranceLogo} />
+            )}
+            <View style={styles.buttonGroup}>
+              <View style={styles.camera}>
+                <AppButton
+                  onPress={() => {
+                    openCamera(userID, "Insurance");
+                  }}
+                  backgroundColor="transparent"
+                  widthPercentage={45}
+                  borderStyle="dashed"
+                  borderRadius={5}
+                  borderColor="black"
+                  borderWidth={1}
+                >
+                  <FontAwesome name={"camera"} size={15} />
+                  <Text style={styles.buttonText}>&nbsp;Open Camera</Text>
+                </AppButton>
+              </View>
               <AppButton
                 onPress={() => {
-                  openCamera(userID, "Insurance");
+                  openFilePicker(userID, "Insurance");
                 }}
                 backgroundColor="transparent"
                 widthPercentage={45}
@@ -146,35 +162,21 @@ const BasicInfo = () => {
                 borderColor="black"
                 borderWidth={1}
               >
-                <FontAwesome name={"camera"} size={15} />
-                <Text style={styles.buttonText}>&nbsp;Open Camera</Text>
+                <FontAwesome name={"upload"} size={15} />
+                <Text style={styles.buttonText}>&nbsp; Upload File</Text>
               </AppButton>
             </View>
+          </View>
+          <View style={styles.nextButtonContainer}>
             <AppButton
-              onPress={() => {
-                openFilePicker(userID, "Insurance");
-              }}
-              backgroundColor="transparent"
-              widthPercentage={45}
-              borderStyle="dashed"
-              borderRadius={5}
-              borderColor="black"
-              borderWidth={1}
+              widthPercentage={85}
+              paddingVertical={11}
+              onPress={() => router.push("/onboarding/membership")}
             >
-              <FontAwesome name={"upload"} size={15} />
-              <Text style={styles.buttonText}>&nbsp; Upload File</Text>
+              <Text>Next</Text>
             </AppButton>
           </View>
-        </View>
-        <View style={styles.nextButtonContainer}>
-          <AppButton
-            widthPercentage={85}
-            paddingVertical={11}
-            onPress={() => router.push("/onboarding/membership")}
-          >
-            <Text>Next</Text>
-          </AppButton>
-        </View>
+        </ScrollView>
       </SafeAreaView>
     </LinearGradient>
   );
@@ -187,7 +189,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "transparent",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
+    marginTop: verticalScale(40), // put this here for iphone SE
     paddingHorizontal: horizontalScale(10),
   },
   titleContainer: {
@@ -206,8 +209,8 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     alignItems: "center",
-    marginHorizontal: horizontalScale(20),
     backgroundColor: "transparent",
+    marginTop: verticalScale(10),
   },
   label: {
     fontSize: moderateScale(22),
@@ -215,7 +218,7 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(10),
     alignItems: "center",
     backgroundColor: "transparent",
-    textDecorationLine:"none",
+    textDecorationLine: "none",
   },
   subTitleContainer: {
     alignItems: "center",
@@ -244,6 +247,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: verticalScale(30),
     backgroundColor: "transparent",
+    marginBottom: verticalScale(30),
   },
   nextButtonText: {
     fontSize: moderateScale(22),
