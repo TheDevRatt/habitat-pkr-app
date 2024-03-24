@@ -1,19 +1,8 @@
-import { initializeApp } from "firebase/app";
-import {
-  initializeAuth,
-  getReactNativePersistence,
-  connectAuthEmulator,
-  signInAnonymously,
-} from "firebase/auth";
-import {
-  getFirestore,
-  connectFirestoreEmulator, // Import connectFirestoreEmulator directly
-} from "firebase/firestore";
-import {
-  getStorage,
-  connectStorageEmulator, // No need to import these again
-} from "firebase/storage";
-import { getFunctions, httpsCallable } from "firebase/functions";
+import { initializeApp, getApp, getApps } from "firebase/app";
+import {initializeAuth, getAuth, getReactNativePersistence } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+
+
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 
 export const firebaseConfig = {
@@ -27,7 +16,9 @@ export const firebaseConfig = {
   measurementId: "G-RRQCR4ZZBJ",
 };
 
-export const app = initializeApp(firebaseConfig);
+
+const app = !getApps().length ? initializeApp( firebaseConfig ) : getApp();
+export const db = getFirestore(app);
 export const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(ReactNativeAsyncStorage),
 });

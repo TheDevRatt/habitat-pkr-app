@@ -26,9 +26,6 @@ const uploadToFirebase = async (uri, name, location, userID = null) => {
     uploadTask.on(
       "state_changed",
       (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log(`Upload is ${progress}% done`);
       },
       (error) => {
         console.error(error);
@@ -106,7 +103,6 @@ async function openFilePicker(fileName, location, userID) {
 // Check if a file exists
 async function fileExists(fileName, location) {
   const filepath = location + "/" + fileName;
-  //console.log(filepath);
   const docRef = ref(storage, filepath);
   try {
     await getDownloadURL(docRef);
@@ -125,4 +121,14 @@ async function updateUserDocumentWithFileUrl(userID, fileUrl, fileType) {
   await setDoc(userDocRef, updateData, { merge: true });
 }
 
-export { uploadToFirebase, openCamera, openFilePicker, fileExists };
+async function returnImage(filePath){
+
+    const storageRef = ref(storage, filePath);
+    const url = await getDownloadURL(storageRef);
+    console.log(url);
+    return url;
+
+}
+
+
+export { uploadToFirebase, openCamera, openFilePicker, fileExists, returnImage };

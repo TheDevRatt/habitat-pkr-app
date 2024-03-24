@@ -125,7 +125,24 @@ const LogIn = () => {
               <AppButton
                 widthPercentage={85}
                 paddingVertical={10}
-                onPress={handleLoginPress}
+                onPress={async () => {
+                  let response = await signinUser(
+                    email.trim(),
+                    password.trim()
+                  );
+
+                  if (response == "good") {
+                    router.push("/(tabs)/Home");
+                  } else if (response == "email") {
+                    alert(
+                      "Please close the app and verify your email then try again."
+                    );
+                  } else if (response == "basicinfo") {
+                    router.push("/onboarding/basicInfo");
+                  } else {
+                    alert(response);
+                  }
+                }}
               >
                 Log In
               </AppButton>

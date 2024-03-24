@@ -30,7 +30,7 @@ const CarCard: React.FC<CarCardProps> = ({
         <Text style={styles.rate}>${hourlyRate}/hour</Text>
       </View>
       <View>
-        <Image source={imageUrl} style={styles.image} />
+        <Image source={{uri: imageUrl}}style={styles.image} />
       </View>
     </View>
   );
@@ -59,7 +59,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   rate: {
-    fontSize: 16,
+    fontSize: moderateScale(17),
+    fontFamily: "karlaM",
     color: "#E55D25",
     marginBottom: verticalScale(5),
     textAlign: "center",

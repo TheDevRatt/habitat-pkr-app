@@ -1,64 +1,128 @@
-import React, { ReactNode, useState } from "react";
-import { StyleSheet } from "react-native";
-import { Text, View, TouchableOpacity, Image } from "@/components/Themed";
-import { horizontalScale, moderateScale, verticalScale } from "@/constants/Metrics";
-import cameraImg from "@/assets/images/camera.png";
+import React from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ImageSourcePropType,
+} from "react-native";
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from "@/constants/Metrics";
 
+interface PaymentCardProps {
+  make: string;
+  model: string;
+  date: string;
+  amount: number;
+  time: number;
+  unit: string;
+  paymentId: string;
+  imageUrl: ImageSourcePropType;
+}
 
-const PaymentCard = () => {
-
+const PaymentCard: React.FC<PaymentCardProps> = ({
+  make,
+  model,
+  pickup,
+  dropoff,
+  amount,
+  imageUrl,
+}) => {
   return (
-    <View style={styles.containerStyle}>
-      <TouchableOpacity
-        style={{ backgroundColor: "transparent" }}
-      >
-        <View style={styles.cameraIconContainer}>
-        <Image source={cameraImg} style={styles.cameraIcon} />
-        <Text style={styles.text}>SCAN CARD</Text>
+    <View style={styles.container}>
+      <View style={styles.leftContainer}>
+        <Text style={styles.title}>
+          {make} {model}
+        </Text>
+        <View style={styles.detailsContainer}>
+          <Text style={styles.detailsTitle}>Pickup: </Text>
+          <Text style={styles.details}>{pickup}</Text>
         </View>
-      </TouchableOpacity>
+        <View style={styles.detailsContainer}>
+          <Text style={styles.detailsTitle}>Dropoff: </Text>
+          <Text style={styles.details}>{dropoff}</Text>
+        </View>
+        <View style={styles.detailsAmount}>
+          <Text style={styles.detailsPrice}>${amount}</Text>
+        </View>
+      </View>
+      <View style={styles.rightContainer}>
+        <Image source={imageUrl} style={styles.image} />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  containerStyle: {
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.4,
-    shadowRadius: 1.0,
-    elevation: 1,
-    backgroundColor: "#D3F0FA",
-    marginTop: 10,
-    height: verticalScale(180),
-    width: horizontalScale(325),
-    borderRadius: 22,
+  container: {
+    backgroundColor: "#fff",
+    borderRadius: 15,
+    padding: 15,
+    margin: 15,
+    width: "90%",
+    alignSelf: "center",
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  leftContainer: {
+    flex: 1,
+  },
+  rightContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
+  },
+  title: {
+    fontSize: moderateScale(20),
+    fontFamily: "karlaM",
+    textAlign: "center",
+    marginBottom: verticalScale(5),
+  },
+  transmission: {
+    fontSize: moderateScale(14),
+    fontFamily: "karlaL",
+    marginBottom: verticalScale(12),
+    textAlign: "center",
+  },
+  details: {
+    fontSize: moderateScale(16),
+    color: "#333",
+    textAlign: "center",
+    fontFamily: "karlaL",
+  },
+  detailsContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: verticalScale(3),
+  },
+  detailsTitle: {
     fontFamily: "karlaR",
-    alignItems:"center",
-    justifyContent:"center",
+    fontSize: moderateScale(16),
   },
-  cameraIcon:{
-    backgroundColor:"#ECFAFF",
+  image: {
+    width: verticalScale(150),
+    height: verticalScale(90),
+    marginLeft: horizontalScale(10),
+    resizeMode: "contain",
   },
-  cameraIconContainer:{
-    padding: moderateScale(10),
-    paddingHorizontal: moderateScale(12),
-    backgroundColor:"#ECFAFF",
-    borderRadius: 10, 
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    alignItems:"center",
-    justifyContent:"center",
+  detailsAmount: {
+    backgroundColor: "#0099CC",
+    padding: moderateScale(5),
+    borderRadius: moderateScale(15),
+    marginTop: verticalScale(15),
+    marginHorizontal: horizontalScale(25),
+    left: 0,
   },
-  text:{
-    paddingTop: moderateScale(4),
-  }
-
-
+  detailsPrice: {
+    fontSize: moderateScale(22),
+    fontFamily: "karlaB",
+    color: "#FFF",
+    textAlign: "center",
+  },
 });
 
 export default PaymentCard;

@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Image } from "react-native";
+import { Stack, useRouter, useLocalSearchParams } from "expo-router";
 import { SafeAreaView, Text, TouchableOpacity } from "@/components/Themed";
 import { LinearGradient } from "expo-linear-gradient";
 import { EvilIcons } from "@expo/vector-icons";
@@ -10,29 +11,25 @@ import {
   moderateScale,
   verticalScale,
 } from "@/constants/Metrics";
-import { Link, useRouter } from "expo-router";
-import AppButton from "@/components/AppButton";
+import { selectedVehicle, selectedReservation } from "../(tabs)/Bookings";
 
-const Payment = () => {
+const BookingDetails = () => {
+  const ident = useLocalSearchParams();
   const navigation = useNavigation();
 
   const goBack = () => {
-    navigation.goBack(); // Navigate to the previous screen
+    navigation.goBack(); 
   };
-  const router = useRouter();
+
+
   const bookingDetails = {
-    make: "Honda",
-    model: "Civic",
-    bookingId: "743774432",
+    make: selectedVehicle.Make,
+    model: selectedVehicle.Model,
+    bookingId: ident.toString(),
     pickUpDate: "08/11/2023",
     pickUpTime: "9:30 AM",
     dropOffDate: "08/15/2023",
     dropOffTime: "11:30 AM",
-    mileage: "Unlimited",
-    insurance: "Included",
-    rentalPrice: "$600",
-    weekendPremium: "$20",
-    taxes: "$80",
     totalPrice: "$700",
   };
 
@@ -44,14 +41,26 @@ const Payment = () => {
             name="arrowleft"
             size={24}
             color="black"
-            onPress={goBack}
+            onPress={goBack} 
           />
         </View>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Select Booking Dates:</Text>
+          <Text style={styles.title}>Booking Details:</Text>
         </View>
-
-        <View style={styles.detailRow}>
+        <View style={styles.subtitleContainer}>
+          <Text style={styles.subtitle}>
+            {bookingDetails.make} {bookingDetails.model}
+          </Text>
+        </View>
+        <Image
+          source={{uri: selectedVehicle.imageURL}}
+          style={styles.image}
+        />
+        <View style={styles.detailsContainer}>
+          <View style={styles.idContainer}>
+            <Text style={styles.id}>#743774432</Text>
+          </View>
+          <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>Pick Up:</Text>
 
             <Text style={styles.detailValue}>
@@ -72,44 +81,16 @@ const Payment = () => {
               {bookingDetails.dropOffTime}
             </Text>
           </View>
-        <View style={styles.detailsContainer}>
-          <View style={styles.detailRowCard}>
-            <Text style={styles.detailLabelCard}>Mileage:</Text>
-            <Text style={styles.detailValueCard}>{bookingDetails.mileage}</Text>
-          </View>
-          <View style={styles.detailRowCard}>
-            <Text style={styles.detailLabelCard}>Insurance:</Text>
-            <Text style={styles.detailValueCard}>{bookingDetails.insurance}</Text>
-          </View>
-          <View style={styles.detailRowCard}>
-            <Text style={styles.detailLabelCard}>Rental Price:</Text>
-            <Text style={styles.detailValueCard}>{bookingDetails.rentalPrice}</Text>
-          </View>
-          <View style={styles.detailRowCard}>
-            <Text style={styles.detailLabelCard}>Weekend Premium:</Text>
-            <Text style={styles.detailValueCard}>
-              {bookingDetails.weekendPremium}
+          <View style={styles.detailPrice}>
+            <Text style={styles.detailPriceLabel}>Total Price:</Text>
+            <Text style={styles.detailPriceValue}>
+              {bookingDetails.totalPrice}
             </Text>
           </View>
-          <View style={styles.detailRowCard}>
-            <Text style={styles.detailLabelCard}>Taxes:</Text>
-            <Text style={styles.detailValueCard}>{bookingDetails.taxes}</Text>
-          </View>
-          <View style={styles.detailRowCard}>
-            <Text style={styles.detailLabelCard}>Total Price:</Text>
-            <Text style={styles.detailValueCard}>{bookingDetails.totalPrice}</Text>
-          </View>
-         
-          </View>
-          <View style={styles.buttonContainer}>
-            <AppButton
-              onPress={() => router.push({ pathname: "/home/${carId}" })}
-              backgroundColor="#E55D25"
-              widthPercentage={45}
-                textStyle={{color:"#fff"}}
-            >
-              Pay
-            </AppButton>
+          <Text style={styles.note}>
+            Your booking will become active when the handover period of 15
+            minutes starts.
+          </Text>
         </View>
       </SafeAreaView>
     </LinearGradient>
@@ -162,8 +143,7 @@ const styles = StyleSheet.create({
   detailRow: {
     flexDirection: "column",
     justifyContent: "space-between",
-    marginVertical: verticalScale(20),
-    width:"80%"
+    marginBottom: verticalScale(20),
   },
   detailLabel: {
     fontFamily: "karlaB",
@@ -175,36 +155,31 @@ const styles = StyleSheet.create({
     fontFamily: "karlaR",
     fontSize: moderateScale(22),
   },
-  buttonContainer: {
-    alignItems: "center",
-    marginTop: verticalScale(20),
-  },
-  payButton: {
-    backgroundColor: "#0099cc",
-    borderRadius: 10,
-    paddingVertical: verticalScale(10),
-    paddingHorizontal: horizontalScale(20),
-  },
-  payButtonText: {
-    fontFamily: "karlaB",
-    fontSize: moderateScale(18),
-    color: "white",
-  },
-  detailRowCard: {
+  detailPrice: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: verticalScale(10),
+    marginVertical: verticalScale(20),
   },
-  detailLabelCard: {
+  detailPriceLabel: {
+    fontSize: moderateScale(20),
     fontFamily: "karlaB",
-    fontSize: moderateScale(16),
-    marginBottom: verticalScale(5),
   },
-  detailValueCard: {
-    fontFamily: "karlaR",
-    fontSize: moderateScale(16),
-    marginBottom: verticalScale(5),
+  detailPriceValue: {
+    fontSize: moderateScale(20),
+    fontFamily: "karlaB",
+  },
+  note: {
+    fontFamily: "karlaL",
+    fontSize: moderateScale(20),
+  },
+  id: {
+    fontSize: moderateScale(14),
+    fontFamily: "karlaL",
+    color: "#666",
+    textAlign: "right",
+  },
+  idContainer: {
+    width: "100%",
   },
 });
-
-export default Payment;
+export default BookingDetails;
