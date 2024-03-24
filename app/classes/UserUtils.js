@@ -67,6 +67,29 @@ async function fetchVehicles(){
 }
 
 
+async function fetchUserReservations(){
+
+    let userID = await getUserID();
+    const q = query(collection(db, "reservations"), where("UserID", "==", userID));
+    const querySnapshot = await getDocs(q);
+    const userReservations = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        CarID: doc.data().CarID,
+        UserID: doc.data().UserID,
+        StartTime: doc.data().StartTime,
+        EndTime: doc.data().EndTime,
+        TotalTime: doc.data().TotalTime,
+        Cost: doc.data().Cost,
+        Active: doc.data().Active,
+        Created: doc.data().Created
+    }));
+    return userReservations
+}
+
+
+
+
+
 async function test(){
     console.log("test");
     let testR = await fetchVehicles();
@@ -77,4 +100,4 @@ async function test(){
 //test();
 
 
-export { getUserID, fileExists, fetchReservations, fetchVehicles };
+export { getUserID, fileExists, fetchReservations, fetchVehicles, fetchUserReservations };

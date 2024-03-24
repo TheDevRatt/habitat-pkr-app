@@ -55,7 +55,7 @@ const BookingCard: React.FC<BookingCardProps> = ({
         
       </View>
       <View style={styles.rightContainer}>
-        <Image source={imageUrl} style={styles.image} />
+        <Image source={{uri: imageUrl}}style={styles.image} />
 
         <Text style={styles.id}>#{bookingId}</Text>
       </View>
