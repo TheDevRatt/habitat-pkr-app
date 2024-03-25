@@ -11,7 +11,7 @@ import { Text, View, SafeAreaView, TextInput } from "@/components/Themed";
 import { LinearGradient } from "expo-linear-gradient";
 import AppButton from "../../components/AppButton";
 import { useRouter } from "expo-router";
-import PaymentCard from "@/components/PaymentCard";
+import PaymentCard from "@/components/paymentCard";
 import {
   verticalScale,
   moderateScale,
@@ -74,78 +74,77 @@ const PaymentInfo = () => {
     setCardCVC(value);
   };
 
-  const booking =
-    {
-      id: 1,
-      make: "Honda",
-      model: "Civic",
-      pickup: "Dec 11 2023",
-      dropoff:"Dec 15 2023",
-      amount: 700,
-      imageUrl: require("@/assets/images/carImagesTEMP/image 13.png"),
-    }
+  const booking = {
+    id: 1,
+    make: "Honda",
+    model: "Civic",
+    pickup: "Dec 11 2023",
+    dropoff: "Dec 15 2023",
+    amount: 700,
+    imageUrl: require("@/assets/images/carImagesTEMP/image 13.png"),
+  };
 
   return (
     <LinearGradient colors={["#FFFFFF", "#0099CC"]} style={styles.gradient}>
       <SafeAreaView style={{ flex: 1, backgroundColor: "transparent" }}>
         <ScrollView>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={styles.container}
-          >
-            <View style={styles.backButtonContainer}>
-              <BackButton />
-            </View>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <KeyboardAvoidingView
+              behavior={Platform.OS === "ios" ? "padding" : "height"}
+              style={styles.container}
+            >
+              <View style={styles.backButtonContainer}>
+                <BackButton />
+              </View>
 
-            <View style={styles.titleContainer}>
-              <Text style={styles.title}>Payment Information</Text>
-            </View>
+              <View style={styles.titleContainer}>
+                <Text style={styles.title}>Payment Information</Text>
+              </View>
 
-            {/* <View style={styles.cardContainer}>
+              {/* <View style={styles.cardContainer}>
             <PaymentCard />
           </View> */}
 
-            {/* <Text style={styles.dividerText}> OR </Text> */}
+              {/* <Text style={styles.dividerText}> OR </Text> */}
 
-            <View style={styles.subtitleContainer}>
-              <Text style={styles.subtitle}> Enter Card Details </Text>
-            </View>
-
-            <View style={styles.inputGroup}>
-              <TextInput
-                value={cardName}
-                placeholder={"Cardholder Name"}
-                style={styles.inputField}
-                placeholderTextColor="#000"
-                onChangeText={handleChangeCardName}
-              />
-
-              <View style={styles.inputContainer}>
-                <TextInput
-                  value={cardNumber}
-                  placeholder={"Card Number"}
-                  style={styles.cardInput}
-                  keyboardType="numeric"
-                  placeholderTextColor="#000"
-                  onChangeText={handleChangeCardNumber}
-                  maxLength={19} // Maximum length considering spaces
-                />
-
-                <TextInput
-                  value={cardCVC}
-                  placeholder={"CVC"}
-                  style={styles.cvcInput}
-                  keyboardType="numeric"
-                  placeholderTextColor="#000"
-                  onChangeText={handleChangeCardCVC}
-                  maxLength={3} // Maximum length considering spaces
-                />
+              <View style={styles.subtitleContainer}>
+                <Text style={styles.subtitle}> Enter Card Details </Text>
               </View>
-            </View>
 
-            <View style={styles.containerInput}>
-              {/* <View style={styles.row}>
+              <View style={styles.inputGroup}>
+                <TextInput
+                  value={cardName}
+                  placeholder={"Cardholder Name"}
+                  style={styles.inputField}
+                  placeholderTextColor="#000"
+                  onChangeText={handleChangeCardName}
+                />
+
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    value={cardNumber}
+                    placeholder={"Card Number"}
+                    style={styles.cardInput}
+                    keyboardType="numeric"
+                    placeholderTextColor="#000"
+                    onChangeText={handleChangeCardNumber}
+                    maxLength={19} // Maximum length considering spaces
+                  />
+
+                  <TextInput
+                    value={cardCVC}
+                    placeholder={"CVC"}
+                    style={styles.cvcInput}
+                    keyboardType="numeric"
+                    placeholderTextColor="#000"
+                    onChangeText={handleChangeCardCVC}
+                    maxLength={3} // Maximum length considering spaces
+                  />
+                </View>
+              </View>
+
+              <View style={styles.containerInput}>
+                {/* <View style={styles.row}>
                 <Text style={styles.labelInput}>Cardholder Name</Text>
                 <TextInput style={styles.input} />
               </View>
@@ -169,57 +168,57 @@ const PaymentInfo = () => {
                 </View>
               </View> */}
 
-              <View style={styles.expirationContainer}>
-                <Text style={styles.expirationText}>Expiration Date:</Text>
-              </View>
+                <View style={styles.expirationContainer}>
+                  <Text style={styles.expirationText}>Expiration Date:</Text>
+                </View>
 
-              <View style={styles.row}>
-                <View style={styles.inlineInput}>
-                  <Picker
-                    selectedValue={month}
-                    onValueChange={(itemValue) => setMonth(itemValue)}
-                    style={styles.inlinePicker}
-                  >
-                    {months.map((m) => (
-                      <Picker.Item key={m} label={m} value={m} />
-                    ))}
-                  </Picker>
-                  <Picker
-                    selectedValue={year}
-                    onValueChange={(itemValue) => setYear(itemValue)}
-                    style={styles.inlinePicker}
-                  >
-                    {years.map((y) => (
-                      <Picker.Item key={y} label={y} value={y} />
-                    ))}
-                  </Picker>
+                <View style={styles.row}>
+                  <View style={styles.inlineInput}>
+                    <Picker
+                      selectedValue={month}
+                      onValueChange={(itemValue) => setMonth(itemValue)}
+                      style={styles.inlinePicker}
+                    >
+                      {months.map((m) => (
+                        <Picker.Item key={m} label={m} value={m} />
+                      ))}
+                    </Picker>
+                    <Picker
+                      selectedValue={year}
+                      onValueChange={(itemValue) => setYear(itemValue)}
+                      style={styles.inlinePicker}
+                    >
+                      {years.map((y) => (
+                        <Picker.Item key={y} label={y} value={y} />
+                      ))}
+                    </Picker>
+                  </View>
                 </View>
               </View>
-            </View>
 
-            <View style={styles.Card}>
-              <Text style={styles.CardText}>Summary</Text>
-              <PaymentCard
-              make={booking.make}
-              model={booking.model}
-              pickup={booking.pickup}
-              dropoff={booking.dropoff}
-              amount={booking.amount}
-              imageUrl={booking.imageUrl}
-               />
-            </View>
-            <View style={styles.submitButton}>
-              <AppButton
-                backgroundColor="#E55D25"
-                widthPercentage={85}
-                textStyle={{ color: "#fff" }}
-                onPress={handleOpenModal}
-              >
-                Confirm Payment
-              </AppButton>
-            </View>
-          </KeyboardAvoidingView>
-        </TouchableWithoutFeedback>
+              <View style={styles.Card}>
+                <Text style={styles.CardText}>Summary</Text>
+                <PaymentCard
+                  make={booking.make}
+                  model={booking.model}
+                  pickup={booking.pickup}
+                  dropoff={booking.dropoff}
+                  amount={booking.amount}
+                  imageUrl={booking.imageUrl}
+                />
+              </View>
+              <View style={styles.submitButton}>
+                <AppButton
+                  backgroundColor="#E55D25"
+                  widthPercentage={85}
+                  textColor="#fff"
+                  onPress={handleOpenModal}
+                >
+                  Confirm Payment
+                </AppButton>
+              </View>
+            </KeyboardAvoidingView>
+          </TouchableWithoutFeedback>
         </ScrollView>
       </SafeAreaView>
     </LinearGradient>
@@ -235,6 +234,12 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     justifyContent: "center",
     paddingHorizontal: horizontalScale(10),
+    ...Platform.select({
+      ios: {},
+      android: {
+        marginTop: verticalScale(50),
+      },
+    }),
   },
   titleContainer: {
     // marginTop: verticalScale(30),
@@ -255,9 +260,7 @@ const styles = StyleSheet.create({
       ios: {
         marginBottom: verticalScale(15),
       },
-      android: {
-        marginBottom: verticalScale(15),
-      },
+      android: {},
     }),
   },
   subtitleContainer: {
@@ -387,12 +390,12 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     marginTop: verticalScale(5),
   },
-  CardText:{
+  CardText: {
     fontSize: moderateScale(22),
     fontFamily: "karlaB",
     marginLeft: horizontalScale(15),
   },
-  Card:{
+  Card: {
     marginBottom: verticalScale(10),
     backgroundColor: "transparent",
   },

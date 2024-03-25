@@ -130,10 +130,17 @@ function RootLayoutNav() {
         name="onboarding/restricted"
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="bookings/BookingInfo" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="bookings/BookingInfo"
+        options={{ headerShown: false }}
+      />
       <Stack.Screen name="home/CarInfo" options={{ headerShown: false }} />
-      <Stack.Screen name="home/Booking" options={{ headerShown: false }} />
-      <Stack.Screen name="home/Payment" options={{ headerShown: false }} />
+      <Stack.Screen name="home/Bookings" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="home/BookingComplete"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="home/PaymentInfo" options={{ headerShown: false }} />
 
       <Stack.Screen
         name="admin/signuprequests"
@@ -153,9 +160,6 @@ function RootLayoutNav() {
         name="profile/ChangePassword"
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="home/Bookings" options={{ headerShown: false }} />
-      <Stack.Screen name="home/BookingComplete" options={{ headerShown: false }} />
- 
     </Stack>
   );
 }

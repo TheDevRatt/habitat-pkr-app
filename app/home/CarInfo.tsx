@@ -4,6 +4,7 @@ import { StyleSheet, View, Image, ScrollView } from "react-native";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { SafeAreaView, Text } from "@/components/Themed";
 import AppButton from "@/components/AppButton";
+import BackButton from "@/components/BackButton";
 
 import { Stack, useRouter, useLocalSearchParams } from "expo-router";
 import {
@@ -48,17 +49,15 @@ const Details = () => {
   return (
     <LinearGradient colors={["#FFFFFF", "#59C9F0"]} style={styles.gradient}>
       <SafeAreaView style={styles.container}>
-        <View style={styles.back}>
-          <AntDesign
-            name="arrowleft"
-            size={24}
-            color="black"
-            onPress={goBack}
-          />
-        </View>
-        </SafeAreaView>
         <ScrollView>
-          <Text style={styles.title}>{Details.make}</Text>
+          <View style={styles.headerContainer}>
+            <View style={styles.backButton}>
+              <BackButton />
+            </View>
+            <View style={styles.titleContainer}>
+              <Text style={styles.title}>{Details.make}</Text>
+            </View>
+          </View>
           <Image
             source={{ uri: selectedVehicle.imageURL }}
             style={styles.image}
@@ -82,15 +81,19 @@ const Details = () => {
               </View>
             ))}
           </ScrollView>
-     
+
           <View style={styles.card}>
             <View style={styles.cardHeader}>
               <Text style={styles.cardTitle}>
                 {Details.make} {Details.model}
               </Text>
               <View style={styles.cardRate}>
-                <Text style={styles.cardRateText}>${Details.dailyRate} per day</Text>
-                <Text style={styles.cardRateText}>${Details.hourlyRate}/hour</Text>
+                <Text style={styles.cardRateText}>
+                  ${Details.dailyRate} per day
+                </Text>
+                <Text style={styles.cardRateText}>
+                  ${Details.hourlyRate}/hour
+                </Text>
               </View>
             </View>
             <Text style={styles.cardText}>{Details.description}</Text>
@@ -101,13 +104,14 @@ const Details = () => {
                 textStyle={{ color: "white" }}
                 //onPress={() => console.log("Rent Now")}
                 onPress={() => router.push("/home/Bookings")}
+                textColor="#fff"
               >
                 Rent Now
               </AppButton>
             </View>
           </View>
         </ScrollView>
-
+      </SafeAreaView>
     </LinearGradient>
   );
 };
@@ -121,14 +125,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: horizontalScale(20),
     paddingTop: verticalScale(20),
     backgroundColor: "transparent",
-
   },
   title: {
     fontFamily: "karlaM",
     fontSize: moderateScale(40),
-    textAlign: "left",
-    marginTop: verticalScale(20),
-    marginLeft: horizontalScale(20),
   },
   subtitle: {
     fontFamily: "karlaB",
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   image: {
     width: moderateScale(300),
     height: moderateScale(200),
-    marginVertical: verticalScale(20),
+    marginVertical: verticalScale(10),
     alignSelf: "center",
     resizeMode: "contain",
   },
@@ -156,7 +156,6 @@ const styles = StyleSheet.create({
     height: verticalScale(60),
   },
   specificationText: {
-    marginLeft: moderateScale(10),
     flexDirection: "row",
     justifyContent: "space-between",
   },
@@ -177,7 +176,6 @@ const styles = StyleSheet.create({
     paddingTop: verticalScale(20),
     marginTop: 50,
     height: verticalScale(330),
-    
   },
   cardHeader: {
     flexDirection: "row",
@@ -186,27 +184,33 @@ const styles = StyleSheet.create({
   },
   cardRate: {},
   cardRateText: {
-    fontSize: moderateScale(20),
+    fontSize: moderateScale(15),
     fontFamily: "karlaEB",
     textAlign: "right",
   },
-
   cardTitle: {
     fontFamily: "karlaB",
-    fontSize: moderateScale(30),
+    fontSize: moderateScale(20),
     marginBottom: verticalScale(25),
   },
   cardText: {
     fontFamily: "karlaR",
     fontSize: moderateScale(18),
   },
-  back: {
-    width: "90%",
-  },
   buttonContainer: {
     alignItems: "center",
     marginVertical: verticalScale(10),
     marginTop: verticalScale(40),
+  },
+  headerContainer: {
+    flexDirection: "column",
+    alignItems: "flex-start",
+    paddingHorizontal: horizontalScale(20),
+    marginTop: verticalScale(20),
+  },
+  backButton: {
+    marginRight: horizontalScale(10),
+    marginBottom: verticalScale(10),
   },
 });
 

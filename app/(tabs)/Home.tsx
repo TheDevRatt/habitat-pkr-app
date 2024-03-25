@@ -39,31 +39,28 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-export let vehicles = [];
+export let vehicleList = [];
 export let selectedVehicle = [];
 
 const Home = () => {
-
-  const [vehicles, setVehicles] = useState([]); 
-  const [loading, setLoading] = useState(true); 
-  const [error, setError] = useState(null); 
-  const [filter, setFilter] = useState("all"); 
+  const [vehicles, setVehicles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [filter, setFilter] = useState("all");
 
   useEffect(() => {
     async function fetchVehicleList() {
-        try {
-          const vehicleList  = await fetchVehicles();
-            setVehicles(vehicleList);
-            setLoading(false);
-        } catch (error) {
-            setError(error);
-            setLoading(false);
-        }
+      try {
+        vehicleList = await fetchVehicles();
+        setVehicles(vehicleList);
+        setLoading(false);
+      } catch (error) {
+        setError(error);
+        setLoading(false);
+      }
     }
     fetchVehicleList();
-    }, []);
-
-
+  }, []);
 
   // user info
   const user = auth.currentUser;
@@ -84,8 +81,8 @@ const Home = () => {
   // navigation
   const router = useRouter();
 
- const goToBooking = (carId: number) => {
-    selectedVehicle = vehicles[carId];
+  const goToBooking = (carId: number) => {
+    selectedVehicle = vehicleList[carId];
     router.push({ pathname: "/home/CarInfo" });
   };
 
@@ -115,6 +112,24 @@ const Home = () => {
     },
   ];
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (user) {
+        const userDocRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          setUserInfo({
+            ...userInfo,
+            name: `${userData.FirstName}`,
+            profileUrl: userData.profileUrl,
+          });
+        }
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   // Search bar
 
@@ -131,8 +146,7 @@ const Home = () => {
     }
   };
 
- 
-   if (loading) {
+  if (loading) {
     return <Text>Loading...</Text>;
   }
 
@@ -144,7 +158,20 @@ const Home = () => {
     <LinearGradient colors={["#FFFFFF", "#59C9F0"]} style={styles.gradient}>
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-          <ProfileContainer width={50} height={50} style={styles.smallImage} />
+          {userInfo.profileUrl ? (
+            <Image
+              source={{ uri: userInfo.profileUrl }}
+              width={50}
+              height={50}
+              style={styles.profileImage}
+            />
+          ) : (
+            <ProfileContainer
+              width={50}
+              height={50}
+              style={styles.smallImage}
+            />
+          )}
           <Text style={styles.greeting}>Hello, {userName}!</Text>
           {/* <EvilIcons name="bell" size={35} color="black" /> */}
         </View>
@@ -230,34 +257,6 @@ const Home = () => {
   );
 };
 
-// const loadData = () =>{
-//   let [vehicleList, setVehicleList] = useState(null);
-//   let [loading, setLoading] = useState(true);
-//   let [error, setError] = useState(null);
-//       useEffect(() => {
-//           async function fetchVehicleList() {
-//               try {
-//                   vehicleList = await fetchVehicles();
-//                   setVehicleList(vehicleList);
-//                   setLoading(false);
-//               } catch (error) {
-//                   setError(error);
-//                   setLoading(false);
-//               }
-//           }
-//           fetchVehicleList();
-//           }, []);
-//       if (loading) {
-//           return <Text style={styles.greeting}>Loading</Text>;
-//           }
-//       if (error) {
-//           return <Text style={styles.greeting}>Error: {error.message}</Text>;
-//           }
-//       vehicles = vehicleList;
-//       return;
-//   }
-
-
 const styles = StyleSheet.create({
   gradient: {
     flex: 1,
@@ -286,14 +285,14 @@ const styles = StyleSheet.create({
     marginLeft: horizontalScale(15),
     marginRight: "auto",
   },
+  profileImage: {
+    padding: horizontalScale(5),
+    borderRadius: 10,
+  },
   instructions: {
     fontSize: moderateScale(22),
     fontFamily: "karlaM",
     marginTop: verticalScale(6),
-  },
-  profileImage: {
-    padding: horizontalScale(5),
-    borderRadius: 10,
   },
   searchContainer: {
     flexDirection: "row",

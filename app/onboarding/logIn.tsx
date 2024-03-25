@@ -34,7 +34,6 @@ const LogIn = () => {
 
   const handleForgotPasswordPress = () => {
     console.log("Navigating to Forgot Password Page");
-    // Once forgot password is added this error should go away.
     router.push("/onboarding/ForgotPassword");
   };
 
@@ -125,24 +124,7 @@ const LogIn = () => {
               <AppButton
                 widthPercentage={85}
                 paddingVertical={10}
-                onPress={async () => {
-                  let response = await signinUser(
-                    email.trim(),
-                    password.trim()
-                  );
-
-                  if (response == "good") {
-                    router.push("/(tabs)/Home");
-                  } else if (response == "email") {
-                    alert(
-                      "Please close the app and verify your email then try again."
-                    );
-                  } else if (response == "basicinfo") {
-                    router.push("/onboarding/basicInfo");
-                  } else {
-                    alert(response);
-                  }
-                }}
+                onPress={handleLoginPress}
               >
                 Log In
               </AppButton>
