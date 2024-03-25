@@ -6,7 +6,7 @@ import { useRouter } from "expo-router";
 import { openCamera } from "./../classes/CloudStorage";
 import { selectedVehicle, selectedReservation } from "../(tabs)/Bookings";
 import { getUserID } from "../classes/UserUtils";
-
+import { AntDesign } from "@expo/vector-icons";
 import CameraIcon from "@/components/CameraIcon"; // Import CameraIcon component
 import {
   verticalScale,
@@ -19,6 +19,10 @@ const Pictures = () => {
   const [backImage, setBackImage] = useState("Back");
   const [rightImage, setRightImage] = useState("Right");
   const [leftImage, setLeftImage] = useState("Left");
+  const [isFrontImageTaken, setIsFrontImageTaken] = useState(false);
+  const [isBackImageTaken, setIsBackImageTaken] = useState(false);
+  const [isRightImageTaken, setIsRightImageTaken] = useState(false);
+  const [isLeftImageTaken, setIsLeftImageTaken] = useState(false);
   const router = useRouter();
 
   const userID = getUserID();
@@ -34,6 +38,27 @@ const Pictures = () => {
     let location = "Reservations/" + selectedReservation.id;
     openCamera(filename, location);
     imageURI = "gs://pkrides-d3c59.appspot.com/" + location + "/" + filename;
+    // Update the state based on which button was pressed.
+    switch (imageSide) {
+      case "Front":
+        setFrontImage(imageURI);
+        setIsFrontImageTaken(true);
+        break;
+      case "Back":
+        setBackImage(imageURI);
+        setIsBackImageTaken(true);
+        break;
+      case "Right":
+        setRightImage(imageURI);
+        setIsRightImageTaken(true);
+        break;
+      case "Left":
+        setLeftImage(imageURI);
+        setIsLeftImageTaken(true);
+        break;
+      default:
+        console.log("Unknown side");
+    }
   }
 
   const renderImage = (imageUri: string | null | undefined) => {
@@ -62,6 +87,9 @@ const Pictures = () => {
           <Text style={styles.photoText}>
             Please take a photo of the front of the car
           </Text>
+          {isFrontImageTaken && (
+            <AntDesign name="checkcircle" size={24} color="green" />
+          )}
         </View>
       </TouchableOpacity>
 
@@ -72,6 +100,9 @@ const Pictures = () => {
           <Text style={styles.photoText}>
             Please take a photo of the back of the car
           </Text>
+          {isBackImageTaken && (
+            <AntDesign name="checkcircle" size={24} color="green" />
+          )}
         </View>
       </TouchableOpacity>
 
@@ -82,6 +113,9 @@ const Pictures = () => {
           <Text style={styles.photoText}>
             Please take a photo of the right side of the car
           </Text>
+          {isRightImageTaken && (
+            <AntDesign name="checkcircle" size={24} color="green" />
+          )}
         </View>
       </TouchableOpacity>
 
@@ -92,6 +126,9 @@ const Pictures = () => {
           <Text style={styles.photoText}>
             Please take a photo of the left side of the car
           </Text>
+          {isLeftImageTaken && (
+            <AntDesign name="checkcircle" size={24} color="green" />
+          )}
         </View>
       </TouchableOpacity>
 
