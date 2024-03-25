@@ -7,12 +7,14 @@ import { openCamera } from "./../classes/CloudStorage";
 import { selectedVehicle, selectedReservation } from "../(tabs)/Bookings";
 import { getUserID } from "../classes/UserUtils";
 import { AntDesign } from "@expo/vector-icons";
-import CameraIcon from "@/components/CameraIcon"; // Import CameraIcon component
+// import CameraIcon from "@/components/CameraIcon"; // Import CameraIcon component
+import Camera from "../../assets/images/camera.png";
 import {
   verticalScale,
   moderateScale,
   horizontalScale,
 } from "@/constants/Metrics";
+import { SafeAreaView } from "@/components/Themed";
 
 const Pictures = () => {
   const [frontImage, setFrontImage] = useState("Front");
@@ -63,26 +65,20 @@ const Pictures = () => {
 
   const renderImage = (imageUri: string | null | undefined) => {
     return imageUri ? (
-      <Image source={{ uri: imageUri }} style={styles.image} />
+      <Image source={{ uri: imageUri }} />
     ) : (
-      <CameraIcon style={styles.cameraIcon} />
+      <Image source={Camera} />
     );
   };
 
   return (
-    <View style={styles.container}>
-      <Text
-        style={[
-          styles.title,
-          { marginBottom: verticalScale(30), marginTop: verticalScale(80) },
-        ]}
-      >
-        Photo Time!
-      </Text>
+    <SafeAreaView style={styles.container}>
+      <Text style={[styles.title]}>Photo Time!</Text>
 
       {/* Front Photo */}
       <TouchableOpacity onPress={() => handleOpenCamera(frontImage)}>
         <View style={styles.photoContainer}>
+          <Image source={Camera} style={styles.image} />
           {renderImage(frontImage)}
           <Text style={styles.photoText}>
             Please take a photo of the front of the car
@@ -96,6 +92,7 @@ const Pictures = () => {
       {/* Back Photo */}
       <TouchableOpacity onPress={() => handleOpenCamera(backImage)}>
         <View style={styles.photoContainer}>
+          <Image source={Camera} style={styles.image} />
           {renderImage(backImage)}
           <Text style={styles.photoText}>
             Please take a photo of the back of the car
@@ -109,6 +106,7 @@ const Pictures = () => {
       {/* Right Side Photo */}
       <TouchableOpacity onPress={() => handleOpenCamera(rightImage)}>
         <View style={styles.photoContainer}>
+          <Image source={Camera} style={styles.image} />
           {renderImage(rightImage)}
           <Text style={styles.photoText}>
             Please take a photo of the right side of the car
@@ -122,6 +120,7 @@ const Pictures = () => {
       {/* Left Side Photo */}
       <TouchableOpacity onPress={() => handleOpenCamera(leftImage)}>
         <View style={styles.photoContainer}>
+          <Image source={Camera} style={styles.image} />
           {renderImage(leftImage)}
           <Text style={styles.photoText}>
             Please take a photo of the left side of the car
@@ -133,30 +132,35 @@ const Pictures = () => {
       </TouchableOpacity>
 
       {/* Submit Button */}
-      <AppButton style={styles.submitButton} onPress={handleSubmission}>
-        <Text style={styles.buttonText}>Submit</Text>
-      </AppButton>
-    </View>
+      <View style={styles.submitButton}>
+        <AppButton backgroundColor="#E55D25" onPress={handleSubmission}>
+          <Text style={styles.buttonText}>Submit</Text>
+        </AppButton>
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: horizontalScale(20),
+    padding: verticalScale(20),
     backgroundColor: "white",
+    alignContent: "center",
+    justifyContent: "space-evenly",
   },
   title: {
-    fontSize: moderateScale(35),
-    fontWeight: "bold",
+    fontSize: moderateScale(40),
+    marginTop: verticalScale(10),
+    fontFamily: "karlaM",
     textAlign: "center",
-    marginBottom: horizontalScale(30),
   },
   photoContainer: {
     flexDirection: "row",
-    alignItems: "center",
-    marginBottom: verticalScale(30),
-    marginTop: moderateScale(40),
+    marginHorizontal: horizontalScale(20),
+    alignContent: "center",
+    justifyContent: "space-between",
+    width: "90%",
   },
   cameraIcon: {
     width: moderateScale(70),
@@ -166,11 +170,10 @@ const styles = StyleSheet.create({
   photoText: {
     flexShrink: 1,
     fontSize: moderateScale(25),
-    fontWeight: "bold",
+    fontFamily: "karlaR",
   },
-  photo: {
-    width: moderateScale(60),
-    height: moderateScale(60),
+  image: {
+    backgroundColor: "#ECFAFF",
     borderRadius: moderateScale(10),
     marginRight: horizontalScale(10),
   },
@@ -180,11 +183,10 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     height: verticalScale(50),
-    width: "90%",
+    alignContent: "center",
+    alignItems: "center",
     justifyContent: "center",
-    alignSelf: "center",
     marginTop: verticalScale(30),
-    backgroundColor: "orange",
     borderRadius: moderateScale(25),
   },
 });

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Platform } from "react-native";
 import AppButton from "../../components/AppButton";
 import AnalogClock from "../../components/AnalogClock";
 import { useRouter } from "expo-router";
@@ -19,7 +19,7 @@ const Reservation = () => {
   //};
 
   const handleDropOff = () => {
-    router.push("Pickup/ReservationEnded");
+    router.push("/Pickup/ReservationEnded");
   };
 
   const [timer, setTimer] = useState("timer");
@@ -50,7 +50,12 @@ const Reservation = () => {
       <View style={styles.durationBox}>
         <View style={styles.clockContainer}></View>
         <View style={styles.timerContainer}>
-          <EvilIcons name="clock" size={125} color="#E85E21" />
+          <EvilIcons
+            name="clock"
+            size={120}
+            color="#E85E21"
+            style={styles.clock}
+          />
           <Text style={styles.durationText}>{timer}</Text>
         </View>
       </View>
@@ -102,8 +107,9 @@ const styles = StyleSheet.create({
     elevation: 4,
     width: "95%",
   },
-  clockContainer: {
-    //  width: "100%",
+  clockContainer: {},
+  clock: {
+    marginBottom: verticalScale(20),
   },
   durationText: {
     fontSize: moderateScale(50),
@@ -121,7 +127,7 @@ const styles = StyleSheet.create({
   timerContainer: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: verticalScale(25),
+    paddingVertical: verticalScale(30),
   },
   button: {
     alignItems: "center",
