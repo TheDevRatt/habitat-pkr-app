@@ -8,6 +8,7 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import { AuthProvider } from "@/components/AuthContext";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -55,7 +56,11 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return (
+    <AuthProvider>
+      <RootLayoutNav />
+    </AuthProvider>
+  );
 }
 
 function RootLayoutNav() {
@@ -125,12 +130,36 @@ function RootLayoutNav() {
         name="onboarding/restricted"
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="bookings/BookingInfo" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="bookings/BookingInfo"
+        options={{ headerShown: false }}
+      />
       <Stack.Screen name="home/CarInfo" options={{ headerShown: false }} />
-      <Stack.Screen name="home/Booking" options={{ headerShown: false }} />
       <Stack.Screen name="home/Bookings" options={{ headerShown: false }} />
-      <Stack.Screen name="home/BookingComplete" options={{ headerShown: false }} />
- 
+      <Stack.Screen
+        name="home/BookingComplete"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="home/PaymentInfo" options={{ headerShown: false }} />
+
+      <Stack.Screen
+        name="admin/signuprequests"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="admin/adduser" options={{ headerShown: false }} />
+      <Stack.Screen name="admin/addadmin" options={{ headerShown: false }} />
+
+      <Stack.Screen
+        name="profile/licenseAndInsurance"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="profile/faq" options={{ headerShown: false }} />
+      <Stack.Screen name="profile/settings" options={{ headerShown: false }} />
+      <Stack.Screen name="profile/myInfo" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="profile/ChangePassword"
+        options={{ headerShown: false }}
+      />
     </Stack>
   );
 }

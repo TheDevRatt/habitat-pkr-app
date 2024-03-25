@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Link, useRouter } from "expo-router";
 import { SafeAreaView, Text, TouchableOpacity } from "@/components/Themed";
@@ -11,22 +11,8 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import BookingCard from "@/components/BookingCard";
 import AppButton from "@/components/AppButton";
-import { fetchUserReservations } from "../classes/UserUtils";
-import { vehicles } from "../(tabs)/Home";
-
-export let selectedReservation = [];
-export let selectedVehicle = [];
-let userReservations = [];
-let currentReservations = [];
-let previousReservations = [];
-
-
-
 
 const Bookings = () => {
-
-  loadData();
-
   const router = useRouter();
   const [currentVisible, setCurrentVisible] = useState(true);
 
@@ -34,22 +20,55 @@ const Bookings = () => {
     router.push("/Pickup/ActiveReservation");
   };
 
-  const goToDetails = (reservationID : number) => {
-    selectedReservation = userReservations[userReservations.findIndex(p => p.id == reservationID)];
-    selectedVehicle = vehicles[vehicles.findIndex(p => p.id == selectedReservation.CarID)];
-    router.push({ pathname: "/bookings/BookingInfo"});
-  }
+  const goToDetails = (bookingId: number) => {
+    //router.push({ pathname: "/bookings/${bookingId}" });
+  };
 
-  if(userReservations){
+  const bookings = [
+    {
+      id: 1,
+      make: "Honda",
+      model: "Civic",
+      date: "Dec 11 2023",
+      amount: 700,
+      time: 5,
+      unit: "days",
+      bookingId: "74374432",
+      bookingComplete: false,
+      imageUrl: require("@/assets/images/carImagesTEMP/image 13.png"),
+    },
+    {
+      id: 2,
+      make: "Honda",
+      model: "Civic",
+      date: "Dec 15 2023",
+      amount: 700,
+      time: 2,
+      unit: "days",
+      bookingId: "74374432",
+      bookingComplete: true,
+      imageUrl: require("@/assets/images/carImagesTEMP/image 13.png"),
+    },
+    {
+      id: 3,
+      make: "Nissan",
+      model: "Juke",
+      date: "Feb 22 2023",
+      amount: 330,
+      time: 2,
+      unit: "days",
+      bookingId: "74374793",
+      bookingComplete: false,
+      imageUrl: require("@/assets/images/carImagesTEMP/image 10.png"),
+    },
+  ];
 
-    currentReservations = userReservations.filter(
-        (reservation) => reservation.Active
-    );
-    previousReservations = userReservations.filter(
-        (reservation) => !reservation.Active
-    );
-  }
-
+  const currentBookings = bookings.filter(
+    (booking) => !booking.bookingComplete
+  );
+  const previousBookings = bookings.filter(
+    (booking) => booking.bookingComplete
+  );
 
   const handleCurrentPress = () => {
     setCurrentVisible(true);
@@ -77,7 +96,6 @@ const Bookings = () => {
           <View style={styles.externalButton}>
             <AppButton
               onPress={handlePreviousPress}
-
               widthPercentage={40}
               backgroundColor={currentVisible ? "transparent" : "#E55D25"}
               textStyle={{ color: currentVisible ? "#333" : "white" }}
@@ -89,42 +107,43 @@ const Bookings = () => {
         <ScrollView style={styles.carList}>
           {currentVisible ? (
             <View style={styles.section}>
-              {currentReservations.map((reservation, index) => (
+              {currentBookings.map((booking) => (
                 <TouchableOpacity
-                  key={reservation.id}
-                  onPress={() => goToDetails(reservation.id)}
+                  key={booking.id}
+                  onPress={() => goToDetails(booking.id)}
                   style={styles.bookingCardContainer}
                 >
                   <BookingCard
-                    make={Object.values(vehicles)[vehicles.findIndex(p => p.CarID == userReservations.CarID)].Make}
-                    model={Object.values(vehicles)[vehicles.findIndex(p => p.CarID == userReservations.CarID)].Model}
-                    date={reservation.StartTime.toDate().toLocaleString()}
-                    amount={reservation.Cost}
-                    time={reservation.TotalTime}
-                    unit={"hours"}
-                    bookingId={reservation.id}
-                    imageUrl={Object.values(vehicles)[vehicles.findIndex(p => p.CarID == userReservations.CarID)].imageURL}
+                    make={booking.make}
+                    model={booking.model}
+                    date={booking.date}
+                    amount={booking.amount}
+                    time={booking.time}
+                    unit={booking.unit}
+                    bookingId={booking.bookingId}
+                    imageUrl={booking.imageUrl}
                   />
                 </TouchableOpacity>
               ))}
             </View>
           ) : (
             <View style={styles.section}>
-              {previousReservations.map((reservation) => (
+              {previousBookings.map((booking) => (
                 <TouchableOpacity
-                  key={reservation.id}
+                  key={booking.id}
                   style={styles.bookingCardContainer}
-                  onPress={() => goToDetails(reservation.id)}
+                  onPress={() => goToDetails(booking.id)}
                 >
                   <BookingCard
-                    make={Object.values(vehicles)[vehicles.findIndex(p => p.CarID == userReservations.CarID)].Make}
-                    model={Object.values(vehicles)[vehicles.findIndex(p => p.CarID == userReservations.CarID)].Model}
-                    date={reservation.StartTime.toDate().toLocaleString()}
-                    amount={reservation.Cost}
-                    time={reservation.TotalTime}
-                    unit={"hours"}
-                    bookingId={reservation.id}
-                    imageUrl={Object.values(vehicles)[vehicles.findIndex(p => p.CarID == userReservations.CarID)].imageURL}                  />                                 />
+                    make={booking.make}
+                    model={booking.model}
+                    date={booking.date}
+                    amount={booking.amount}
+                    time={booking.time}
+                    unit={booking.unit}
+                    bookingId={booking.bookingId}
+                    imageUrl={booking.imageUrl}
+                  />
                 </TouchableOpacity>
               ))}
             </View>
@@ -134,34 +153,6 @@ const Bookings = () => {
     </LinearGradient>
   );
 };
-
-const loadData = () =>{
-let [reservationList, setReservationList] = useState(null);
-let [loading, setLoading] = useState(true);
-let [error, setError] = useState(null);
-    useEffect(() => {
-        async function fetchUserReservationsList() {
-            try {
-                reservationList = await fetchUserReservations();
-                setReservationList(reservationList);
-                setLoading(false);
-            } catch (error) {
-                setError(error);
-                setLoading(false);
-            }
-        }
-        fetchUserReservationsList();
-        }, []);
-    if (loading) {
-        return <Text style={styles.greeting}>Loading</Text>;
-        }
-    if (error) {
-        return <Text style={styles.greeting}>Error: {error.message}</Text>;
-        }
-    userReservations = reservationList;
-    return;
-}
-
 
 const styles = StyleSheet.create({
   gradient: {

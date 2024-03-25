@@ -16,6 +16,7 @@ import { selectedVehicle } from "../(tabs)/Home";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { reserve } from "../classes/Rental";
+import BackButton from "@/components/BackButton";
 
 const Payment = () => {
   const navigation = useNavigation();
@@ -64,33 +65,32 @@ const Payment = () => {
   };
 
   const router = useRouter();
-  let bookingDetails = {
-    make: selectedVehicle.Make,
-    model: selectedVehicle.Model,
-    bookingId: "743774432",
-    mileage: "Unlimited",
-    insurance: "Included",
-    rentalPrice: "$600",
-    weekendPremium: "$20",
-    taxes: "$80",
-    totalPrice: "$700",
-  };
+  let bookingDetails = selectedVehicle
+    ? {
+        make: selectedVehicle.Make,
+        model: selectedVehicle.Model,
+        bookingId: "743774432",
+        mileage: "Unlimited",
+        insurance: "Included",
+        rentalPrice: "$600",
+        weekendPremium: "$20",
+        taxes: "$80",
+        totalPrice: "$700",
+      }
+    : {};
 
   return (
     <LinearGradient colors={["#FFFFFF", "#59C9F0"]} style={styles.gradient}>
       <SafeAreaView style={styles.container}>
         <ScrollView style={styles.scrollView}>
           <View style={styles.container}>
-            <View style={styles.back}>
-              <AntDesign
-                name="arrowleft"
-                size={24}
-                color="black"
-                onPress={goBack}
-              />
-            </View>
-            <View>
-              <Text style={styles.title}>Select Booking Dates:</Text>
+            <View style={styles.headerContainer}>
+              <View style={styles.backButton}>
+                <BackButton />
+              </View>
+              <View>
+                <Text style={styles.title}>Select Booking Dates</Text>
+              </View>
             </View>
 
             <View style={styles.detailRow}>
@@ -226,14 +226,14 @@ const Payment = () => {
                   );
                   if (reservation == "Booked") {
                     alert("Reservation complete");
-                    router.push({ pathname: "/home/paymentInfo" })
+                    router.push({ pathname: "/home/PaymentInfo" });
                   } else {
                     alert(reservation);
                   }
                 }}
                 backgroundColor="#E55D25"
                 widthPercentage={45}
-                textStyle={{ color: "#fff" }}
+                textColor="#fff"
               >
                 Pay
               </AppButton>
@@ -249,25 +249,28 @@ const styles = StyleSheet.create({
   gradient: {
     flex: 1,
   },
-  back: {
-    width: "90%",
-    height:"3%"
-  },
   container: {
     flex: 1,
     alignItems: "center",
     backgroundColor: "transparent",
+    paddingTop: verticalScale(10),
   },
   scrollView: {
     width: "100%",
     flex: 1,
   },
-
+  headerContainer: {
+    flexDirection: "column",
+    paddingTop: verticalScale(30),
+  },
+  backButton: {
+    marginBottom: verticalScale(10),
+  },
   title: {
     fontFamily: "karlaM",
-    fontSize: moderateScale(44),
-    alignItems: "center",
-    marginBottom: verticalScale(5),
+    fontSize: moderateScale(35),
+    textAlign: "left",
+    paddingBottom: verticalScale(10),
   },
   detailsContainer: {
     backgroundColor: "white",

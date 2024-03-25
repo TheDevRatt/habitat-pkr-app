@@ -1,151 +1,205 @@
-import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import AppButton from '../../components/AppButton';
-import { useRouter } from "expo-router";
+import React, { useState, useEffect } from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { Link, useRouter } from "expo-router";
+import { SafeAreaView, Text, TouchableOpacity } from "@/components/Themed";
+import { LinearGradient } from "expo-linear-gradient";
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from "@/constants/Metrics";
+import { Ionicons } from "@expo/vector-icons";
+import BookingCard from "@/components/BookingCard";
+import AppButton from "@/components/AppButton";
+import { fetchUserReservations } from "../classes/UserUtils";
+import { vehicleList } from "../(tabs)/Home";
 
-const Pictures = () => {
-  const [frontImage, setFrontImage] = useState(null);
-  const [backImage, setBackImage] = useState(null);
-  const [rightImage, setRightImage] = useState(null);
-  const [leftImage, setLeftImage] = useState(null);
+export let selectedReservation = [];
+export let selectedVehicle = [];
+let userReservations = [];
+let currentReservations = [];
+let previousReservations = [];
+
+const Bookings = () => {
+
+  loadData();
+
   const router = useRouter();
+  const [currentVisible, setCurrentVisible] = useState(true);
 
-  const handleSubmission = () => {
-    console.log('Photos submitted!');
-    console.log('Front Image:', frontImage);
-    console.log('Back Image:', backImage);
-    console.log('Right Image:', rightImage);
-    console.log('Left Image:', leftImage);
-    router.push('Pickup/FinalPictures');
+  const goToPickup = () => {
+    router.push("/Pickup/ActiveReservation");
   };
 
-  const openCamera = async (setImage) => {
-    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-  
-    if (permissionResult.granted === false) {
-      alert('Permission to access camera is required!');
-      return;
-    }
-  
-    const pickerResult = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      aspect: [4, 3],
-    });
-  
-    if (!pickerResult.canceled) {
-      const imageResult = pickerResult.assets[0]; 
-      const newUri = imageResult.uri + '?' + new Date().getTime(); 
-      console.log('New photo URI:', newUri); 
-      setImage(newUri);
-    }
-  };
-  
+  const goToDetails = (reservationID : number) => {
+    selectedReservation = userReservations[userReservations.findIndex(p => p.id == reservationID)];
+    selectedVehicle = vehicleList[vehicleList.findIndex(p => p.id == selectedReservation.CarID)];
+    router.push({ pathname: "/bookings/BookingInfo"});
+  }
 
-  const renderImage = (imageUri: string | null | undefined) => {
-    return imageUri ? (
-      <Image source={{ uri: imageUri }} style={styles.photo} key={imageUri} />
-    ) : (
-      <Image source={cameraImg} style={styles.cameraIcon} />
+  if(userReservations){
+    currentReservations = userReservations.filter(
+        (reservation) => reservation.Active
     );
+    previousReservations = userReservations.filter(
+        (reservation) => !reservation.Active
+    );
+  }
+
+  const handleCurrentPress = () => {
+    setCurrentVisible(true);
+  };
+
+  const handlePreviousPress = () => {
+    setCurrentVisible(false);
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>
-        Photo Time!
-      </Text>
+    <LinearGradient colors={["#FFFFFF", "#59C9F0"]} style={styles.gradient}>
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.title}>My Reservations </Text>
+        <View style={styles.externalButtonContainer}>
+          <View style={styles.externalButton}>
+            <AppButton
+              onPress={handleCurrentPress}
+              widthPercentage={40}
+              backgroundColor={currentVisible ? "#E55D25" : "transparent"}
+              textStyle={{ color: currentVisible ? "white" : "#333" }}
+            >
+              Current
+            </AppButton>
+          </View>
+          <View style={styles.externalButton}>
+            <AppButton
+              onPress={handlePreviousPress}
 
-      {/* Front Photo */}
-      <TouchableOpacity onPress={() => openCamera(setFrontImage)}>
-        <View style={styles.photoContainer}>
-          {renderImage(frontImage)}
-          <Text style={styles.photoText}>Please take a photo of the front of the car</Text>
+              widthPercentage={40}
+              backgroundColor={currentVisible ? "transparent" : "#E55D25"}
+              textStyle={{ color: currentVisible ? "#333" : "white" }}
+            >
+              Previous
+            </AppButton>
+          </View>
         </View>
-      </TouchableOpacity>
-
-      {/* Back Photo */}
-      <TouchableOpacity onPress={() => openCamera(setBackImage)}>
-        <View style={styles.photoContainer}>
-          {renderImage(backImage)}
-          <Text style={styles.photoText}>Please take a photo of the back of the car</Text>
-        </View>
-      </TouchableOpacity>
-
-      {/* Right Side Photo */}
-      <TouchableOpacity onPress={() => openCamera(setRightImage)}>
-        <View style={styles.photoContainer}>
-          {renderImage(rightImage)}
-          <Text style={styles.photoText}>Please take a photo of the right side of the car</Text>
-        </View>
-      </TouchableOpacity>
-
-      {/* Left Side Photo */}
-      <TouchableOpacity onPress={() => openCamera(setLeftImage)}>
-        <View style={styles.photoContainer}>
-          {renderImage(leftImage)}
-          <Text style={styles.photoText}>Please take a photo of the left side of the car</Text>
-        </View>
-      </TouchableOpacity>
-
-      {/* Submit Button */}
-      <AppButton
-        style={styles.submitButton}
-        onPress={handleSubmission}
-      >
-        <Text style={styles.buttonText}>Submit</Text>
-      </AppButton>
-    </View>
+        <ScrollView style={styles.carList}>
+          {currentVisible ? (
+            <View style={styles.section}>
+              {currentReservations.map((reservation, index) => (
+                <TouchableOpacity
+                  key={reservation.id}
+                  onPress={() => goToDetails(reservation.id)}
+                  style={styles.bookingCardContainer}
+                >
+                  <BookingCard
+                    make={Object.values(vehicleList)[vehicleList.findIndex(p => p.CarID == userReservations.CarID)].Make}
+                    model={Object.values(vehicleList)[vehicleList.findIndex(p => p.CarID == userReservations.CarID)].Model}
+                    date={reservation.StartTime.toDate().toLocaleString()}
+                    amount={reservation.Cost}
+                    time={reservation.TotalTime}
+                    unit={"hours"}
+                    bookingId={reservation.id}
+                    imageUrl={Object.values(vehicleList)[vehicleList.findIndex(p => p.CarID == userReservations.CarID)].imageURL}
+                  />
+                </TouchableOpacity>
+              ))}
+            </View>
+          ) : (
+            <View style={styles.section}>
+              {previousReservations.map((reservation) => (
+                <TouchableOpacity
+                  key={reservation.id}
+                  style={styles.bookingCardContainer}
+                  onPress={() => goToDetails(reservation.id)}
+                >
+                  <BookingCard
+                    make={Object.values(vehicleList)[vehicleList.findIndex(p => p.CarID == userReservations.CarID)].Make}
+                    model={Object.values(vehicleList)[vehicleList.findIndex(p => p.CarID == userReservations.CarID)].Model}
+                    date={reservation.StartTime.toDate().toLocaleString()}
+                    amount={reservation.Cost}
+                    time={reservation.TotalTime}
+                    unit={"hours"}
+                    bookingId={reservation.id}
+                    imageUrl={Object.values(vehicleList)[vehicleList.findIndex(p => p.CarID == userReservations.CarID)].imageURL}                  />                                 />
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+        </ScrollView>
+      </SafeAreaView>
+    </LinearGradient>
   );
 };
 
+const loadData = () =>{
+let [reservationList, setReservationList] = useState(null);
+let [loading, setLoading] = useState(true);
+let [error, setError] = useState(null);
+    useEffect(() => {
+        async function fetchUserReservationsList() {
+            try {
+                reservationList = await fetchUserReservations();
+                setReservationList(reservationList);
+                setLoading(false);
+            } catch (error) {
+                setError(error);
+                setLoading(false);
+            }
+        }
+        fetchUserReservationsList();
+        }, []);
+    if (loading) {
+        return <Text style={styles.greeting}>Loading</Text>;
+        }
+    if (error) {
+        return <Text style={styles.greeting}>Error: {error.message}</Text>;
+        }
+    userReservations = reservationList;
+    return;
+}
+
+
 const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: 'white', 
+    alignItems: "center",
+    marginTop: verticalScale(20),
+    paddingTop: verticalScale(20),
+    backgroundColor: "transparent",
   },
   title: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    marginBottom: 30,
-    marginTop: 80,
-    textAlign: 'center',
+    fontFamily: "karlaM",
+    fontSize: moderateScale(44),
+    marginTop: verticalScale(10),
   },
-  photoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 40,
+  externalButtonContainer: {
+    flexDirection: "row",
+    margin: moderateScale(30),
+    backgroundColor: "transparent",
   },
-  cameraIcon: {
-    width: 90,
-    height: 90,
-    marginRight:20
+  externalButton: {
+    marginHorizontal: horizontalScale(15),
+    backgroundColor: "transparent",
   },
-  photoText: {
-    flexShrink: 1,
-    fontSize: 22,
-    fontWeight: 'bold',
+  section: {
+    marginBottom: verticalScale(20),
   },
-  photo: {
-    width: 60,
-    height: 60,
-    borderRadius: 10,
-    marginRight: 10,
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
   },
-  buttonText: {
-    color: 'white',
-    textAlign: 'center',
+  bookingCardContainer: {
+    marginBottom: verticalScale(10),
+    backgroundColor: "transparent",
   },
-  submitButton: {
-    height: 50,
-    width: '90%',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    marginTop: 30,
-    backgroundColor: 'orange', 
-    borderRadius: 25, 
+  carList: {
+    flex: 1,
+    width: "100%",
+    backgroundColor: "transparent",
   },
 });
 
-export default Pictures;
+export default Bookings;

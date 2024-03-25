@@ -19,6 +19,7 @@ interface ButtonProps {
   paddingVertical?: number;
   textStyle?: object;
   borderStyle?: "solid" | "dotted" | "dashed" | undefined;
+  textColor?: string; // Add a new prop for text color
 }
 
 // Destructuring the props and merging the classNames together so that you can override or add to the default button styling.
@@ -32,8 +33,8 @@ export default function AppButton({
   borderWidth = 0,
   borderRadius = 20,
   paddingVertical = 8,
-  textStyle,
   borderStyle = undefined,
+  textColor = "black", // Set default text color to black
   ...props
 }: ButtonProps) {
   const screenWidth = Dimensions.get("window").width;
@@ -62,11 +63,11 @@ export default function AppButton({
             name={icon}
             // Increase the size if the icon is 'apple' because font-awesome for some reason makes it smaller
             size={icon === "apple" ? 32 : 24}
-            color="black"
+            color={textColor} // Use the textColor prop for icon color as well
             style={styles.icon}
           />
         )}
-        <Text style={[styles.text, textStyle]}>{children}</Text>
+        <Text style={[styles.text, { color: textColor }]}>{children}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -88,7 +89,6 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: "center",
-    color: "black",
     fontSize: 30,
     fontFamily: "karlaR",
   },
