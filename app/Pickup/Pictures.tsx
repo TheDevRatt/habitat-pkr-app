@@ -5,7 +5,7 @@ import AppButton from '../../components/AppButton';
 import { useRouter } from "expo-router";
 import { openCamera } from "./../classes/CloudStorage";
 import { selectedVehicle, selectedReservation } from "../(tabs)/Bookings";
-import { getUserID } from "../classes/UserUtils";
+
 
 import CameraIcon from '@/components/CameraIcon'; // Import CameraIcon component
 import { verticalScale, moderateScale, horizontalScale } from '@/constants/Metrics';

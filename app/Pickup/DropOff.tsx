@@ -4,6 +4,7 @@ import AppButton from '../../components/AppButton';
 import AnalogClock from '../../components/AnalogClock';
 import { useRouter } from "expo-router";
 import { verticalScale, moderateScale, horizontalScale } from "@/constants/Metrics";
+import { selectedVehicle, selectedReservation } from "../(tabs)/Bookings";
 
 
 
@@ -18,6 +19,24 @@ const DropOff = () => {
     router.push('/Pickup/ReservationEnded');
   };
 
+
+  const [timer, setTimer] = useState("timer");
+  const [time, setTime] = useState(new Date());
+  function isActive(){
+    let currentTime = new Date();
+    let timeWindow = new Date(selectedReservation.EndTime.toDate() + ONE_MINUTE*30);
+    timeWindow = (currentTime - timeWindow)/1000;
+    setTimer(new Date(timeWindow * 1000).toISOString().slice(11, 19));
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+        setTime(isActive());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>
@@ -27,13 +46,13 @@ const DropOff = () => {
       {/* Active Duration Box */}
       <View style={styles.durationBox}>
         <View style={styles.clockContainer}>
-          <AnalogClock />
-        </View>
-        <View>
-          <Text style={styles.durationText}>4:00Min</Text>
-        </View>
-      </View>
-
+            </View>
+            <View>
+                <Text style={styles.durationText}>
+                      {timer}
+                </Text>
+              </View>
+            </View>
       <Text style={styles.infoText}>
         Please return to drop off location and press drop off location and press drop off before the timer ends
       </Text>
@@ -41,7 +60,7 @@ const DropOff = () => {
       {/* Drop Off */}
       <AppButton
         style={styles.button}
-        onPress={handleDropOff}
+        onPress={() => router.push('Pickup/ReservationEnded')}
       >
         <Text style={styles.buttonText}>Drop Off</Text>
       </AppButton>
