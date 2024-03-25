@@ -136,6 +136,11 @@ No prerequisites required other than the above tools and a decent computer capab
    npx expo start -c
    ```
 
+### FAQ
+
+- Why is all my code red?!
+  - Don't worry, your IDE just requires a restart, this was a common problem encountered when pulling code from main.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
@@ -192,7 +197,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
   - [ ] Blocked users page
   - [ ] Keyholders page
   - [x] Add user page
-  - [ ] Add admin page
+  - [x] Add admin page
   - [ ] Manage user page
   - [ ] Add car page
   - [ ] Manage car page
