@@ -18,7 +18,7 @@ const ReservationEnding = () => {
   const router = useRouter();
 
   function handleOpenCamera(gasLevelImage){
-      let filename = ("pickup" + gasLevelImage) ;
+      let filename = ("dropoff" + gasLevelImage) ;
       let location = ("Reservations/" + selectedReservation.id);
       openCamera(filename, location);
     }
