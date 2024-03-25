@@ -21,9 +21,11 @@ import {
 import { updateProgress } from "../classes/Rental";
 
 import CameraIcon from "../../components/CameraIcon"; // Import CameraIcon component
+import { AntDesign } from "@expo/vector-icons";
 
 const FinalPictures = () => {
   const [gasLevelImage, setGasLevelImage] = useState("Gas");
+  const [gasLevelPhotoTaken, setGasLevelPhotoTaken] = useState(false);
   const router = useRouter(); // initialize router
 
   const handleSubmission = () => {
@@ -40,6 +42,7 @@ const FinalPictures = () => {
     let filename = "pickup" + gasLevelImage;
     let location = "Reservations/" + selectedReservation.id;
     openCamera(filename, location);
+    setGasLevelPhotoTaken(true);
   }
 
   return (
@@ -57,6 +60,14 @@ const FinalPictures = () => {
           <Text style={styles.photoText}>
             Please take a photo of the gas level on the dashboard
           </Text>
+          {gasLevelPhotoTaken && (
+            <AntDesign
+              name="checkcircle"
+              size={24}
+              color="green"
+              style={styles.checkIcon}
+            />
+          )}
         </View>
       </TouchableOpacity>
 
@@ -107,14 +118,15 @@ const styles = StyleSheet.create({
   },
   photoText: {
     flexShrink: 1,
+    alignItems: "flex-start",
     fontSize: moderateScale(28),
-    marginLeft: verticalScale(10),
+  },
+  checkIcon: {
+    marginRight: moderateScale(20),
   },
   photo: {
-    width: moderateScale(60),
     height: moderateScale(60),
     borderRadius: moderateScale(10),
-    marginRight: moderateScale(10),
   },
   disclaimerContainer: {
     alignItems: "center",
