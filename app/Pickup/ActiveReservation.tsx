@@ -1,41 +1,69 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import AppButton from '../../components/AppButton';
-import AnalogClock from '../../components/AnalogClock';
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, TextInput, SafeAreaView } from "react-native";
+import AnalogClock from "@/components/AnalogClock";
+import AppButton from "@/components/AppButton";
 import { useRouter } from "expo-router";
+import {
+  verticalScale,
+  moderateScale,
+  horizontalScale,
+} from "@/constants/Metrics";
+import { selectedVehicle, selectedReservation } from "../(tabs)/Bookings";
+
+const ONE_MINUTE = 60000;
 
 const ActiveBooking = () => {
   const router = useRouter();
 
   const reportAccident = () => {
-    router.push('Pickup/ReportDamages');
+    router.push("/Pickup/ReportDamages");
   };
 
   const endReservationEarly = () => {
-    router.push('Pickup/DropOff');
+    router.push("/Pickup/DropOff");
   };
 
+  // Assuming selectedReservation.EndTime is a firebase timestamp, convert it to a Date object
+  const endTime = selectedReservation.EndTime.toDate();
+  const [timer, setTimer] = useState("");
+
+  const updateTimer = () => {
+    const currentTime = new Date();
+    const remainingTime = endTime.getTime() - currentTime.getTime();
+
+    // Check if the reservation time has ended plus 30 minutes buffer
+    if (remainingTime + 30 * 60000 < 0) {
+      router.push("/Pickup/DropOff");
+    } else {
+      // Update timer string HH:MM:SS
+      const hours = Math.floor((remainingTime / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((remainingTime / 1000 / 60) % 60);
+      const seconds = Math.floor((remainingTime / 1000) % 60);
+      setTimer(`${hours}:${minutes}:${seconds}`);
+    }
+  };
+
+  useEffect(() => {
+    const intervalId = setInterval(updateTimer, 1000);
+
+    // Cleanup the interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>
-        Your Reservation is Active
-      </Text>
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.heading}>Your Reservation is Active</Text>
 
       {/* Active Duration Box */}
       <View style={styles.durationBox}>
-        <AnalogClock />
-        <View style={styles.durationText}>
-          <Text style={styles.duration}>4 days</Text>
-          <Text style={styles.duration}>23 hours</Text>
-          <Text style={styles.duration}>42 mins</Text>
+        <View style={styles.clockContainer}></View>
+        <View>
+          <Text style={styles.durationText}>{timer}</Text>
         </View>
       </View>
 
       {/* Report Accident Button */}
-      <AppButton
-        style={styles.button}
-        onPress={reportAccident}
-      >
+      <AppButton style={styles.button} onPress={reportAccident}>
         <Text style={styles.buttonText}>Report an accident or damages</Text>
       </AppButton>
 
@@ -46,68 +74,72 @@ const ActiveBooking = () => {
       >
         <Text style={styles.buttonText}>End reservation early</Text>
       </AppButton>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: 'white',
+    paddingVertical: verticalScale(20),
+    paddingHorizontal: 10,
+    backgroundColor: "white",
+    alignItems: "center",
   },
   heading: {
-    fontSize: 40,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    marginTop: 80,
-    textAlign: 'center',
+    fontSize: moderateScale(40),
+    fontWeight: "bold",
+    marginBottom: verticalScale(5),
+    marginTop: horizontalScale(30),
+    fontFamily: "karlaM",
+    textAlign: "center",
   },
   durationBox: {
-    alignItems: 'center',
-    marginBottom: 40,
-    marginTop: 100,
-    backgroundColor: 'white',
+    alignItems: "center",
+    marginBottom: verticalScale(40),
+    marginTop: verticalScale(100),
+    backgroundColor: "white",
     borderWidth: 1,
-    borderColor: 'black',
-    padding: 50,
-    borderRadius: 10,
-    flexDirection: 'row',
-    justifyContent: 'center',
+    borderColor: "black",
+    padding: horizontalScale(40),
+    borderRadius: moderateScale(5),
+    flexDirection: "row",
+    justifyContent: "space-between", // Adjusted alignment
     shadowColor: "0000",
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: verticalScale(2),
     },
     shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    shadowRadius: moderateScale(3.84),
     elevation: 5,
   },
   durationText: {},
   duration: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    fontSize: moderateScale(28),
+    fontWeight: "bold",
+    marginBottom: verticalScale(10),
   },
   button: {
-    height: 80,
-    width: '90%',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    marginTop: 30,
-    marginBottom: 20,
-    borderRadius: 20,
-    backgroundColor: 'white',
+    height: verticalScale(80),
+    width: "90%",
+    justifyContent: "center",
+    alignSelf: "center",
+    marginTop: verticalScale(30),
+    marginBottom: verticalScale(20),
+    borderRadius: moderateScale(20),
+    backgroundColor: "white",
     borderWidth: 1,
-    borderColor: 'black',
+    borderColor: "black",
   },
   buttonText: {
-    color: 'black',
-    textAlign: 'center',
+    color: "black",
+    textAlign: "center",
+    fontSize: moderateScale(20),
   },
   endButton: {
-    height: 50,
-    marginTop: 20,
+    height: verticalScale(50),
+    marginTop: verticalScale(20),
   },
 });
 
