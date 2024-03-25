@@ -19,7 +19,7 @@ const Reservation = () => {
   //};
 
   const handleDropOff = () => {
-    router.push("Pickup/ReservationEnded");
+    router.push("/Pickup/ReservationEnded");
   };
 
   const [timer, setTimer] = useState("timer");

@@ -9,6 +9,7 @@ import {
   horizontalScale,
 } from "@/constants/Metrics";
 import { selectedVehicle, selectedReservation } from "../(tabs)/Bookings";
+import { EvilIcons } from "@expo/vector-icons";
 
 const ONE_MINUTE = 60000;
 
@@ -56,13 +57,16 @@ const ActiveBooking = () => {
 
       {/* Active Duration Box */}
       <View style={styles.durationBox}>
-        <View style={styles.clockContainer}></View>
-        <View>
+        <View style={styles.timerContainer}>
+          <EvilIcons name="clock" size={125} color="#E85E21" />
           <Text style={styles.durationText}>{timer}</Text>
+           {/* <Text style={styles.durationText}>4 days 23 hours
+42 min</Text> */}
         </View>
       </View>
 
       {/* Report Accident Button */}
+      <View style={styles.buttonContainer}>
       <AppButton style={styles.button} onPress={reportAccident}>
         <Text style={styles.buttonText}>Report an accident or damages</Text>
       </AppButton>
@@ -74,6 +78,7 @@ const ActiveBooking = () => {
       >
         <Text style={styles.buttonText}>End reservation early</Text>
       </AppButton>
+      </View>
     </SafeAreaView>
   );
 };
@@ -81,9 +86,9 @@ const ActiveBooking = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: verticalScale(20),
-    paddingHorizontal: 10,
+    padding: verticalScale(12),
     backgroundColor: "white",
+    justifyContent: "space-around",
     alignItems: "center",
   },
   heading: {
@@ -92,36 +97,39 @@ const styles = StyleSheet.create({
     marginBottom: verticalScale(5),
     marginTop: horizontalScale(30),
     fontFamily: "karlaM",
-    textAlign: "center",
+    textAlign: "left",
   },
   durationBox: {
+    width: "85%",
     alignItems: "center",
-    marginBottom: verticalScale(40),
-    marginTop: verticalScale(100),
     backgroundColor: "white",
-    borderWidth: 1,
-    borderColor: "black",
-    padding: horizontalScale(40),
+    padding: "5%",
     borderRadius: moderateScale(5),
-    flexDirection: "row",
-    justifyContent: "space-between", // Adjusted alignment
     shadowColor: "0000",
     shadowOffset: {
-      width: 0,
-      height: verticalScale(2),
+      width: 1,
+      height:2,
     },
     shadowOpacity: 0.25,
     shadowRadius: moderateScale(3.84),
     elevation: 5,
   },
-  durationText: {},
+  durationText: {
+    fontSize: moderateScale(50),
+    fontFamily: "karlaEB",
+    marginBottom: 10,
+    width: "75%",
+  },
   duration: {
     fontSize: moderateScale(28),
-    fontWeight: "bold",
     marginBottom: verticalScale(10),
   },
+  timerContainer:{
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: verticalScale(25),
+  },
   button: {
-    height: verticalScale(80),
     width: "90%",
     justifyContent: "center",
     alignSelf: "center",
@@ -131,6 +139,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderWidth: 1,
     borderColor: "black",
+    height: verticalScale(50),
   },
   buttonText: {
     color: "black",
@@ -138,8 +147,13 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(20),
   },
   endButton: {
-    height: verticalScale(50),
     marginTop: verticalScale(20),
+  },
+  buttonContainer: {
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "90%",
   },
 });
 
