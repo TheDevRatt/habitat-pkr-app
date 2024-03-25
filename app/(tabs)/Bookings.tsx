@@ -95,7 +95,8 @@ const Bookings = () => {
                     make={Object.values(vehicleList)[vehicleList.findIndex(p => p.CarID == userReservations.CarID)].Make}
                     model={Object.values(vehicleList)[vehicleList.findIndex(p => p.CarID == userReservations.CarID)].Model}
                     date={reservation.StartTime.toDate().toLocaleString()}
-                    amount={reservation.Cost}
+                    // amount={reservation.Cost}
+                    amount={34}
                     time={reservation.TotalTime}
                     unit={"hours"}
                     bookingId={reservation.id}

@@ -70,10 +70,10 @@ const Payment = () => {
     bookingId: "743774432",
     mileage: "Unlimited",
     insurance: "Included",
-    rentalPrice: "$600",
-    weekendPremium: "$20",
-    taxes: "$80",
-    totalPrice: "$700",
+    rentalPrice: "$30",
+    weekendPremium: "$0",
+    taxes: "$4",
+    totalPrice: "$34",
   };
 
   return (
@@ -235,7 +235,7 @@ const Payment = () => {
                 }}
                 backgroundColor="#E55D25"
                 widthPercentage={45}
-                textStyle={{ color: "#fff" }}
+                textColor="#fff"
               >
                 Pay
               </AppButton>

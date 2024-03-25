@@ -104,7 +104,7 @@ const Details = () => {
           <AppButton
             backgroundColor="#E55D25"
             widthPercentage={50}
-            textStyle={{ color: "white" }}
+            textColor="#fff"
             //onPress={() => console.log("Rent Now")}
             onPress={() => router.push("/home/Bookings")}
           >

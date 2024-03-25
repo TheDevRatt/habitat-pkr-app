@@ -80,7 +80,7 @@ const PaymentInfo = () => {
     model: "Civic",
     pickup: "Dec 11 2023",
     dropoff: "Dec 15 2023",
-    amount: 700,
+    amount: 34,
     imageUrl: require("@/assets/images/carImagesTEMP/image 13.png"),
   };
 
