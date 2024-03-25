@@ -50,7 +50,7 @@ const Reservation = () => {
         <View style={styles.clockContainer}>
         </View>
         <View  style={styles.timerContainer}>
-        <EvilIcons name="clock" size={140} color="#E85E21" />
+        <EvilIcons name="clock" size={125} color="#E85E21" />
           <Text style={styles.durationText}>
           {timer}
           </Text>
@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
     marginTop: horizontalScale(50),
     fontFamily: 'karlaM',
     textAlign: 'left',
+    marginHorizontal: horizontalScale(10),
   },
   durationBox: {
     flexDirection: 'row', 
@@ -101,7 +102,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2.8,
     elevation: 4,
-    width: "98%",
+    width: "95%",
 
   },
   clockContainer: {
@@ -117,12 +118,13 @@ const styles = StyleSheet.create({
     fontFamily: 'karlaR',
     marginBottom: 50,
     marginTop: 30,
-    textAlign: 'center',
+    textAlign: 'left',
+    marginHorizontal:"8%",
   },
   timerContainer:{
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: verticalScale(20),
+    paddingVertical: verticalScale(25),
   },
   button:{
     alignItems: 'center',
