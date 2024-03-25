@@ -19,7 +19,7 @@ interface BookingCardProps {
   amount: number;
   time: number;
   unit: string;
-  bookingId: string;
+  // bookingId: string;
   imageUrl: ImageSourcePropType;
 }
 
@@ -30,9 +30,55 @@ const BookingCard: React.FC<BookingCardProps> = ({
   amount,
   time,
   unit,
-  bookingId,
+  // bookingId,
   imageUrl,
 }) => {
+  const displayUnit = time === 1 ? 'hour' : unit;
+  // Function to format the date string
+  const formatDate = (inputDate: string): string => {
+    const [datePart, timePart] = inputDate.split(", ");
+    const [month, day, year] = datePart.split("/");
+    const isPM = timePart.toUpperCase().includes("PM");
+
+    let [hour, minute, second] = timePart.split(":");
+
+    if (isPM && hour !== "12") {
+      hour = String(Number(hour) + 12);
+    } else if (!isPM && hour === "12") {
+      hour = "0";
+    }
+
+    // date object
+    const dateObject = new Date(
+      Number(year),
+      Number(month),
+      Number(day),
+      Number(hour),
+      Number(minute)
+    );
+
+    //  validate
+    if (isNaN(dateObject.getTime())) {
+      return "Invalid Date";
+    }
+
+    
+
+    // formate the date using toLocaleString
+    const formattedDate = dateObject.toLocaleDateString("en-us", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+
+    const formattedTime = dateObject.toLocaleTimeString("en-us", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    return `${formattedDate}\n${formattedTime}`;
+  };
+
+  const formattedDate = formatDate(date);
   return (
     <View style={styles.container}>
       <View style={styles.leftContainer}>
@@ -41,23 +87,21 @@ const BookingCard: React.FC<BookingCardProps> = ({
         </Text>
         <View style={styles.detailsContainer}>
           <Text style={styles.detailsTitle}>Date: </Text>
-          <Text style={styles.details}>{date}</Text>
+          <Text style={styles.detailsDate}>{formattedDate}</Text>
         </View>
         <View style={styles.detailsContainer}>
-        <Text style={styles.detailsTitle}>Amount:</Text>
-        <Text style={styles.details}> ${amount}</Text>
+          <Text style={styles.detailsTitle}>Amount:</Text>
+          <Text style={styles.details}> ${amount}</Text>
         </View>
         <View style={styles.timeContainer}>
           <Text style={styles.time}>
-            {time} {unit}
+            {time} {displayUnit}
           </Text>
         </View>
-        
       </View>
       <View style={styles.rightContainer}>
-        <Image source={{uri: imageUrl}}style={styles.image} />
-
-        <Text style={styles.id}>#{bookingId}</Text>
+        <Image source={{ uri: imageUrl }} style={styles.image} />
+        {/* <Text style={styles.id}>#{bookingId}</Text> */}
       </View>
     </View>
   );
@@ -79,7 +123,7 @@ const styles = StyleSheet.create({
   },
   rightContainer: {
     flex: 1,
-    justifyContent: "flex-end",
+    justifyContent: "center",
     alignItems: "center",
   },
   title: {
@@ -94,15 +138,20 @@ const styles = StyleSheet.create({
     marginBottom: verticalScale(12),
     textAlign: "center",
   },
+  detailsDate: {
+    fontSize: moderateScale(16),
+    fontFamily: "karlaL",
+  },
   details: {
     fontSize: moderateScale(16),
     color: "#333",
-    textAlign: "center",
+    textAlign: "left",
     fontFamily: "karlaL",
+    marginVertical: verticalScale(3),
   },
   detailsContainer: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
     marginBottom: verticalScale(3),
   },

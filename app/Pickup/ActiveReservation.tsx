@@ -6,6 +6,7 @@ import { useRouter } from 'expo-router';
 import { verticalScale, moderateScale, horizontalScale } from '@/constants/Metrics';
 import { selectedVehicle, selectedReservation } from "../(tabs)/Bookings";
 
+
 const ActiveBooking = () => {
   const router = useRouter();
 
@@ -71,6 +72,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: verticalScale(5),
     marginTop: horizontalScale(30),
+    fontFamily: 'karlaM',
     textAlign: 'center',
   },
   durationBox: {
