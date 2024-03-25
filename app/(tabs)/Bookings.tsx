@@ -30,7 +30,7 @@ const Bookings = () => {
   const [currentVisible, setCurrentVisible] = useState(true);
 
   const goToPickup = () => {
-    router.push("/Pickup/ActiveReservation");
+    router.push("/Pickup/Reservation");
   };
 
   const goToDetails = (reservationID : number) => {
@@ -87,8 +87,8 @@ const Bookings = () => {
             <View style={styles.section}>
               {currentReservations.map((reservation, index) => (
                 <TouchableOpacity
-                  key={reservation.id}
-                  onPress={() => goToDetails(reservation.id)}
+                  // key={booking.id}
+                  onPress={() => goToPickup()}
                   style={styles.bookingCardContainer}
                 >
                   <BookingCard
@@ -98,7 +98,7 @@ const Bookings = () => {
                     amount={reservation.Cost}
                     time={reservation.TotalTime}
                     unit={"hours"}
-                    bookingId={reservation.id}
+                    // bookingId={reservation.id}
                     imageUrl={Object.values(vehicleList)[vehicleList.findIndex(p => p.CarID == userReservations.CarID)].imageURL}
                   />
                 </TouchableOpacity>

@@ -126,6 +126,7 @@ const styles = StyleSheet.create({
     fontFamily: "karlaM",
     color: "#fff",
     textAlign: "center",
+    
   },
   id: {
     fontSize: 14,
