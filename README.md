@@ -231,7 +231,7 @@ Please contact **Habitat for Humanity - Peterborough & Kawartha Region** for lic
 
 Matthew Makary - [@LinkedIn](https://www.linkedin.com/in/matthew-makary-52b093249/) - Matthew_Makary@outlook.com
 
-Brady Gibson -
+Brady Gibson - [@LinkedIn](https://www.linkedin.com/in/bradygibsoncomp/) - bradydjg@hotmail.com
 
 Emma Villas - [@LinkedIn](https://www.linkedin.com/in/emmavillas/) - emmavillas@trentu.ca
 
