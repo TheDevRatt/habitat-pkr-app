@@ -9,6 +9,9 @@ import {
   horizontalScale,
 } from "@/constants/Metrics";
 import { EvilIcons } from "@expo/vector-icons";
+import { selectedVehicle, selectedReservation } from "../(tabs)/Bookings";
+
+const ONE_MINUTE = 60000;
 
 const DropOff = () => {
   const router = useRouter();
@@ -18,13 +21,12 @@ const DropOff = () => {
     router.push("/Pickup/ReservationEnded");
   };
 
-
-  const [timer, setTimer] = useState("timer");
+  const [timer, setTimer] = useState("00:00");
   const [time, setTime] = useState(new Date());
   function isActive(){
     let currentTime = new Date();
-    let timeWindow = new Date(selectedReservation.EndTime.toDate() + ONE_MINUTE*30);
-    timeWindow = (currentTime - timeWindow)/1000;
+    let timeWindow = (selectedReservation.EndTime.toDate().getTime() + ONE_MINUTE * 30);
+    timeWindow = (timeWindow - currentTime)/1000;
     setTimer(new Date(timeWindow * 1000).toISOString().slice(11, 19));
   }
 

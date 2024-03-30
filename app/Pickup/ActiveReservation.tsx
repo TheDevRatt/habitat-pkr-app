@@ -26,6 +26,7 @@ const ActiveBooking = () => {
 
   // Assuming selectedReservation.EndTime is a firebase timestamp, convert it to a Date object
   const endTime = selectedReservation.EndTime.toDate();
+
   const [timer, setTimer] = useState("");
 
   const updateTimer = () => {

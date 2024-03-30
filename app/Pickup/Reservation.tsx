@@ -24,8 +24,11 @@ const Reservation = () => {
     let currentTime = new Date();
     let timeDifference = (selectedReservation.StartTime.toDate().getTime() - currentTime.getTime())/1000;
     setTimer(new Date(timeDifference * 1000).toISOString().slice(11, 19));
-    //router.push({ pathname: "/Pickup/Reservation" });
+    if (timeDifference < 0){
+        setTimer("00:00");
     }
+  }
+
 
   useEffect(() => {
        const interval = setInterval(() => {

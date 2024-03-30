@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -21,12 +21,7 @@ import Camera from "../../assets/images/camera.png";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "@/components/Themed";
 import { EvilIcons } from "@expo/vector-icons";
-import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, Modal } from 'react-native';
-import AppButton from '../../components/AppButton';
-import * as ImagePicker from 'expo-image-picker';
 import CameraIcon from '@/components/CameraIcon'; // Import CameraIcon component
-import { useRouter } from 'expo-router';
 import { openCamera } from "./../classes/CloudStorage";
 import { selectedVehicle, selectedReservation } from "../(tabs)/Bookings";
 import { updateActiveStatus } from "../classes/Rental";
@@ -37,6 +32,23 @@ const ReservationEnding = () => {
   const [gasLevelImage, setGasLevelImage] = useState("Gas");
   const [modalVisible, setModalVisible] = useState(false);
   const router = useRouter();
+
+  const [timer, setTimer] = useState("00:00");
+  const [time, setTime] = useState(new Date());
+  function isActive(){
+    let currentTime = new Date();
+    let timeWindow = (selectedReservation.EndTime.toDate().getTime() + ONE_MINUTE * 30);
+    timeWindow = (timeWindow - currentTime)/1000;
+    setTimer(new Date(timeWindow * 1000).toISOString().slice(11, 19));
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+        setTime(isActive());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   function handleOpenCamera(gasLevelImage){
       let filename = ("pickup" + gasLevelImage) ;
@@ -81,7 +93,7 @@ const ReservationEnding = () => {
       <View style={styles.timeSlotBox}>
         <View style={styles.row}>
           <EvilIcons name="clock" size={125} color="#E85E21" />
-          <Text style={styles.headerTextBox}>4:00</Text>
+          <Text style={styles.headerTextBox}>{timer}</Text>
         </View>
       </View>
 
@@ -111,7 +123,7 @@ const ReservationEnding = () => {
               style={styles.modalButton}
               onPress={() => {
                 setModalVisible(false); // close the modal
-                router.push('/Pickup/UserReservation'); // navigate to Pickup/UserReservation
+                router.push('(tabs)/Bookings'); // navigate to Pickup/UserReservation
               }}
             >
               <Text style={styles.modalButtonText}>Go to My Reservations</Text>

@@ -18,7 +18,6 @@ import {
 } from "@/constants/Metrics";
 import { SafeAreaView } from "@/components/Themed";
 import CameraIcon from '@/components/CameraIcon'; // Import CameraIcon component
-import { verticalScale, moderateScale, horizontalScale } from '@/constants/Metrics';
 import { openCamera } from "./../classes/CloudStorage";
 import { selectedVehicle, selectedReservation } from "../(tabs)/Bookings";
 

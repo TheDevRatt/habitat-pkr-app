@@ -188,5 +188,5 @@ async function updateActiveStatus(userID){
     }catch (error) {
         alert(error);
     }
-
+}
 export { reserve, updateProgress, updateActiveStatus };
