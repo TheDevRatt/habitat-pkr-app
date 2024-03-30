@@ -99,6 +99,7 @@ async function makeAdminUser(userId) {
   }
 }
 
+// Return an object of all reservations
 async function fetchReservations() {
   let reservations;
   await getDocs(collection(db, "reservations")).then((querySnapshot) => {
@@ -108,11 +109,11 @@ async function fetchReservations() {
       StartTime: doc.data().StartTime,
       EndTime: doc.data().EndTime,
     }));
-    console.log(reservations);
   });
   return reservations;
 }
 
+// Return an object of all vehicles and their data
 async function fetchVehicles(){
     const q = query(collection(db, "vehicles"), where("Status", "==", true));
     const querySnapshot = await getDocs(q);
@@ -132,9 +133,8 @@ async function fetchVehicles(){
     return vehicles
 }
 
-
+// Return a specific users reservations
 async function fetchUserReservations(){
-
     let userID = await getUserID();
     const q = query(collection(db, "reservations"), where("UserID", "==", userID));
     const querySnapshot = await getDocs(q);
@@ -152,19 +152,6 @@ async function fetchUserReservations(){
     }));
     return userReservations
 }
-
-
-
-
-
-async function test(){
-    console.log("test");
-    let testR = await fetchVehicles();
-    console.log(testR);
-
-}
-
-//test();
 
 export {
   getUserID,

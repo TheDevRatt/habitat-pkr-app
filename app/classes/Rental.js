@@ -15,6 +15,7 @@ import { db, auth } from "@/firebase";
 
 const ONE_HOUR = 3600000;
 
+// Function to check if the attempted booking valid and has no conflicts
 function bookingVerification(startTime, endTime){
     let start = startTime.getTime();
     let end = endTime.getTime();
@@ -165,6 +166,7 @@ async function userReservations(userID, reservationID, startTime) {
     return true
 }
 
+// Update the reservations progress to determine if it has already been started
 async function updateProgress(userID){
     const userDoc = await getDoc(doc(db, 'users', userID));
     try{
@@ -177,6 +179,8 @@ async function updateProgress(userID){
         alert(error);
     }
 }
+
+// Update the reservation to determine if the res is valid or completed
 async function updateActiveStatus(userID){
     const userDoc = await getDoc(doc(db, 'users', userID));
     try{
