@@ -1,7 +1,8 @@
-import { initializeApp, getApp, getApps } from "firebase/app";
-import {initializeAuth, getAuth, getReactNativePersistence } from "firebase/auth";
+import { initializeApp } from "firebase/app";
+import { initializeAuth, getReactNativePersistence } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { getFunctions, httpsCallable } from "firebase/functions";
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 
 export const firebaseConfig = {
@@ -14,13 +15,15 @@ export const firebaseConfig = {
     appId: "1:539323902826:web:c43816f1c18112bd369313",
     measurementId: "G-RRQCR4ZZBJ"
     };
-
+};
 
 const app = !getApps().length ? initializeApp( firebaseConfig ) : getApp();
 export const db = getFirestore(app);
 export const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(ReactNativeAsyncStorage),
 });
+export const functions = getFunctions(app);
+export const db = getFirestore(app);
 export const storage = getStorage(app); // This is correctly placed
 
 // No need to re-import or redeclare getAuth or getFirestore inside the development check

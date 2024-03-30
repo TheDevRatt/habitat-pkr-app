@@ -29,6 +29,8 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 import ProfileContainer from "@/components/ProfileContainer";
 import { fetchVehicles } from "../classes/UserUtils";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/firebase";
 
 if (
   Platform.OS === "android" &&
@@ -41,11 +43,10 @@ export let vehicleList = [];
 export let selectedVehicle = [];
 
 const Home = () => {
-
-  const [vehicles, setVehicles] = useState([]); 
-  const [loading, setLoading] = useState(true); 
-  const [error, setError] = useState(null); 
-  const [filter, setFilter] = useState("all"); 
+  const [vehicles, setVehicles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [filter, setFilter] = useState("all");
 
   useEffect(() => {
     async function fetchVehicleList() {
@@ -53,7 +54,6 @@ const Home = () => {
             vehicleList  = await fetchVehicles();
             setVehicles(vehicleList);
             setLoading(false);
-
         } catch (error) {
             setError(error);
             setLoading(false);
@@ -61,7 +61,6 @@ const Home = () => {
     }
     fetchVehicleList();
     }, []);
-
 
   // user info
   const user = auth.currentUser;
@@ -72,6 +71,12 @@ const Home = () => {
 
   // location
   const location = "Ptbo region";
+
+  const [userInfo, setUserInfo] = useState({
+    name: userName,
+    totalRides: 14,
+    profileUrl: "",
+  });
 
   // navigation
   const router = useRouter();
@@ -107,6 +112,24 @@ const Home = () => {
     },
   ];
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (user) {
+        const userDocRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          setUserInfo({
+            ...userInfo,
+            name: `${userData.FirstName}`,
+            profileUrl: userData.profileUrl,
+          });
+        }
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   // Search bar
 
@@ -123,8 +146,7 @@ const Home = () => {
     }
   };
 
- 
-   if (loading) {
+  if (loading) {
     return <Text>Loading...</Text>;
   }
 
@@ -136,7 +158,20 @@ const Home = () => {
     <LinearGradient colors={["#FFFFFF", "#59C9F0"]} style={styles.gradient}>
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-          <ProfileContainer width={50} height={50} style={styles.smallImage} />
+          {userInfo.profileUrl ? (
+            <Image
+              source={{ uri: userInfo.profileUrl }}
+              width={50}
+              height={50}
+              style={styles.profileImage}
+            />
+          ) : (
+            <ProfileContainer
+              width={50}
+              height={50}
+              style={styles.smallImage}
+            />
+          )}
           <Text style={styles.greeting}>Hello, {userName}!</Text>
           {/* <EvilIcons name="bell" size={35} color="black" /> */}
         </View>
@@ -222,7 +257,6 @@ const Home = () => {
   );
 };
 
-
 const styles = StyleSheet.create({
   gradient: {
     flex: 1,
@@ -250,6 +284,10 @@ const styles = StyleSheet.create({
     fontFamily: "karlaEB",
     marginLeft: horizontalScale(15),
     marginRight: "auto",
+  },
+  profileImage: {
+    padding: horizontalScale(5),
+    borderRadius: 10,
   },
   instructions: {
     fontSize: moderateScale(22),

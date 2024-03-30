@@ -30,81 +30,89 @@ import { Link, useRouter } from "expo-router";
 import { verifyUser } from "./../classes/User.js";
 import DriversLicenseLogo from "@/components/DriversLicenseLogo";
 import InsuranceLogo from "@/components/InsuranceLogo";
-// import * as Progress from 'react-native-progress';
+import ProfileContainer from "@/components/ProfileContainer";
 import { openCamera, openFilePicker } from "./../classes/CloudStorage";
-import { auth } from "@/firebase";
 import { getUserData } from "../classes/User";
 import { getFirestore, setDoc, doc, onSnapshot } from "firebase/firestore";
-//import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { getFunctions, httpsCallable } from "firebase/functions";
+import { auth, db } from "@/firebase";
+import SignoutIcon from "@/components/SignoutIcon";
 
-LogBox.ignoreLogs([
-  "VirtualizedLists should never be nested inside plain ScrollViews with the same orientation because it can break windowing and other functionality - use another VirtualizedList-backed container instead.",
-]);
+const myInfo = () => {
+  const router = useRouter();
 
-const addUser = () => {
-  interface CreateUserResponse {
-    uid: string; // Assuming the cloud function returns an object with a uid property
-  }
+  const user = auth.currentUser; // Assuming this is already defined in your component
+  const location = "Profile";
+  const fileName = `${user?.uid}`; // Example file name
 
-  // State management
-  const [showPassword, setShowPassword] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [age, setAge] = useState("");
   const [pronouns, setPronouns] = useState("");
-  const [userCreated, setUserCreated] = useState(false); // Track if the user has been created
-  const [newUserId, setNewUserId] = useState(""); // Store the new user's ID
-  const [licenseUrl, setLicenseUrl] = useState(null);
+  const [profilePictureUrl, setProfilePictureUrl] = useState(null);
+  const [isEditMode, setIsEditMode] = useState(false);
 
-  const router = useRouter();
+  // Inside your component
+  useEffect(() => {
+    // Check if a user is logged in
+    const user = auth.currentUser;
+    if (user) {
+      // User is signed in, fetch their document from Firestore
+      const userDocRef = doc(db, "users", user.uid);
+      const unsubscribe = onSnapshot(userDocRef, (doc) => {
+        if (doc.exists()) {
+          // Assuming the document contains fields: firstName, lastName, email, etc.
+          const userData = doc.data();
+          setFirstName(userData.FirstName);
+          setLastName(userData.LastName);
+          setEmail(userData.Email);
+          setPhoneNumber(userData.Phone);
+          setAge(userData.Age);
+          setPronouns(userData.Pronouns);
+          if (userData.profileUrl) {
+            // Assume 'profileUrl' is the field name in Firestore
+            setProfilePictureUrl(userData.profileUrl);
+          }
+        } else {
+          console.log("No such document!");
+        }
+      });
 
-  const formatPhoneNumber = (value: any) => {
-    // Remove non-numeric characters
-    const numericValue = value.replace(/\D/g, "");
-    // Format to US/Canadian phone number standard
-    const formattedValue = numericValue.replace(
-      /(\d{3})(\d{3})(\d{4})/,
-      "$1-$2-$3"
-    );
-    return formattedValue;
-  };
-  // Function to create a user or upload driver's license
-  const handleSubmit = async () => {
-    if (!userCreated) {
-      const functions = getFunctions();
-      const createUserByAdmin = httpsCallable(functions, "createUserByAdmin");
-
-      try {
-        const result = await createUserByAdmin({
-          firstName,
-          lastName,
-          email,
-          password,
-          phoneNumber,
-          age,
-          pronouns,
-        });
-
-        // Using the interface to assert the type of result.data
-        const data = result.data as CreateUserResponse;
-        const createdUserId = data.uid;
-        setNewUserId(createdUserId);
-        setUserCreated(true);
-        alert("User created successfully!");
-
-        // Optionally reset form here or redirect admin to another page
-      } catch (error) {
-        console.error("Error creating user:", error);
-        alert("Failed to create user. Please try again.");
-      }
-    } else {
-      // If the user has been created, you can now upload the driver's license
-      // This part is handled by the openCamera or openFilePicker functions when they are called
+      return () => unsubscribe(); // Cleanup subscription on unmount
     }
+    if (!user) {
+      // No user is logged in, redirect them to the login page or show a message
+      console.log("No user logged in");
+      // router.push("/login"); // Uncomment and adjust according to your routing setup
+    }
+  }, []);
+
+  const saveChanges = async () => {
+    const user = auth.currentUser;
+    if (user) {
+      const userDocRef = doc(db, "users", user.uid);
+      try {
+        await setDoc(
+          userDocRef,
+          {
+            FirstName: firstName,
+            LastName: lastName,
+            Email: email,
+            Phone: phoneNumber,
+            Age: age,
+            Pronouns: pronouns,
+          },
+          { merge: true }
+        ); // Use merge option to update fields without overwriting the entire document
+        console.log("Document successfully updated!");
+      } catch (error) {
+        console.error("Error updating document: ", error);
+      }
+    }
+    setIsEditMode(false); // Exit edit mode after saving changes
   };
 
   return (
@@ -126,12 +134,16 @@ const addUser = () => {
                 <BackButton />
               </View>
               <View style={styles.welcomeTextContainer}>
-                <Text style={styles.welcomeText}>Add User</Text>
+                <Text style={styles.welcomeText}>My Info</Text>
+              </View>
+              <View style={styles.signoutContainer}>
+                <SignoutIcon />
               </View>
             </View>
 
             <View style={styles.inputGroup}>
               <TextInput
+                editable={isEditMode}
                 value={firstName}
                 placeholder={"First Name"}
                 onChangeText={(newFirstName) => setFirstName(newFirstName)}
@@ -139,6 +151,7 @@ const addUser = () => {
                 style={styles.inputField}
               />
               <TextInput
+                editable={isEditMode}
                 value={lastName}
                 placeholder={"Last Name"}
                 onChangeText={(newLastName) => setLastName(newLastName)}
@@ -146,46 +159,28 @@ const addUser = () => {
                 style={styles.inputField}
               />
               <TextInput
+                editable={isEditMode}
                 value={email}
                 placeholder={"Email"}
                 onChangeText={(newEmail) => setEmail(newEmail)}
                 placeholderTextColor="#000"
                 style={styles.inputField}
               />
-              <View style={styles.passwordField}>
-                <TextInput
-                  value={password}
-                  secureTextEntry={!showPassword}
-                  placeholder={"Password"}
-                  onChangeText={(newPassword) => setPassword(newPassword)}
-                  placeholderTextColor="#000"
-                  style={[styles.inputField, { flex: 1 }]}
-                />
-                <TouchableOpacity
-                  onPress={() => setShowPassword(!showPassword)}
-                  style={styles.passwordIcon}
-                >
-                  <FontAwesome
-                    name={showPassword ? "eye" : "eye-slash"}
-                    size={28}
-                  />
-                </TouchableOpacity>
-              </View>
               <TextInput
+                editable={isEditMode}
                 value={phoneNumber}
                 keyboardType="numeric"
                 placeholder={"Phone Number"}
-                onChangeText={(newPhoneNumber) => {
-                  const formattedPhoneNumber =
-                    formatPhoneNumber(newPhoneNumber);
-                  setPhoneNumber(formattedPhoneNumber);
-                }}
+                onChangeText={(newPhoneNumber) =>
+                  setPhoneNumber(newPhoneNumber)
+                }
                 placeholderTextColor="#000"
                 style={styles.inputField}
               />
 
               <View style={styles.dropdownContainer}>
                 <TextInput
+                  editable={isEditMode}
                   value={age}
                   keyboardType="numeric"
                   placeholder={"Age"}
@@ -197,19 +192,23 @@ const addUser = () => {
                   ]}
                 />
                 <View style={styles.dropDownPicker}>
-                  <PronounSelector value={pronouns} setValue={setPronouns} />
+                  <PronounSelector
+                    value={pronouns}
+                    setValue={setPronouns}
+                    editable={isEditMode}
+                  />
                 </View>
               </View>
             </View>
 
             <View style={styles.itemContainer}>
               <View style={styles.subTitleContainer}>
-                <Text style={styles.label}>Driver's License</Text>
+                <Text style={styles.label}>Profile Picture</Text>
               </View>
               <View style={styles.imageButtonContainer}>
-                {licenseUrl ? (
+                {profilePictureUrl ? (
                   <Image
-                    source={{ uri: licenseUrl }}
+                    source={{ uri: profilePictureUrl }}
                     style={{
                       width: 150,
                       height: 150,
@@ -219,14 +218,15 @@ const addUser = () => {
                     }}
                   />
                 ) : (
-                  <DriversLicenseLogo style={styles.driversLicenseContainer} />
+                  <ProfileContainer width={99} height={99} />
                 )}
                 <View style={styles.buttonGroup}>
                   <View style={styles.camera}>
                     <AppButton
-                      onPress={() =>
-                        openCamera(newUserId, "License", newUserId)
-                      }
+                      onPress={() => {
+                        if (isEditMode)
+                          openCamera(fileName, "Profile", user?.uid);
+                      }}
                       backgroundColor="transparent"
                       widthPercentage={45}
                       borderStyle="dashed"
@@ -239,9 +239,10 @@ const addUser = () => {
                     </AppButton>
                   </View>
                   <AppButton
-                    onPress={() =>
-                      openFilePicker(newUserId, "License", newUserId)
-                    }
+                    onPress={() => {
+                      if (isEditMode)
+                        openFilePicker(fileName, "Profile", user?.uid);
+                    }}
                     backgroundColor="transparent"
                     widthPercentage={45}
                     borderStyle="dashed"
@@ -262,9 +263,15 @@ const addUser = () => {
                 paddingVertical={11}
                 borderRadius={25}
                 textStyle={{ fontSize: 25 }}
-                onPress={handleSubmit}
+                onPress={() => {
+                  if (isEditMode) {
+                    saveChanges();
+                  } else {
+                    setIsEditMode(true);
+                  }
+                }}
               >
-                {userCreated ? "Upload Driver's License" : "Create Account"}
+                {isEditMode ? "Save Changes" : "Edit Account"}
               </AppButton>
             </View>
           </KeyboardAwareScrollView>
@@ -274,7 +281,7 @@ const addUser = () => {
   );
 };
 
-export default addUser;
+export default myInfo;
 
 const styles = StyleSheet.create({
   gradient: {
@@ -305,10 +312,11 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     justifyContent: "center",
     paddingLeft: horizontalScale(20),
-    ...Platform.select({
-      ios: {},
-      android: {},
-    }),
+  },
+  signoutContainer: {
+    backgroundColor: "transparent",
+    justifyContent: "center",
+    paddingRight: horizontalScale(20),
   },
   topContainer: {
     flexDirection: "row",
@@ -320,11 +328,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     backgroundColor: "transparent",
-    marginRight: verticalScale(50),
-    ...Platform.select({
-      ios: {},
-      android: {},
-    }),
   },
   welcomeText: {
     fontFamily: "karlaM",
@@ -378,6 +381,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginBottom: verticalScale(15),
+    paddingTop: verticalScale(20),
     alignItems: "center",
     backgroundColor: "transparent",
     zIndex: -1,
@@ -404,11 +408,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "transparent",
+    marginTop: verticalScale(20),
   },
   buttonGroup: {
     backgroundColor: "transparent",
     alignItems: "center",
-    paddingLeft: horizontalScale(-40),
+    paddingLeft: horizontalScale(20),
   },
   buttonText: {
     fontSize: moderateScale(18),
@@ -418,8 +423,5 @@ const styles = StyleSheet.create({
   camera: {
     marginBottom: verticalScale(12),
     backgroundColor: "transparent",
-  },
-  driversLicenseContainer: {
-    left: horizontalScale(-20),
   },
 });

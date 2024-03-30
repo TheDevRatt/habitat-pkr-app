@@ -20,17 +20,23 @@ import {
   moderateScale,
   verticalScale,
 } from "@/constants/Metrics";
-
 import { Link, useRouter } from "expo-router";
-
 import SignoutIcon from "@/components/SignoutIcon";
 import { fetchUnapprovedUsers } from "../classes/UserUtils";
 import BackButton from "@/components/BackButton";
-
 import CheckmarkIcon from "@/components/CheckmarkIcon";
 import XIcon from "@/components/XIcon";
-
-import { approveUser } from "../classes/UserUtils";
+import { fetchNonAdminUsers } from "../classes/UserUtils";
+import { auth, db, functions } from "@/firebase";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
+import { getFunctions, httpsCallable } from "firebase/functions";
 
 interface User {
   id: string;
@@ -39,45 +45,51 @@ interface User {
   Email?: string; // Optional, in case we decide to use it later
 }
 
-const SignupRequests = () => {
-  const [unapprovedUsers, setUnapprovedUsers] = useState<User[]>([]);
+const AddAdmin = () => {
+  const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
-    const getUnapprovedUsers = async () => {
-      const users = await fetchUnapprovedUsers();
-      // console.log(users);
-      setUnapprovedUsers(users);
+    // Use the fetchNonAdminUsers from UserUtils.js
+    const initFetch = async () => {
+      const nonAdminUsers = await fetchNonAdminUsers();
+      setUsers(nonAdminUsers);
     };
 
-    getUnapprovedUsers();
+    initFetch();
   }, []);
 
   const handleApproveUser = async (user: User) => {
-    // console.log("Approving user:", user.id);
     Alert.alert(
-      "Approve User?",
-      `Would you like to approve ${user.FirstName} ${user.LastName}?`,
+      "Make Admin?",
+      `Are you sure you want to make ${user.FirstName} ${user.LastName} an admin?`,
       [
-        // The "No" button
-        // Does nothing but dismiss the dialog when pressed
-        {
-          text: "No",
-          style: "cancel",
-        },
-        // The "Yes" button
+        { text: "Cancel", style: "cancel" },
         {
           text: "Yes",
           onPress: async () => {
-            try {
-              await approveUser(user.id);
-              setUnapprovedUsers((currentUsers) =>
-                currentUsers.filter((currentUser) => currentUser.id !== user.id)
-              );
-              // You might want to include some feedback here, like another alert
-            } catch (error) {
-              console.error("Error approving user:", error);
-              // Include error handling here, such as displaying an error message
-            }
+            // Update Firestore to set isAdmin to true
+            await updateDoc(doc(db, "users", user.id), {
+              isAdmin: true,
+            });
+
+            // Call cloud function to set custom admin claim
+            const addAdminRole = httpsCallable(functions, "addAdminRole");
+            addAdminRole({ id: user.id })
+              .then(() => {
+                Alert.alert(
+                  "Success",
+                  `${user.FirstName} ${user.LastName} has been made an admin.`
+                );
+                // Refresh the list or remove the user from the current state
+                setUsers(users.filter((u) => u.id !== user.id));
+              })
+              .catch((error) => {
+                console.error("Error making user admin:", error);
+                Alert.alert(
+                  "Error",
+                  "Failed to make user an admin. Please try again."
+                );
+              });
           },
         },
       ]
@@ -95,16 +107,28 @@ const SignupRequests = () => {
         },
         {
           text: "Yes",
-          onPress: () => {
-            // Directly update the state to remove the user
-            setUnapprovedUsers((currentUsers) =>
-              currentUsers.filter((currentUser) => currentUser.id !== user.id)
-            );
-            // Optionally, provide feedback to the admin
-            Alert.alert(
-              "User Rejected",
-              `${user.FirstName} ${user.LastName} has been rejected.`
-            );
+          onPress: async () => {
+            try {
+              // Assuming you have a function to handle the rejection in your backend
+              // await rejectUser(user.id);
+
+              // Update the local state to remove the user
+              setUsers((currentUsers) =>
+                currentUsers.filter((currentUser) => currentUser.id !== user.id)
+              );
+
+              // Provide feedback to the admin
+              Alert.alert(
+                "User Rejected",
+                `${user.FirstName} ${user.LastName} has been rejected.`
+              );
+            } catch (error) {
+              console.error("Error rejecting user:", error);
+              Alert.alert(
+                "Error",
+                "There was an error rejecting the user. Please try again."
+              );
+            }
           },
         },
       ]
@@ -117,7 +141,7 @@ const SignupRequests = () => {
         <View style={styles.backButtonContainer}>
           <BackButton />
         </View>
-        <Text style={styles.title}>Signed Up{"\n"}Users</Text>
+        <Text style={styles.title}>Add a new{"\n"}admin</Text>
         <View style={styles.signoutContainer}>
           <SignoutIcon />
         </View>
@@ -125,7 +149,7 @@ const SignupRequests = () => {
 
       <ScrollView style={styles.scrollViewContainer}>
         <View style={styles.innerScrollViewContent}>
-          {unapprovedUsers.map((user) => (
+          {users.map((user) => (
             <View key={user.id} style={styles.userContainer}>
               <Text style={styles.userText}>
                 {`${user.FirstName} ${user.LastName}`}
@@ -205,4 +229,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignupRequests;
+export default AddAdmin;

@@ -64,7 +64,7 @@ const Bookings = () => {
               onPress={handleCurrentPress}
               widthPercentage={40}
               backgroundColor={currentVisible ? "#E55D25" : "transparent"}
-              textStyle={{ color: currentVisible ? "white" : "#333" }}
+              textColor={currentVisible ? "#fff" : "#333" }
             >
               Current
             </AppButton>
@@ -72,10 +72,9 @@ const Bookings = () => {
           <View style={styles.externalButton}>
             <AppButton
               onPress={handlePreviousPress}
-
               widthPercentage={40}
               backgroundColor={currentVisible ? "transparent" : "#E55D25"}
-              textStyle={{ color: currentVisible ? "#333" : "white" }}
+              textColor={currentVisible ? "#333" : "#fff" }
             >
               Previous
             </AppButton>
@@ -118,7 +117,7 @@ const Bookings = () => {
                     amount={reservation.Cost}
                     time={reservation.TotalTime}
                     unit={"hours"}
-                    bookingId={reservation.id}
+                    // bookingId={reservation.id}
                     imageUrl={Object.values(vehicleList)[vehicleList.findIndex(p => p.CarID == userReservations.CarID)].imageURL}                  />                                 />
                 </TouchableOpacity>
               ))}

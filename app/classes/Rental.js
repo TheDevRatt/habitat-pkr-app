@@ -8,16 +8,14 @@ import {
   query,
   where,
   updateDoc,
-  deleteDoc
+  deleteDoc,
 } from "firebase/firestore";
 import { Link, useRouter } from "expo-router";
 import { db, auth } from "@/firebase";
 
 const ONE_HOUR = 3600000;
 
-
 function bookingVerification(startTime, endTime){
-
     let start = startTime.getTime();
     let end = endTime.getTime();
 
@@ -39,12 +37,10 @@ function bookingVerification(startTime, endTime){
     return "pass";
 }
 
-
 // Check if a reservation starts or ends in the attempted booking
 // and check if the attempted reservation would occur inside a
 // booked reservation
 async function availability(carID, startTime, endTime){
-
     const start = startTime.getTime();
     const end = endTime.getTime();
 
@@ -56,30 +52,21 @@ async function availability(carID, startTime, endTime){
         let bookedStart = doc.data().StartTime.toDate().getTime();
         let bookedEnd = doc.data().EndTime.toDate().getTime();
 
-        if(
-            ((
-            start >= bookedStart &&
-            start <= bookedEnd)||
-            (
-            end >= bookedStart &&
-            end <= bookedEnd))||
-            ((
-            bookedStart <= start &&
-            bookedEnd >= end))||
-            (
-            bookedStart >= start &&
-            bookedEnd <= end))
-            {
-            reserve = false;
-            }
-    });
+    if (
+      (start >= bookedStart && start <= bookedEnd) ||
+      (end >= bookedStart && end <= bookedEnd) ||
+      (bookedStart <= start && bookedEnd >= end) ||
+      (bookedStart >= start && bookedEnd <= end)
+    ) {
+      reserve = false;
+    }
+  });
 
     return reserve;
 }
 
 // Function to upload reservation to database
 async function reserve(carID, start, end, dayRate, hourlyRate){
-
      let startTime = start;
      let endTime = end;
 
@@ -108,7 +95,6 @@ async function reserve(carID, start, end, dayRate, hourlyRate){
         userID = user.uid;
     }
 
-
     // Convert reserved time to hours
     let reservedTime = (endTime.getTime() - startTime.getTime())/3600000;
     reservedTime = Math.round(reservedTime * 100) / 100
@@ -125,8 +111,6 @@ async function reserve(carID, start, end, dayRate, hourlyRate){
             rTime -= rTime;
         }
     }
-
-    console.log(cost);
 
 
     // Upload reservation
@@ -146,26 +130,14 @@ async function reserve(carID, start, end, dayRate, hourlyRate){
         return e;
     }
 
-    // Add reservation to user reservation list, delete reservation
-    // if an error occurs
-    //let res = await userReservations(userID, tripName, startTime);
-    //if (res == false){
-        //console.log("here");
-        //try{
-            //await deleteDoc(doc(db, "reservations", tripName));
-        //}catch(e){
-            //return e;
-        //}
-        //return "An error has occurred";
-    //}
 
     return "Booked";
 
 }
 
 // function to add reservation name and time to user reservation list
-async function userReservations(userID, reservationID, startTime){
-    const userDoc = await getDoc(doc(db, 'users', userID));
+async function userReservations(userID, reservationID, startTime) {
+  const userDoc = await getDoc(doc(db, "users", userID));
 
     try{
         if (userDoc.exists()) {
@@ -205,7 +177,6 @@ async function updateProgress(userID){
         alert(error);
     }
 }
-
 async function updateActiveStatus(userID){
     const userDoc = await getDoc(doc(db, 'users', userID));
     try{
@@ -217,6 +188,5 @@ async function updateActiveStatus(userID){
     }catch (error) {
         alert(error);
     }
-}
 
 export { reserve, updateProgress, updateActiveStatus };

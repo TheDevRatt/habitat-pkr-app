@@ -6,6 +6,7 @@ import {
   Platform,
   StyleSheet,
   ScrollView,
+  Image,
 } from "react-native";
 import {
   Text,
@@ -36,6 +37,8 @@ import { Link, useRouter } from "expo-router";
 import { auth, db } from "@/firebase";
 import { getDoc, doc } from "firebase/firestore";
 
+import SignoutIcon from "@/components/SignoutIcon";
+
 const Profile = () => {
   const router = useRouter();
 
@@ -49,7 +52,7 @@ const Profile = () => {
   const [userInfo, setUserInfo] = useState({
     name: userName,
     totalRides: 14,
-    // You can also store other user details here we grab these from Firebase later.
+    profileUrl: "",
   });
 
   useEffect(() => {
@@ -62,13 +65,14 @@ const Profile = () => {
           setUserInfo({
             ...userInfo,
             name: `${userData.FirstName} ${userData.LastName}`,
+            profileUrl: userData.profileUrl,
           });
         }
       }
     };
 
     fetchUserData();
-  }, []); // Empty dependency array to run the effect only once
+  }, []);
 
   // Dummy function to handle image press
   const handleImagePress = () => {
@@ -88,7 +92,7 @@ const Profile = () => {
   };
   const handleLicenseInsurancePress = () => {
     console.log("Navigating to License & Insurance");
-    //router.push("/tabs/Account/LicenseInsurance");
+    router.push("../profile/licenseAndInsurance");
   };
   const handlePaymentPress = () => {
     console.log("Navigating to Payment");
@@ -96,28 +100,40 @@ const Profile = () => {
   };
   const handleFAQPress = () => {
     console.log("Navigating to FAQ");
-    //router.push("/tabs/Account/Settings");
+    router.push("../profile/faq");
   };
   const handleTermsPress = () => {
     console.log("Navigating to Terms & Conditions");
-    router.push("/onboarding/termsAndConditions");
+    router.push("../onboarding/termsAndConditions");
   };
   const handleSettingsPress = () => {
     console.log("Navigating to Settings");
-    router.push("/Settings/Setting");
+    router.push("../profile/settings");
   };
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.profileHeader}>
-        <TouchableOpacity onPress={handleImagePress}></TouchableOpacity>
-        <Text style={styles.profileTitle}>Profile</Text>
+        <View style={styles.profileTitleContainer}>
+          <Text style={styles.profileTitle}>Profile</Text>
+
+          <View style={styles.signoutContainer}>
+            <SignoutIcon />
+          </View>
+        </View>
         <View style={styles.profileContainer}>
-          <ProfileContainer
-            width={99}
-            height={99}
-            style={styles.profileImage}
-          />
+          {userInfo.profileUrl ? (
+            <Image
+              source={{ uri: userInfo.profileUrl }}
+              style={styles.profileImage}
+            />
+          ) : (
+            <ProfileContainer
+              width={99}
+              height={99}
+              style={styles.profileImage}
+            />
+          )}
           <Text style={styles.profileName}>{userInfo.name}</Text>
         </View>
 
@@ -156,7 +172,7 @@ const Profile = () => {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => handleRideHistoryPress()}
+        onPress={() => handleLicenseInsurancePress()}
       >
         <View style={styles.iconContainer}>
           <AddressIcon />
@@ -176,10 +192,7 @@ const Profile = () => {
         <ArrowIcon />
       </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => handleRideHistoryPress()}
-      >
+      <TouchableOpacity style={styles.button} onPress={() => handleFAQPress()}>
         <View style={styles.iconContainer}>
           <FAQIcon />
           <Text style={styles.text}> FAQ</Text>
@@ -217,6 +230,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
   },
+  profileTitleContainer: {
+    flexDirection: "row",
+  },
+  signoutContainer: {
+    top: verticalScale(40),
+    left: horizontalScale(100),
+    alignItems: "flex-start",
+  },
   profileHeader: {
     alignItems: "center",
     paddingVertical: verticalScale(15),
@@ -229,7 +250,7 @@ const styles = StyleSheet.create({
   profileImage: {
     width: 100,
     height: 100,
-    borderRadius: 50,
+    borderRadius: 10,
     backgroundColor: "#e1e4e8",
     marginRight: 20, // Adds space between the image and the name
   },

@@ -1,5 +1,11 @@
 import React from "react";
-import { StyleSheet, Text, View, Image, ImageSourcePropType } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ImageSourcePropType,
+} from "react-native";
 import { moderateScale, verticalScale } from "@/constants/Metrics";
 
 interface CarCardProps {
@@ -8,7 +14,7 @@ interface CarCardProps {
   dailyRate: number;
   hourlyRate: number;
   transmission: string;
-  imageUrl: ImageSourcePropType; 
+  imageUrl: ImageSourcePropType;
 }
 
 const CarCard: React.FC<CarCardProps> = ({
@@ -30,7 +36,7 @@ const CarCard: React.FC<CarCardProps> = ({
         <Text style={styles.rate}>${hourlyRate}/hour</Text>
       </View>
       <View>
-        <Image source={{uri: imageUrl}}style={styles.image} />
+        <Image source={{ uri: imageUrl }} style={styles.image} />
       </View>
     </View>
   );
@@ -45,7 +51,7 @@ const styles = StyleSheet.create({
     width: "85%",
     alignSelf: "center",
     flexDirection: "row",
-    justifyContent:"space-around"
+    justifyContent: "space-around",
   },
   title: {
     fontSize: moderateScale(20),
@@ -70,7 +76,6 @@ const styles = StyleSheet.create({
     height: verticalScale(110),
     resizeMode: "contain",
   },
-
 });
 
 export default CarCard;
