@@ -47,12 +47,11 @@ async function availability(carID, startTime, endTime){
 
     let reserve = true;
 
-    const q = query(collection(db, "reservations"), where("Status", "==", true));
+    const q = query(collection(db, "reservations"), where("Active", "==", true));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
         let bookedStart = doc.data().StartTime.toDate().getTime();
         let bookedEnd = doc.data().EndTime.toDate().getTime();
-
     if (
       (start >= bookedStart && start <= bookedEnd) ||
       (end >= bookedStart && end <= bookedEnd) ||
@@ -60,8 +59,8 @@ async function availability(carID, startTime, endTime){
       (bookedStart >= start && bookedEnd <= end)
     ) {
       reserve = false;
-    }
-  });
+      }
+    });
 
     return reserve;
 }
