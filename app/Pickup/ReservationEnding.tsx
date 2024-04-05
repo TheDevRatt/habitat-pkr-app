@@ -25,7 +25,8 @@ import CameraIcon from '@/components/CameraIcon'; // Import CameraIcon component
 import { openCamera } from "./../classes/CloudStorage";
 import { selectedVehicle, selectedReservation } from "../(tabs)/Bookings";
 import { updateActiveStatus } from "../classes/Rental";
-import { getUserID } from "../classes/UserUtils";
+
+const ONE_MINUTE = 60000;
 
 const ReservationEnding = () => {
   const [image, setImage] = useState(null);
@@ -58,7 +59,7 @@ const ReservationEnding = () => {
 
   const handlePhotoSubmission = () => {
     console.log('Submit photo');
-    updateActiveStatus(getUserID());
+    updateActiveStatus(selectedReservation.id);
     router.push("(tabs)/Home")
     setModalVisible(true);
   };

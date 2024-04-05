@@ -166,28 +166,24 @@ async function userReservations(userID, reservationID, startTime) {
 }
 
 // Update the reservations progress to determine if it has already been started
-async function updateProgress(userID){
-    const userDoc = await getDoc(doc(db, 'users', userID));
+async function updateProgress(reservationID){
+    const reservationDocRef = doc(db, 'reservations', reservationID);
     try{
-        if (userDoc.exists()) {
-            await updateDoc(userDocRef, {
-                InProgress: true
-            });
-        }
+        await updateDoc(reservationDocRef, {
+            InProgress: true
+        });
     }catch (error) {
         alert(error);
     }
 }
 
 // Update the reservation to determine if the res is valid or completed
-async function updateActiveStatus(userID){
-    const userDoc = await getDoc(doc(db, 'users', userID));
+async function updateActiveStatus(reservationID){
+    const reservationDocRef = doc(db, 'reservations', reservationID);
     try{
-        if (userDoc.exists()) {
-            await updateDoc(userDocRef, {
-                Active: false
-            });
-        }
+        await updateDoc(reservationDocRef, {
+            Active: false
+        });
     }catch (error) {
         alert(error);
     }

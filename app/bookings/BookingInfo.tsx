@@ -35,7 +35,6 @@ const BookingDetails = () => {
 
         // Check if the reservation is active and not cancelled or completed
         if(selectedReservation.Active === true){
-
             // If the pickup portion has been completed send user to active reservation
             if (selectedReservation.InProgress === true){
                 router.push({ pathname: "/Pickup/ActiveReservation" });

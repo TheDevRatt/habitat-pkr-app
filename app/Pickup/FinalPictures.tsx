@@ -25,7 +25,7 @@ const FinalPictures = () => {
       alert("Please take a photo of the gas level before submitting.");
       return;
     }
-    updateProgress(getUserID());
+    updateProgress(selectedReservation.id);
     console.log("Final photos submitted!");
     router.push("/Pickup/ActiveReservation"); // navigate to Pickup/ActiveReservation
   };
