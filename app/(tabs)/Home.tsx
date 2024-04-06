@@ -50,17 +50,17 @@ const Home = () => {
 
   useEffect(() => {
     async function fetchVehicleList() {
-      try {
-        vehicleList = await fetchVehicles();
-        setVehicles(vehicleList);
-        setLoading(false);
-      } catch (error) {
-        setError(error);
-        setLoading(false);
-      }
+        try {
+            vehicleList  = await fetchVehicles();
+            setVehicles(vehicleList);
+            setLoading(false);
+        } catch (error) {
+            setError(error);
+            setLoading(false);
+        }
     }
     fetchVehicleList();
-  }, []);
+    }, []);
 
   // user info
   const user = auth.currentUser;
@@ -81,7 +81,7 @@ const Home = () => {
   // navigation
   const router = useRouter();
 
-  const goToBooking = (carId: number) => {
+ const goToBooking = (carId: number) => {
     selectedVehicle = vehicleList[carId];
     router.push({ pathname: "/home/CarInfo" });
   };

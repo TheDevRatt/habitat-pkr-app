@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Image } from "react-native";
 import { Stack, useRouter, useLocalSearchParams } from "expo-router";
 import { SafeAreaView, Text, TouchableOpacity } from "@/components/Themed";
@@ -13,13 +13,48 @@ import {
 } from "@/constants/Metrics";
 import { selectedVehicle, selectedReservation } from "../(tabs)/Bookings";
 
+const ONE_MINUTE = 60000;
+
 const BookingDetails = () => {
   const ident = useLocalSearchParams();
   const navigation = useNavigation();
+  const router = useRouter();
 
   const goBack = () => {
     navigation.goBack(); 
   };
+
+    // isActive determines the active reservations time and sends
+    // the user to the appropriate page.
+    function isActive(startTime){
+        let currentTime = new Date(); // Current time
+        let timeWindow = startTime.toDate(); // Time window is start time -15 mins
+        timeWindow = new Date(timeWindow - ONE_MINUTE * 15);
+        let pickUpWindow = startTime.toDate(); // Pickup window is start time +15 mins
+        pickUpWindow = new Date(pickUpWindow.getTime() + ONE_MINUTE * 15);
+
+        // Check if the reservation is active and not cancelled or completed
+        if(selectedReservation.Active === true){
+            // If the pickup portion has been completed send user to active reservation
+            if (selectedReservation.InProgress === true){
+                router.push({ pathname: "/Pickup/ActiveReservation" });
+
+            // If the currentTime falls into the 15 minute pickup window
+            }else if (currentTime <= pickUpWindow && currentTime >= timeWindow) {
+                router.push({ pathname: "/Pickup/Reservation" });
+
+            // If the user is 15 mins late to pick up then the appointment is forfeited
+            }else if ( currentTime > pickUpWindow ){
+                router.push({ pathname: "/Pickup/forfeited" });
+            }
+        }
+    }
+    useEffect(() => {
+        if (selectedReservation){
+            isActive(selectedReservation.StartTime);
+        }
+    }, []);
+
 
 
   const bookingDetails = {
@@ -91,6 +126,11 @@ const BookingDetails = () => {
             Your booking will become active when the handover period of 15
             minutes starts.
           </Text>
+
+
+
+
+
         </View>
       </SafeAreaView>
     </LinearGradient>

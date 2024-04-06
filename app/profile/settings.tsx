@@ -24,8 +24,8 @@ import {
 import RoadIcon from "@/components/RoadIcon";
 import PeopleIcon from "@/components/PeopleIcon";
 import ArrowIcon from "@/components/ArrowIcon";
-import PencilIcon from "@/components/pencilIcon";
-import LockIcon from "@/components/lockIcon";
+import PencilIcon from "@/components/PencilIcon";
+import LockIcon from "@/components/LockIcon";
 import NotificationsIcon from "@/components/notificationIcon";
 
 import { Link, useRouter } from "expo-router";

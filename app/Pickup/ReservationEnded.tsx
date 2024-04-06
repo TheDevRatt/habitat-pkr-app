@@ -17,47 +17,36 @@ import {
   horizontalScale,
 } from "@/constants/Metrics";
 import { SafeAreaView } from "@/components/Themed";
+import CameraIcon from '@/components/CameraIcon'; // Import CameraIcon component
+import { openCamera } from "./../classes/CloudStorage";
+import { selectedVehicle, selectedReservation } from "../(tabs)/Bookings";
+
 
 const ReservationEnded = () => {
-  const [frontImage, setFrontImage] = useState(null);
-  const [backImage, setBackImage] = useState(null);
-  const [rightImage, setRightImage] = useState(null);
-  const [leftImage, setLeftImage] = useState(null);
+  const [frontImage, setFrontImage] = useState('Front');
+  const [backImage, setBackImage] = useState('Back');
+  const [rightImage, setRightImage] = useState('Right');
+  const [leftImage, setLeftImage] = useState('Left');
   const router = useRouter();
 
   const handleSubmission = () => {
-    console.log("Photos submitted!");
-    console.log("Front Image:", frontImage);
-    console.log("Back Image:", backImage);
-    console.log("Right Image:", rightImage);
-    console.log("Left Image:", leftImage);
-    router.push("/Pickup/ReservationEnding");
+    console.log('Photos submitted!');
+    router.push('Pickup/ReservationEnding');
   };
 
-  const openCamera = async (setImage) => {
-    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+  let imageURI;
+  function handleOpenCamera(imageSide){
+    let filename = ("dropoff" + imageSide) ;
+    let location = ("Reservations/" + selectedReservation.id);
+    openCamera(filename, location);
+    imageURI = ("gs://pkrides-d3c59.appspot.com/" + location + "/" + filename);
+  }
 
-    if (permissionResult.granted === false) {
-      alert("Permission to access camera is required!");
-      return;
-    }
 
-    const pickerResult = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      aspect: [4, 3],
-    });
 
-    if (!pickerResult.cancelled) {
-      const imageResult = pickerResult.assets[0];
-      const newUri = imageResult.uri + "?" + new Date().getTime();
-      console.log("New photo URI:", newUri);
-      setImage(newUri);
-    }
-  };
-
-  const renderImage = (imageUri) => {
+  const renderImage = (imageUri: string | null | undefined) => {
     return imageUri ? (
-      <Image source={{ uri: imageUri }} style={styles.photo} key={imageUri} />
+      <Image source={{ uri: imageUri }} style={styles.image} />
     ) : (
       <Image
         source={require("../../components/CameraIcon.tsx")}
@@ -65,13 +54,12 @@ const ReservationEnded = () => {
       />
     );
   };
-
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Reservation Ended</Text>
 
       {/* Front Photo */}
-      <TouchableOpacity onPress={() => openCamera(setFrontImage)}>
+      <TouchableOpacity onPress={() => handleOpenCamera(frontImage)}>
         <View style={styles.photoContainer}>
           <Image source={Camera} style={styles.image} />
           {renderImage(frontImage)}
@@ -82,7 +70,7 @@ const ReservationEnded = () => {
       </TouchableOpacity>
 
       {/* Back Photo */}
-      <TouchableOpacity onPress={() => openCamera(setBackImage)}>
+      <TouchableOpacity onPress={() => handleOpenCamera(setBackImage)}>
         <View style={styles.photoContainer}>
           <Image source={Camera} style={styles.image} />
           {renderImage(backImage)}
@@ -93,7 +81,7 @@ const ReservationEnded = () => {
       </TouchableOpacity>
 
       {/* Right Side Photo */}
-      <TouchableOpacity onPress={() => openCamera(setRightImage)}>
+      <TouchableOpacity onPress={() => handleOpenCamera(setRightImage)}>
         <View style={styles.photoContainer}>
           <Image source={Camera} style={styles.image} />
           {renderImage(rightImage)}
@@ -104,7 +92,7 @@ const ReservationEnded = () => {
       </TouchableOpacity>
 
       {/* Left Side Photo */}
-      <TouchableOpacity onPress={() => openCamera(setLeftImage)}>
+      <TouchableOpacity onPress={() => handleOpenCamera(setLeftImage)}>
         <View style={styles.photoContainer}>
           <Image source={Camera} style={styles.image} />
           {renderImage(leftImage)}
@@ -156,10 +144,10 @@ const styles = StyleSheet.create({
     fontFamily: "karlaR",
   },
   photo: {
-    width: 60,
-    height: 60,
-    borderRadius: 10,
-    marginRight: 10,
+    width: moderateScale(60),
+    height: moderateScale(60),
+    borderRadius: moderateScale(10),
+    marginRight: horizontalScale(10),
   },
   buttonText: {
     color: "white",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -21,25 +21,46 @@ import Camera from "../../assets/images/camera.png";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "@/components/Themed";
 import { EvilIcons } from "@expo/vector-icons";
+import CameraIcon from '@/components/CameraIcon'; // Import CameraIcon component
+import { openCamera } from "./../classes/CloudStorage";
+import { selectedVehicle, selectedReservation } from "../(tabs)/Bookings";
+import { updateActiveStatus } from "../classes/Rental";
+
+const ONE_MINUTE = 60000;
 
 const ReservationEnding = () => {
   const [image, setImage] = useState(null);
+  const [gasLevelImage, setGasLevelImage] = useState("Gas");
   const [modalVisible, setModalVisible] = useState(false);
-  const router = useRouter(); // initialize router
+  const router = useRouter();
 
-  const openCamera = async () => {
-    const imageResult = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      aspect: [4, 3],
-    });
+  const [timer, setTimer] = useState("00:00");
+  const [time, setTime] = useState(new Date());
+  function isActive(){
+    let currentTime = new Date();
+    let timeWindow = (selectedReservation.EndTime.toDate().getTime() + ONE_MINUTE * 30);
+    timeWindow = (timeWindow - currentTime)/1000;
+    setTimer(new Date(timeWindow * 1000).toISOString().slice(11, 19));
+  }
 
-    if (!imageResult.cancelled) {
-      setImage(imageResult.uri);
+  useEffect(() => {
+    const interval = setInterval(() => {
+        setTime(isActive());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  function handleOpenCamera(gasLevelImage){
+      let filename = ("pickup" + gasLevelImage) ;
+      let location = ("Reservations/" + selectedReservation.id);
+      openCamera(filename, location);
     }
-  };
 
   const handlePhotoSubmission = () => {
-    console.log("Submit photo");
+    console.log('Submit photo');
+    updateActiveStatus(selectedReservation.id);
+    router.push("(tabs)/Home")
     setModalVisible(true);
   };
 
@@ -62,7 +83,10 @@ const ReservationEnding = () => {
       </View>
 
       {/* Submit Photo Button */}
-      <AppButton style={styles.button} onPress={handlePhotoSubmission}>
+      <AppButton
+        style={styles.button}
+        onPress={handlePhotoSubmission}
+      >
         Submit Photo
       </AppButton>
 
@@ -70,7 +94,7 @@ const ReservationEnding = () => {
       <View style={styles.timeSlotBox}>
         <View style={styles.row}>
           <EvilIcons name="clock" size={125} color="#E85E21" />
-          <Text style={styles.headerTextBox}>4:00</Text>
+          <Text style={styles.headerTextBox}>{timer}</Text>
         </View>
       </View>
 
@@ -100,7 +124,7 @@ const ReservationEnding = () => {
               style={styles.modalButton}
               onPress={() => {
                 setModalVisible(false); // close the modal
-                router.push("/(tabs)/Bookings"); // navigate to Pickup/UserReservation
+                router.push('(tabs)/Bookings'); // navigate to Pickup/UserReservation
               }}
             >
               <Text style={styles.modalButtonText}>Go to My Reservations</Text>
@@ -110,7 +134,8 @@ const ReservationEnding = () => {
       </Modal>
     </SafeAreaView>
   );
-};
+}
+
 
 const styles = StyleSheet.create({
   container: {
@@ -179,8 +204,8 @@ const styles = StyleSheet.create({
     paddingVertical: verticalScale(20),
   },
   clock: {
-    width: 60,
-    height: 60,
+    width: moderateScale(60),
+    height: moderateScale(60),
   },
   modalContainer: {
     flex: 1,

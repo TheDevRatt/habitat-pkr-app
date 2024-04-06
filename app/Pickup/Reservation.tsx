@@ -14,33 +14,32 @@ import { EvilIcons } from "@expo/vector-icons";
 const Reservation = () => {
   const router = useRouter();
 
-  //const goBack = () => {
-  //navigation.goBack();
-  //};
-
   const handleDropOff = () => {
     router.push("/Pickup/ReservationEnded");
   };
 
   const [timer, setTimer] = useState("timer");
   const [time, setTime] = useState(new Date());
-  function isActive() {
+  function isActive(){
     let currentTime = new Date();
-    let timeDifference =
-      (selectedReservation.StartTime.toDate().getTime() -
-        currentTime.getTime()) /
-      1000;
+    let timeDifference = (selectedReservation.StartTime.toDate().getTime() - currentTime.getTime())/1000;
     setTimer(new Date(timeDifference * 1000).toISOString().slice(11, 19));
-    //router.push({ pathname: "/Pickup/Reservation" });
+    if (timeDifference < 0){
+        setTimer("00:00");
+    }
   }
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(isActive());
-    }, 1000);
 
-    return () => clearInterval(interval);
-  }, []);
+  useEffect(() => {
+       const interval = setInterval(() => {
+         setTime(isActive());
+       }, 1000);
+
+       return () => clearInterval(interval);
+     }, []);
+
+
+
 
   return (
     <View style={styles.container}>
@@ -75,6 +74,7 @@ const Reservation = () => {
         </AppButton>
       </View>
     </View>
+      
   );
 };
 const styles = StyleSheet.create({

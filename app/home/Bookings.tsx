@@ -222,7 +222,9 @@ const Payment = () => {
                   let reservation = await reserve(
                     selectedVehicle.id,
                     Data[0].value,
-                    Data[1].value
+                    Data[1].value,
+                    selectedVehicle.DayRate,
+                    selectedVehicle.HourlyRate
                   );
                   if (reservation == "Booked") {
                     alert("Reservation complete");

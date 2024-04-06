@@ -169,6 +169,7 @@ async function addUser(
       Age: age,
       Approved: false,
       isAdmin: false,
+      iskeyholder: false,
     });
   } catch (e) {}
   updateProfile(auth.currentUser, {
@@ -225,12 +226,6 @@ async function signinUser(email, password) {
     // For other errors, return a generic error status
     return { status: "error", message: error.message };
   }
-}
-
-// Return user ID
-async function getUserID() {
-  const user = auth.currentUser;
-  return user.uid;
 }
 
 async function getUserVerified(email) {
@@ -290,7 +285,6 @@ export {
   verifyUser,
   addUser,
   signinUser,
-  getUserID,
   getUserVerified,
   getUserExists,
   readUserName,

@@ -1,15 +1,9 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  Alert,
-  StyleSheet,
-} from "react-native";
-import * as ImagePicker from "expo-image-picker";
-import AppButton from "../../components/AppButton";
+import React, { useState } from 'react';
+import { View, Text, Image, TouchableOpacity, Alert, StyleSheet } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import AppButton from '../../components/AppButton';
 import { useRouter } from "expo-router"; // import useRouter
+import CameraIcon from '../../components/CameraIcon'; // Import CameraIcon component
 import { openCamera } from "./../classes/CloudStorage";
 import { selectedVehicle, selectedReservation } from "../(tabs)/Bookings";
 import { getUserID } from "../classes/UserUtils";
@@ -21,24 +15,23 @@ import {
 import { updateProgress } from "../classes/Rental";
 import Camera from "../../assets/images/camera.png";
 
-import CameraIcon from "../../components/CameraIcon"; // Import CameraIcon component
-
 const FinalPictures = () => {
-  const [gasLevelImage, setGasLevelImage] = useState("Gas");
+  const [gasLevelImage, setGasLevelImage] = useState(null);
   const router = useRouter(); // initialize router
 
   const handleSubmission = () => {
-    if (!gasLevelImage) {
-      alert("Error", "Please take a photo of the gas level before submitting.");
+    if (!setGasLevelImage) {
+        console.log(gasLevelImage);
+      alert("Please take a photo of the gas level before submitting.");
       return;
     }
-    updateProgress(getUserID());
+    updateProgress(selectedReservation.id);
     console.log("Final photos submitted!");
     router.push("/Pickup/ActiveReservation"); // navigate to Pickup/ActiveReservation
   };
 
   function handleOpenCamera(gasLevelImage) {
-    let filename = "pickup" + gasLevelImage;
+    let filename = "pickupGas";
     let location = "Reservations/" + selectedReservation.id;
     openCamera(filename, location);
   }
@@ -69,11 +62,6 @@ const FinalPictures = () => {
             Please note that it is your responsibility to fill up the gas tank,
             and if you go overtime, you will be charged a premium. By pressing
             “Start” you agree that you have read the above.{"\n"}
-          </Text>
-          <Text style={styles.disclaimerText}>
-            Please note that it is your responsibility to fill up the gas tank,
-            and if you go overtime, you will be charged a premium. By pressing
-            “Start” you agree that you have read the above.
           </Text>
         </View>
       </View>

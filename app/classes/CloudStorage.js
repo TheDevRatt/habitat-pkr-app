@@ -103,6 +103,7 @@ async function openFilePicker(fileName, location, userID) {
 // Check if a file exists
 async function fileExists(fileName, location) {
   const filepath = location + "/" + fileName;
+  //console.log(filepath);
   const docRef = ref(storage, filepath);
   try {
     await getDownloadURL(docRef);

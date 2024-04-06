@@ -22,8 +22,6 @@ let previousReservations = [];
 
 const Bookings = () => {
 
-  // console.log(vehicles)
-
   loadData();
 
   const router = useRouter();
@@ -36,7 +34,7 @@ const Bookings = () => {
   const goToDetails = (reservationID : number) => {
     selectedReservation = userReservations[userReservations.findIndex(p => p.id == reservationID)];
     selectedVehicle = vehicleList[vehicleList.findIndex(p => p.id == selectedReservation.CarID)];
-    router.push("/Pickup/Reservation");
+    router.push({ pathname: "/bookings/BookingInfo"});
   }
 
   if(userReservations){
