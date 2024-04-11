@@ -147,9 +147,8 @@ No prerequisites required other than the above tools and a decent computer capab
 
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+Usage of this app is simple. Users are to create an account and await approval by a verified admin, after which they can use the app normally.
 
-_For more examples, please refer to the [Documentation](https://example.com)_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -194,13 +193,13 @@ _For more examples, please refer to the [Documentation](https://example.com)_
   - [x] Damage report page
 - [x] Admin Page
   - [x] Signed up users page
-  - [ ] Blocked users page
-  - [ ] Keyholders page
+  - [x] Blocked users page
+  - [x] Keyholders page
   - [x] Add user page
   - [x] Add admin page
-  - [ ] Manage user page
-  - [ ] Add car page
-  - [ ] Manage car page
+  - [x] Manage user page
+  - [x] Add car page
+  - [x] Manage car page
 - [ ] Payment Service (Shelved Feature)
 
 See the [open issues](https://github.com/TheDevRatt/habitat-pkr-app/issues) for a full list of proposed features (and known issues).
@@ -247,7 +246,6 @@ Project Link: [https://github.com/TheDevRatt/habitat-pkr-app](https://github.com
 
 - [Trent University]()
 - [Habitat for Humanity - Peterborough & Kawartha Region]()
-- []()
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
